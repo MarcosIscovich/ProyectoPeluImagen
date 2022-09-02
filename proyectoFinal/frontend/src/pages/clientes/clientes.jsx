@@ -2,18 +2,24 @@
 import * as React from "react";
 import "./clientes.css";
 import { DataGrid } from "@mui/x-data-grid";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { DeleteOutline, Face } from "@mui/icons-material";
 import Stack from "@mui/material/Stack";
-import ModalAdd from "./agregarModal";
+import Modal from "./modalForm";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Button from "@mui/material/Button";
 
 export default function clientes() {
+  useEffect(() => {
+    rowsdata();
+  }, []);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [editData, setData] = useState([]);
   const [rows, setRows] = useState([]);
+  const [item, setItemSelected] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [edit , setEdit] = useState(false);
 
   const MySwal = withReactContent(Swal);
 
@@ -24,12 +30,21 @@ export default function clientes() {
     });
   };
 
-  const handleEdit = (id) => {
-    console.log(id);
-    axios.get(`http://localhost:3000/clientes/${id}`).then((response) => {
-      setData(response.data);
-      console.log("data para editar", editData);
-    });
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = () => {
+    setItemSelected({});
+    setOpen(true);
+  };
+
+  const handleEdit = (data) => {
+    console.log("Cliente edit" , data)
+    setItemSelected(data);
+    setOpen(true);
+    setEdit(true);
+    
   };
 
   const handleDelete = (id) => {
@@ -49,14 +64,14 @@ export default function clientes() {
             console.log(response);
             rowsdata();
           });
-        MySwal.fire("¡Eliminado!", "El cliente ha sido eliminado.", "success");
+        MySwal.fire(
+          "Yo te Adverti!",
+          "El cliente ha sido eliminado.",
+          "success"
+        );
       }
     });
   };
-
-  useEffect(() => {
-    rowsdata();
-  }, []);
 
   const columns = [
     /* { field: "id", headerName: "ID", width: 70 }, */
@@ -77,15 +92,13 @@ export default function clientes() {
       renderCell: (params) => {
         return (
           <div>
-            <button
-              className="btnEdit"
-              onClick={() => handleEdit(params.row.id)}
-            >
-              {" "}
+            <Face className="btnFace" />
+
+            <button className="btnEdit" onClick={() => handleEdit(params.row)}>
               Editar
             </button>
 
-            <DeleteOutlineIcon
+            <DeleteOutline
               className="btnDelete"
               onClick={() => handleDelete(params.row.id)}
             />
@@ -95,94 +108,23 @@ export default function clientes() {
     },
   ];
 
-  /* const rows = [
-    {
-      id: 1,
-      nombre: "Juan",
-      telefono: "123456789",
-      direccion: "Calle 1",
-      email: "Juan@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 2,
-      nombre: "Pedro",
-      telefono: "123456789",
-      direccion: "Calle 2",
-      email: "Pedro@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Intagram",
-    },
-    {
-      id: 3,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 4,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 5,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 6,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 7,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 8,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    }, 
-  ];*/
-
   return (
     <div className="clienteList">
+      <Button className="btnAdd" onClick={handleClickOpen}>
+        Agregar Cliente
+      </Button>
+
       <Stack direction="row" spacing={5}>
         <br />
-        <ModalAdd editData={editData} rowsdata={rowsdata} />
+        <Modal edit={edit} item={item} open={open} setOpen={setOpen} handleClose={handleClose} rowsdata={rowsdata} />
       </Stack>
 
       <DataGrid
-        style={{ height: 400, margin: 60, width: "80%" }}
+        style={{ height: 400, margin: 60, width: "90%" }}
         rows={rows}
         disableSelectionOnClick
         columns={columns}
-        pageSize={4}
+        pageSize={5}
         rowsPerPageOptions={[5]}
       />
     </div>

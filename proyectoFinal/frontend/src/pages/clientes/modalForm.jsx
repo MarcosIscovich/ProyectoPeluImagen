@@ -4,30 +4,51 @@ import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
+/* import DialogContentText from "@mui/material/DialogContentText"; */
 import DialogTitle from "@mui/material/DialogTitle";
 import "./clientes.css";
 import axios from "axios";
 
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
-const MySwal = withReactContent(Swal)
-
+const MySwal = withReactContent(Swal);
 
 export default function FormDialog(props) {
-  const [open, setOpen] = React.useState(false);
+  const open = props.open;
+  const handleClose = props.handleClose;
+  const item = props.item;
+  const edit = props.edit;
+  const rowsdata = props.rowsdata;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const editData = () => {
+    const editData = {
+      id: item.id,
+      nombre: document.getElementById("nombre").value,
+      telefono: document.getElementById("telefono").value,
+      direccion: document.getElementById("direccion").value,
+      email: document.getElementById("email").value,
+      fecha_nacimiento: document.getElementById("fechaNacimiento").value,
+      red_social: document.getElementById("redSocial").value,
+    };
+    console.log("editData", editData);
+    axios
+      .put("http://localhost:3000/clientes//update", editData)
+      .then((response) => {
+        console.log("entra a editData", response.data);
+        handleClose();
+        MySwal.fire({
+          title: "Cliente editado",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then((result) => {
+          rowsdata();
+        });
+      });
   };
 
   const handleSave = () => {
-    
     const form = {
       nombre: document.getElementById("nombre").value,
       telefono: document.getElementById("telefono").value,
@@ -37,29 +58,24 @@ export default function FormDialog(props) {
       red_social: document.getElementById("redSocial").value,
     };
 
-    axios.post ("http://localhost:3000/clientes/create", form).then((response) => {
-      console.log(response);
-      handleClose();
-      MySwal.fire({
-        
-        title: "Cliente agregado",
-        text: "El cliente se ha agregado correctamente",
-        icon: "success",
-        background: "#fff",
-        confirmButtonColor: "red",
-        confirmButtonText: "Aceptar",
-    })
-    
-
-    
-  });
-};
+    axios
+      .post("http://localhost:3000/clientes/create", form)
+      .then((response) => {
+        console.log(response);
+        handleClose();
+        MySwal.fire({
+          title: "Cliente agregado",
+          text: "El cliente se ha agregado correctamente",
+          icon: "success",
+          background: "#fff",
+          confirmButtonColor: "red",
+          confirmButtonText: "Aceptar",
+        });
+      });
+  };
 
   return (
     <div>
-      <Button className="btnAdd" onClick={handleClickOpen}>
-        Agregar Cliente
-      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Agendar Cliente</DialogTitle>
         <DialogContent>
@@ -75,6 +91,7 @@ export default function FormDialog(props) {
             type="text"
             fullWidth
             variant="standard"
+            {...(item.nombre && { defaultValue: item.nombre })}
           />
           <TextField
             margin="dense"
@@ -83,6 +100,7 @@ export default function FormDialog(props) {
             type="int"
             fullWidth
             variant="standard"
+            {...(item.telefono && { defaultValue: item.telefono })}
           />
           <TextField
             margin="dense"
@@ -91,6 +109,7 @@ export default function FormDialog(props) {
             type="text"
             fullWidth
             variant="standard"
+            {...(item.direccion && { defaultValue: item.direccion })}
           />
           <TextField
             margin="dense"
@@ -99,6 +118,7 @@ export default function FormDialog(props) {
             type="email"
             fullWidth
             variant="standard"
+            {...(item.email && { defaultValue: item.email })}
           />
           <TextField
             margin="dense"
@@ -107,6 +127,9 @@ export default function FormDialog(props) {
             type="date"
             fullWidth
             variant="standard"
+            {...(item.fecha_nacimiento && {
+              defaultValue: item.fecha_nacimiento,
+            })}
           />
           <TextField
             margin="dense"
@@ -115,11 +138,17 @@ export default function FormDialog(props) {
             type="text"
             fullWidth
             variant="standard"
+            {...(item.red_social && { defaultValue: item.red_social })}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleSave}>Guardar</Button>
+
+          {edit ? (
+            <Button onClick={editData}>Editar</Button>
+          ) : (
+            <Button onClick={handleSave}>Guardar</Button>
+          )}
         </DialogActions>
       </Dialog>
     </div>

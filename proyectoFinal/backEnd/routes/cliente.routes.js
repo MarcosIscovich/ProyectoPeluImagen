@@ -6,7 +6,7 @@ ClienteRoutes.get('/:id', ClienteController.getClientes);
 ClienteRoutes.get('/', ClienteController.getAllClientes);
 
 ClienteRoutes.post('/create',  ClienteController.createCliente);
-ClienteRoutes.put('/update/:id', ClienteController.uptadeCliente);
+ClienteRoutes.put('/update', ClienteController.uptadeCliente);
 ClienteRoutes.delete('/delete/:id', ClienteController.deleteCliente);
 
 

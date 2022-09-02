@@ -10,10 +10,13 @@
     background-color: #3bb077;
     color: white;
     cursor: pointer;
-    margin-right: 20px;
+    margin-bottom: 10px;
+    
 }
 
 .btnDelete{
+    padding: 5px 10px 0px 5px;
+    
     color: red;
     cursor: pointer;
     
@@ -29,5 +32,11 @@
     color: white !important;
     cursor: pointer;
     margin-right: 20px;
+
+}
+.btnFace{
+    padding: 5px 10px 0px 5px;
+    cursor: pointer;
+    
 
 }
