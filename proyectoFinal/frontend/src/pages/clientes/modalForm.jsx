@@ -2,154 +2,212 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-/* import DialogContentText from "@mui/material/DialogContentText"; */
+import DialogContent from "@mui/material/DialogContent"
 import DialogTitle from "@mui/material/DialogTitle";
 import "./clientes.css";
-import axios from "axios";
-
+import { createCliente , updateCliente } from "../../services/cliente";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useForm  } from "react-hook-form";
+import { useEffect } from "react";
 
 const MySwal = withReactContent(Swal);
 
+const defaultValues= {
+    nombre:  "" ,
+    telefono: "",
+    direccion: "",
+    email: "",
+    fecha_nacimiento: "",
+    red_social: "",
+  }
+
 export default function FormDialog(props) {
-  const open = props.open;
-  const handleClose = props.handleClose;
-  const item = props.item;
-  const edit = props.edit;
-  const rowsdata = props.rowsdata;
+  const { open, handleClose, item, edit, rowsdata } = props;  
 
-  const editData = () => {
-    const editData = {
-      id: item.id,
-      nombre: document.getElementById("nombre").value,
-      telefono: document.getElementById("telefono").value,
-      direccion: document.getElementById("direccion").value,
-      email: document.getElementById("email").value,
-      fecha_nacimiento: document.getElementById("fechaNacimiento").value,
-      red_social: document.getElementById("redSocial").value,
-    };
-    console.log("editData", editData);
-    axios
-      .put("http://localhost:3000/clientes//update", editData)
-      .then((response) => {
-        console.log("entra a editData", response.data);
-        handleClose();
-        MySwal.fire({
-          title: "Cliente editado",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        }).then((result) => {
-          rowsdata();
-        });
-      });
+  const {reset, register, handleSubmit, formState: {errors}} = useForm({defaultValues});
+
+
+ useEffect(() => {
+    if (item && item.id) {
+      reset({...item})
+    } else {
+      reset(defaultValues)
+    }
+  }, [item, reset]); 
+
+
+
+  const editData = async  (data) => {
+    const editData = await updateCliente(data)
+    handleClose();
+    MySwal.fire({
+      title: "Cliente Editado",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      reset(editData);
+      rowsdata();
+    });
+  }
+
+  const saveCliente = async (data) => {
+    const save = await createCliente(data);
+    handleClose();
+    MySwal.fire({
+      title: "Cliente Guardado",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    }).then((result) => {
+      reset(save);
+      rowsdata();
+    });
   };
 
-  const handleSave = () => {
-    const form = {
-      nombre: document.getElementById("nombre").value,
-      telefono: document.getElementById("telefono").value,
-      direccion: document.getElementById("direccion").value,
-      email: document.getElementById("email").value,
-      fecha_nacimiento: document.getElementById("fechaNacimiento").value,
-      red_social: document.getElementById("redSocial").value,
-    };
-
-    axios
-      .post("http://localhost:3000/clientes/create", form)
-      .then((response) => {
-        console.log(response);
-        handleClose();
-        MySwal.fire({
-          title: "Cliente agregado",
-          text: "El cliente se ha agregado correctamente",
-          icon: "success",
-          background: "#fff",
-          confirmButtonColor: "red",
-          confirmButtonText: "Aceptar",
-        });
-      });
+  const onSubmit = (data) => { 
+    if (!edit) {
+      console.log("entra a save");
+      saveCliente(data);
+      
+    } else {
+      console.log("entra a edit");
+      editData(data);
+    }
   };
+
+
+   /*setValue("id", item.id);
+  setValue("nombre", item.nombre);
+  setValue("telefono", item.telefono);
+  setValue("direccion", item.direccion);
+  setValue("email", item.email);
+  setValue("fecha_nacimiento", item.fecha_nacimiento);
+  setValue("red_social", item.red_social); */
+
 
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Agendar Cliente</DialogTitle>
+      <DialogTitle>{edit ? "Editar Cliente" : "Crear Cliente"}</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText> */}
-          <TextField
-            autoFocus
-            margin="dense"
-            id="nombre"
-            label="Nombre"
-            type="text"
-            fullWidth
-            variant="standard"
-            {...(item.nombre && { defaultValue: item.nombre })}
-          />
-          <TextField
-            margin="dense"
-            id="telefono"
-            label="Telefono"
-            type="int"
-            fullWidth
-            variant="standard"
-            {...(item.telefono && { defaultValue: item.telefono })}
-          />
-          <TextField
-            margin="dense"
-            id="direccion"
-            label="Direccion"
-            type="text"
-            fullWidth
-            variant="standard"
-            {...(item.direccion && { defaultValue: item.direccion })}
-          />
-          <TextField
-            margin="dense"
-            id="email"
-            label="Email "
-            type="email"
-            fullWidth
-            variant="standard"
-            {...(item.email && { defaultValue: item.email })}
-          />
-          <TextField
-            margin="dense"
-            id="fechaNacimiento"
-            label="Fecha de Nacimiento"
-            type="date"
-            fullWidth
-            variant="standard"
-            {...(item.fecha_nacimiento && {
-              defaultValue: item.fecha_nacimiento,
-            })}
-          />
-          <TextField
-            margin="dense"
-            id="redSocial"
-            label="Red Social"
-            type="text"
-            fullWidth
-            variant="standard"
-            {...(item.red_social && { defaultValue: item.red_social })}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
+        <form onSubmit={handleSubmit(onSubmit)}>
 
-          {edit ? (
-            <Button onClick={editData}>Editar</Button>
-          ) : (
-            <Button onClick={handleSave}>Guardar</Button>
-          )}
-        </DialogActions>
+
+         {/*  <Controller
+            name="nombre"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <TextField onChange={onChange} value={value} label={"Nombre"} autoFocus margin="dense" variant="standard" fullWidth/>
+            )}
+          /> */}
+
+               <TextField
+              
+              inputProps={register( "nombre", {
+                required: "Please enter nombre",
+              })}
+              error={errors.nombre}
+              helperText={errors.nombre?.message}
+                autoFocus
+                margin="dense"
+                id="nombre"
+                label="Nombre"
+                type="text"
+                fullWidth
+                variant="standard"
+              />
+            
+              <TextField
+              defaultValue=""
+              inputProps={register( "telefono", {
+                required: "Please enter telefono",
+              })}
+              error={errors.telefono}
+              helperText={errors.telefono?.message}
+                
+                margin="dense"
+                id="telefono"
+                label="Telefono"
+                type="text"
+                fullWidth
+                variant="standard"
+              />
+            
+              <TextField
+              defaultValue=""
+              inputProps={register( "direccion", {
+                required: "Please enter direccion",
+              })}
+              error={errors.direccion}
+              helperText={errors.direccion?.message}
+                
+                margin="dense"
+                id="direccion"
+                label="Direccion"
+                type="text"
+                fullWidth
+                variant="standard"
+              />
+          
+              <TextField
+              defaultValue=""
+              inputProps={register( "email", {
+                required: "Please enter email",
+              })}
+              error={errors.email}
+              helperText={errors.email?.message}
+                
+                margin="dense"
+                id="email"
+                label="Email"
+                type="text"
+                fullWidth
+                variant="standard"
+              />
+
+              <TextField
+              defaultValue=""
+              inputProps={register( "fecha_nacimiento", {
+                required: "Please enter fecha_nacimiento",
+              })}
+              error={errors.fecha_nacimiento}
+              helperText={errors.fecha_nacimiento?.message}
+                
+                margin="dense"
+                id="fecha_nacimiento"
+                label="Fecha de nacimiento"
+                type="date"
+                fullWidth
+                variant="standard"
+              />
+
+              <TextField
+              defaultValue=""
+              inputProps={register( "red_social", {
+                required: "Please enter red_social",
+              })}
+              error={errors.red_social}
+              helperText={errors.red_social?.message}
+                
+                margin="dense"
+                id="red_social"
+                label="Red social"
+                type="text"
+                fullWidth
+                variant="standard"
+              />
+
+            <Button onClick={handleClose}>Cancelar</Button>
+            <Button type="submit" className="bg-red-900 ">
+              {edit ? "Editar" : "Crear"}
+            </Button>
+
+          </form>
+        </DialogContent>
+
       </Dialog>
     </div>
   );

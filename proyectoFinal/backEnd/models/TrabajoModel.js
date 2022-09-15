@@ -15,7 +15,7 @@ module.exports = function (sequelize, DataTypes) {
         cantTrabajadores: {
             type: DataTypes.INTEGER,
             allowNull: true,
-        },
+        }
     }, {
         timestamps: true,
         tableName: 'trabajos'

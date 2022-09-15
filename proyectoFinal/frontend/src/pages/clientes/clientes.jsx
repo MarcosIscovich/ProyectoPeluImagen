@@ -5,11 +5,58 @@ import { DataGrid } from "@mui/x-data-grid";
 import { DeleteOutline, Face } from "@mui/icons-material";
 import Stack from "@mui/material/Stack";
 import Modal from "./modalForm";
-import axios from "axios";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import Button from "@mui/material/Button";
+import CardModal from "./clienteModal";
+import { deleteCliente, getAllClientes } from "../../services/cliente";
+import SearchIcon from "@mui/icons-material/Search";
+import { styled, alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
+import Box from "@mui/material/Box";
+import CreateIcon from "@mui/icons-material/Create";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 export default function clientes() {
   useEffect(() => {
@@ -19,32 +66,59 @@ export default function clientes() {
   const [rows, setRows] = useState([]);
   const [item, setItemSelected] = useState([]);
   const [open, setOpen] = useState(false);
-  const [edit , setEdit] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [openCard, setOpenCard] = useState(false);
 
   const MySwal = withReactContent(Swal);
 
-  const rowsdata = () => {
-    axios.get("http://localhost:3000/clientes/").then((response) => {
-      console.log("entra a rowsdata", response.data);
-      setRows(response.data);
-    });
+  const search = (e) => {
+    filtrar(e);
+  };
+
+  const filtrar = (filtrado) => {
+    console.log("FILTRADO", filtrado);
+    /*   let resultado = rows.filter((data) => {
+      if (data.title.toString().toLowerCase().includes(filtrado.toLowerCase())
+        || data.category.toString().toLowerCase().includes(filtrado.toLowerCase())
+        || data.price.toString().toLowerCase().includes(filtrado.toLowerCase())
+      ) {
+        return data;
+      }
+
+    }) 
+   rowsdata(resultado);*/
+  };
+
+  const cardOpen = (data) => {
+    console.log("CARD", data);
+    setItemSelected(data);
+    setOpenCard(true);
+  };
+
+  const rowsdata = async () => {
+    const data = await getAllClientes();
+    setRows(data.data);
+  };
+  const handleCloseCard = () => {
+    setOpenCard(false);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setEdit(false);
   };
 
   const handleClickOpen = () => {
     setItemSelected({});
     setOpen(true);
+    setEdit(false);
   };
 
   const handleEdit = (data) => {
-    console.log("Cliente edit" , data)
+    console.log("Cliente edit", data);
     setItemSelected(data);
     setOpen(true);
     setEdit(true);
-    
   };
 
   const handleDelete = (id) => {
@@ -58,48 +132,83 @@ export default function clientes() {
       confirmButtonText: "Sí, bórralo!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:3000/clientes/delete/${id}`)
-          .then((response) => {
-            console.log(response);
-            rowsdata();
-          });
+        deleteCliente(id);
         MySwal.fire(
           "Yo te Adverti!",
           "El cliente ha sido eliminado.",
           "success"
         );
+        rowsdata();
       }
     });
   };
-
   const columns = [
     /* { field: "id", headerName: "ID", width: 70 }, */
-    { field: "nombre", headerName: "Nombre", width: 130 },
-    { field: "telefono", headerName: "Telefono", width: 130 },
-    { field: "direccion", headerName: "Direccion", width: 130 },
-    { field: "email", headerName: "E-mail", width: 180 },
+    {
+      field: "nombre",
+      headerName: "Nombre",
+      width: 130,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "telefono",
+      headerName: "Telefono",
+      width: 130,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "direccion",
+      headerName: "Direccion",
+      width: 130,
+      headerAlign: "center",
+      align: "center",
+    },
+    {
+      field: "email",
+      headerName: "E-mail",
+      width: 250,
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "fecha_nacimiento",
       headerName: "Fecha de Nacimiento",
       width: 160,
+      headerAlign: "center",
+      align: "center",
     },
-    { field: "red_social", headerName: "Red Social", width: 130 },
+    {
+      field: "red_social",
+      headerName: "Red Social",
+      width: 130,
+      headerAlign: "center",
+      align: "center",
+    },
     {
       field: "acciones",
       headerName: "Acciones",
-      width: 130,
+      width: 160,
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => {
         return (
-          <div>
-            <Face className="btnFace" />
+          <div className="flex space-x-2 ">
+            <Face
+              className=" fill-green-500 md:fill-green-700"
+              onClick={() => cardOpen(params.row)}
+            />
 
-            <button className="btnEdit" onClick={() => handleEdit(params.row)}>
-              Editar
-            </button>
+            <CreateIcon
+              className="fill-black-500 md:fill-black-700"
+              onClick={() => handleEdit(params.row)}
+            />
+            {/*  Editar
+            </button> */}
 
             <DeleteOutline
-              className="btnDelete"
+              className="fill-red-500 md:fill-red-700"
               onClick={() => handleDelete(params.row.id)}
             />
           </div>
@@ -109,24 +218,60 @@ export default function clientes() {
   ];
 
   return (
-    <div className="clienteList">
-      <Button className="btnAdd" onClick={handleClickOpen}>
-        Agregar Cliente
-      </Button>
+    <div>
+      
+      <div className=" flex mx-20 pt-12 pb-2">
+        <Fab
+        onClick={handleClickOpen}
+        variant="extended"
+        color="primary"
+        aria-label="add"
+      >
+        <AddIcon sx={{ mr: 1 }} />
+      Agregar Cliente
+      </Fab>
+
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder="Buscar Cliente"
+            inputProps={{ "aria-label": "search" }}
+            onChange={(e) => search(e.target.value)}
+          />
+        </Search>
+      </div>
+
+      <CardModal
+        item={item}
+        openCard={openCard}
+        handleCloseCard={handleCloseCard}
+      />
 
       <Stack direction="row" spacing={5}>
         <br />
-        <Modal edit={edit} item={item} open={open} setOpen={setOpen} handleClose={handleClose} rowsdata={rowsdata} />
+        <Modal
+          edit={edit}
+          item={item}
+          open={open}
+          setOpen={setOpen}
+          handleClose={handleClose}
+          rowsdata={rowsdata}
+        />
       </Stack>
-
-      <DataGrid
-        style={{ height: 400, margin: 60, width: "90%" }}
-        rows={rows}
-        disableSelectionOnClick
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
+      <Box sx={{ height: 400, margin: 10, width: "80%" }}>
+        <DataGrid
+          autoHeight
+          rows={rows}
+          disableSelectionOnClick
+          columns={columns}
+          pageSize={7}
+          rowsPerPageOptions={[7]}
+          align="center"
+          experimentalFeatures={{ newEditingApi: true }}
+        />
+      </Box>
     </div>
   );
 }

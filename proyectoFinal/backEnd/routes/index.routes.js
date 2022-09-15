@@ -15,11 +15,11 @@ const FichaRoutes = require('./ficha.routes');
 
 app.use("/clientes", ClienteRoutes);
 app.use("/prodColocado", ProdColRoutes);
-app.use("/producto", ProductoRoutes);
-app.use("/trabajo", TrabajoRoutes);
-app.use("/turno", TurnoRoutes);
+app.use("/productos", ProductoRoutes);
+app.use("/servicios", TrabajoRoutes);
+app.use("/turnos", TurnoRoutes);
 app.use("/user",  UserRoutes);
 app.use("/login", AuthRoutes);
-app.use("/ficha", FichaRoutes);
+app.use("/fichas", FichaRoutes);
 
 }

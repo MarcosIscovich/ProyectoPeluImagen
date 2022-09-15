@@ -30,10 +30,12 @@ export default function Sidebar() {
               <LineStyle className="sidebarIcon" />
               Usuarios
             </li> */}
+            <Link to="/productos" style={{ textDecoration: 'none' }}>
             <li className="sidebarListitem">
               <Storefront className="sidebarIcon" />
               Productos
             </li>
+            </Link>
             <li className="sidebarListitem">
               <ContentCut className="sidebarIcon" />
               Servicios Peluqueria

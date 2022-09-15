@@ -16,9 +16,14 @@ db.ProdColocadoModel = require('../models/ProdColocadoModel')(sequelize, Sequeli
 db.TrabajoModel = require('../models/TrabajoModel')(sequelize, Sequelize.DataTypes);
 db.UserModel = require('../models/UserModel')(sequelize, Sequelize.DataTypes);
 db.fichaClienteModel = require('../models/FichaClienteModel')(sequelize, Sequelize.DataTypes);
+db.TipoServicioModel = require('../models/TipoServicioModel')(sequelize, Sequelize.DataTypes);
 
-db.ClienteModel.belongsTo(db.fichaClienteModel);
-db.fichaClienteModel.hasMany(db.ClienteModel /* , { foreignKey: 'ficha_id' } */);
+
+db.TipoServicioModel.hasMany(db.TrabajoModel)
+db.TrabajoModel.belongsTo(db.TipoServicioModel)
+
+db.ClienteModel.hasMany(db.fichaClienteModel);
+db.fichaClienteModel.belongsTo(db.ClienteModel /* , { foreignKey: 'ficha_id' } */);
 
 db.ClienteModel.hasMany(db.TurnoModel/*  , { foreignKey: 'cliente_id' } */);
 db.TurnoModel.belongsTo(db.ClienteModel );
