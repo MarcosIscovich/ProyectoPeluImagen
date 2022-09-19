@@ -23,6 +23,7 @@ import Clientes from '../../pages/clientes/clientes';
 import Productos from '../../pages/productos/productos';
 import Servicios from '../../pages/tipoServicio/servicios';
 import FichaClientes from '../../pages/fichaCliente/fichaCliente'; 
+import Turnos from '../../pages/turnos/turnos';
 import ListIcon from './listIcons';
 
 const drawerWidth = 240;
@@ -283,6 +284,7 @@ export default function MiniDrawer() {
             <Route path="/productos" element={<Productos />} />
             <Route path="/servicios" element={<Servicios />} />
             <Route path="/fichas" element={<FichaClientes />} />
+            <Route path="/turnos" element={<Turnos />} />
 
         </Routes>
       

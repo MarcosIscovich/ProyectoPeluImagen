@@ -9,7 +9,6 @@ import ModalProducto from "./modalProducto";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { ImPencil } from "react-icons/im";
 import CreateIcon from '@mui/icons-material/Create';
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
