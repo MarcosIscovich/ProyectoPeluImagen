@@ -99,9 +99,10 @@ export default function Servicios() {
     { field: "tipo_cabello", headerName: "Tipo de Cabello", width: 100 },
     { field: "estado_cabello", headerName: "Estado del Cabello", width: 100 },
     { field: "formula", headerName: "Formula", width: 300 },
-    { field: "cliente.nombre", headerName: "Cliente", width: 130 , renderCell: (params) => (
+    { field: "cliente", headerName: "Cliente", width: 130 ,
+     renderCell: (params) => (
           <p>{params.row.cliente.nombre}</p>
-          )},
+      )},
     {
       field: "acciones",
       headerName: "Acciones",
