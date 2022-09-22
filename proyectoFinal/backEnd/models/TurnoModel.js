@@ -1,7 +1,7 @@
 module.exports = function (sequelize, Datatypes) {
     return sequelize.define('turnos', {
 
-        fehca_concurrencia: {
+        fecha_concurrencia: {
             type: Datatypes.DATE,
             allowNull: false,
         },
