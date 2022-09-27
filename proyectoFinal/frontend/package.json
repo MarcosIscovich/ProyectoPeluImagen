@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:4000",
   "dependencies": {
     "@aldabil/react-scheduler": "^2.3.1",
     "@emotion/react": "^11.10.0",

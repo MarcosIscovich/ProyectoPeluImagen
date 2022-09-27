@@ -8,9 +8,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { createProducto, updateProducto } from "../../services/productos";
 import { useEffect, useState } from "react";
 import { moment } from "moment";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const MySwal = withReactContent(Swal);
 
@@ -25,7 +25,9 @@ const defaultValues = {
 };
 
 export default function FormDialog(props) {
-  const { open, closeModal, addTurno, timeText /* , item */ } = props;
+  const { open, closeModal, addTurno, timeText, clientes , servicios } = props;
+  const [precioServ, setPrecioServicio] = useState("");
+  const [precioSelected, setPrecioSelected] = useState("");
 
   const {
     register,
@@ -33,6 +35,14 @@ export default function FormDialog(props) {
     reset,
     formState: { errors },
   } = useForm({ defaultValues });
+
+  const precioServicio = (data) => {
+    setPrecioSelected(true)
+    setPrecioServicio(data.precio)
+    console.log("DATA", data);
+    
+  };
+
 
   /* useEffect(() => {
     if (item && item.id) {
@@ -43,10 +53,11 @@ export default function FormDialog(props) {
   }, [item, reset]); */
 
   const onSubmit = (data) => {
-    addTurno(data)
+    console.log("ONSUBMIT DATA", data);
+    addTurno(data);
     closeModal();
     reset(defaultValues);
-    
+
     /* if (!edit) {
       console.log("entra a save");
       handleDateSelect(data);
@@ -60,22 +71,60 @@ export default function FormDialog(props) {
   return (
     <div>
       <Dialog open={open} onClose={closeModal}>
-        {/* <DialogTitle >{edit ? "Editar Producto" : "Crear Producto"}</DialogTitle> */}
+        <DialogTitle >Hora de inicio del turno { timeText.substring(0, 5) }Hs</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
+            <Autocomplete
+              style={{ width: 300 }}
+              id="clientes"
+              options={clientes}
+              getOptionLabel={(option) => option.nombre}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Clientes"
+                  placeholder="Clientes"
+                  {...register("clienteId", { required: "Ingrese el cliente" })}
+                  
+                />
+              )}
+            />
+
+            <Autocomplete
+              style={{ width: 300 }}
+              id="clientes"
+              options={servicios}
+              getOptionLabel={(option) => option.nombre}
+              onChange={(event, newValue) => {
+                precioServicio(newValue);
+                console.log("newValue", newValue);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="servicios"
+                  placeholder="servicios"
+                  {...register("trabajoId", { required: "Ingrese el servicio" })}
+                />
+              )}
+            />
+              { precioSelected && 
+               <TextField
               className="mt-3 mb-3"
               fullWidth
               label="Precio"
-              defaultValue=""
+              value={precioServ}
               inputProps={register("precio", {
                 required: "Please enter nombre",
               })}
               error={errors.nombre}
               helperText={errors.nombre?.message}
-            ></TextField>
 
-            <TextField
+            />  }
+             
+            
+
+            {/* <TextField
               className="mt-3 mb-3 w-100 "
               fullWidth
               type="time"
@@ -87,7 +136,7 @@ export default function FormDialog(props) {
               error={errors.descripcion}
               helperText={errors.descripcion?.message}
               readOnly
-            ></TextField>
+            ></TextField> */}
 
             <Button type="submit" className="bg-red-900 justify-content-center">
               {/* {edit ? "Editar" : "Crear"} */}Guardar

@@ -114,12 +114,12 @@ export default function productos() {
         return (
         <div className="flex space-x-2 ">
             
-      <CreateIcon className="fill-orange-500 md:fill-orange-700 mx-5"  onClick={() => handleEdit(params.row)}/>
+      <CreateIcon className="fill-orange-500 md:fill-orange-700 mx-5 cursor-pointer"  onClick={() => handleEdit(params.row)}/>
       {/*   Editar
       </ImPencil> */}
 
       <DeleteOutline
-        className="fill-red-500 md:fill-red-700"
+        className="fill-red-500 md:fill-red-700 cursor-pointer"
         onClick={() => handleDelete(params.row.id)}
       />
     </div>
