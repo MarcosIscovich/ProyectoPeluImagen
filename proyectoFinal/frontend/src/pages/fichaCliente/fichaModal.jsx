@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { createFicha, updateFicha } from "../../services/fichaCliente";
 
 
+
 const MySwal = withReactContent(Swal);
 
 const defaultValues = {
@@ -38,8 +39,12 @@ export default function FormDialog(props) {
     formState: { errors },
   } = useForm({ defaultValues });
 
+  
+
   useEffect(() => {
+
     if (item && item.id) {
+      
       reset({ ...item });
     } else {
       reset(defaultValues);

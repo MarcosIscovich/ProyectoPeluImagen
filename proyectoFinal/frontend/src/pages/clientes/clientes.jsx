@@ -3,6 +3,7 @@ import * as React from "react";
 import "./clientes.css";
 import { DataGrid } from "@mui/x-data-grid";
 import { DeleteOutline, Face } from "@mui/icons-material";
+import NoteAltIcon from "@mui/icons-material/NoteAlt";
 import Stack from "@mui/material/Stack";
 import Modal from "./modalForm";
 import { useState, useEffect } from "react";
@@ -17,6 +18,7 @@ import Box from "@mui/material/Box";
 import CreateIcon from "@mui/icons-material/Create";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
+import ModalFicha from "./modalFichaCliente";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -33,6 +35,8 @@ const Search = styled("div")(({ theme }) => ({
     width: "auto",
   },
 }));
+
+
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
@@ -65,9 +69,11 @@ export default function clientes() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [rows, setRows] = useState([]);
   const [item, setItemSelected] = useState([]);
+  const [idCliente, setIdCliente] = useState([]);
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [openCard, setOpenCard] = useState(false);
+  const [openFicha, setOpenFicha] = useState(false);
 
   const MySwal = withReactContent(Swal);
 
@@ -94,6 +100,11 @@ export default function clientes() {
     setItemSelected(data);
     setOpenCard(true);
   };
+  const openFichaModal = (data) => {
+    console.log("FICHA", data);
+    //setIdCliente(data.id);
+    setOpenFicha(true);
+  };
 
   const rowsdata = async () => {
     const data = await getAllClientes();
@@ -101,6 +112,9 @@ export default function clientes() {
   };
   const handleCloseCard = () => {
     setOpenCard(false);
+  };
+  const handleCloseFicha = () => {
+    setOpenFicha(false);
   };
 
   const handleClose = () => {
@@ -161,7 +175,7 @@ export default function clientes() {
     {
       field: "direccion",
       headerName: "Direccion",
-      width: 130,
+      width: 150,
       headerAlign: "center",
       align: "center",
     },
@@ -195,6 +209,10 @@ export default function clientes() {
       renderCell: (params) => {
         return (
           <div className="flex space-x-2 ">
+            <NoteAltIcon
+              className="cursor-pointer fill-blue-500 md:fill-blue-700 "
+              onClick={() => openFichaModal(params.row)}
+            />
             <Face
               className=" fill-green-500 md:fill-green-700"
               onClick={() => cardOpen(params.row)}
@@ -219,17 +237,16 @@ export default function clientes() {
 
   return (
     <div>
-      
-      <div className=" flex mx-20 pt-12 pb-2">
+      <div className=" flex mx-15 pt-12 pb-2">
         <Fab
-        onClick={handleClickOpen}
-        variant="extended"
-        color="primary"
-        aria-label="add"
-      >
-        <AddIcon sx={{ mr: 1 }} />
-      Agregar Cliente
-      </Fab>
+          onClick={handleClickOpen}
+          variant="extended"
+          color="primary"
+          aria-label="add"
+        >
+          <AddIcon sx={{ mr: 1 }} />
+          Agregar Cliente
+        </Fab>
 
         <Search>
           <SearchIconWrapper>
@@ -248,6 +265,13 @@ export default function clientes() {
         openCard={openCard}
         handleCloseCard={handleCloseCard}
       />
+      <ModalFicha
+        idCliente={idCliente}
+        openFicha={openFicha}
+        setOpen={setOpen}
+        handleCloseFicha={handleCloseFicha}
+        rowsdata={rowsdata}
+      />
 
       <Stack direction="row" spacing={5}>
         <br />
@@ -255,12 +279,12 @@ export default function clientes() {
           edit={edit}
           item={item}
           open={open}
-          setOpen={setOpen}
+          setOpen={setOpenFicha}
           handleClose={handleClose}
           rowsdata={rowsdata}
         />
       </Stack>
-      <Box sx={{ height: 400, margin: 10, width: "80%" }}>
+      <Box sx={{ height: 400, margin: 10, width: "95%" }}>
         <DataGrid
           autoHeight
           rows={rows}

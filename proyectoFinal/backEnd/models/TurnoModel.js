@@ -10,13 +10,14 @@ module.exports = function (sequelize, Datatypes) {
             allowNull: false,
         },
         hora_desde: {
-            type: Datatypes.TIME,
+            type: Datatypes.DATE,
             allowNull: false,
         },
         hora_hasta: {
-            type: Datatypes.TIME,
+            type: Datatypes.DATE,
             allowNull: false,
         },
+        
     }, {
         timestamps: true,
         tableName: 'turnos'

@@ -2,7 +2,18 @@ const db = require('../database/models');
 
 exports.getAllTurnos = (req, res) => {
     db.TurnoModel.findAll({
-
+        include: [
+            {
+                model: db.ClienteModel,
+                as: 'cliente',
+                attributes: ['nombre']
+            },
+            {
+                model: db.TrabajoModel,
+                as: 'trabajo',
+                attributes: ['nombre']
+            }
+        ]
     }).then(turnos => {
         res.status(200).send(turnos);
     }).catch(error => {
@@ -52,7 +63,7 @@ exports.createTurno = (req, res) => {
 exports.updateTurno = (req, res) => {
     try {
         console.log(req.body);
-        /* const { id, precio, hora_desde, hora_hasta , clienteId, trabajoId , fecha_concurrencia } = req.body;
+        const { id, precio, hora_desde, hora_hasta , clienteId, trabajoId , fecha_concurrencia } = req.body;
         db.TurnoModel.update({
             precio,
             fecha_concurrencia,
@@ -70,7 +81,7 @@ exports.updateTurno = (req, res) => {
         ).catch(error => {
             res.status(500).send(error);
         }
-        ); */
+        );
     } catch (error) {
         res.status(500).send(error);
     }
@@ -78,15 +89,16 @@ exports.updateTurno = (req, res) => {
 
 exports.deleteTurno = (req, res) => {
     const id = req.params.id;
+    console.log(id);
     db.TurnoModel.destroy({
         where: {
             id
         }
     }).then(turno => {
-        res.status(200).send(turno);
+        res.status(200).json(turno);
     }
     ).catch(error => {
-        res.status(500).send(error);
+        res.send(error);
     }
     );
 }

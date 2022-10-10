@@ -5,12 +5,13 @@ import Dialog from "@mui/material/Dialog";
 //import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useEffect, useState } from "react";
 import { moment } from "moment";
 import Autocomplete from "@mui/material/Autocomplete";
+import { InsertEmoticonOutlined } from "@mui/icons-material";
 
 const MySwal = withReactContent(Swal);
 
@@ -25,32 +26,34 @@ const defaultValues = {
 };
 
 export default function FormDialog(props) {
-  const { open, closeModal, addTurno, timeText, clientes , servicios } = props;
+  const { open, closeModal, addTurno, timeText, clientes, servicios, item } =
+    props;
   const [precioServ, setPrecioServicio] = useState("");
   const [precioSelected, setPrecioSelected] = useState("");
-
+  const [cargado, setCargado] = useState(false);
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors },
   } = useForm({ defaultValues });
 
   const precioServicio = (data) => {
-    setPrecioSelected(true)
-    setPrecioServicio(data.precio)
+    setPrecioSelected(true);
+    setPrecioServicio(data.precio);
     console.log("DATA", data);
-    
   };
 
-
-  /* useEffect(() => {
-    if (item && item.id) {
+  useEffect(() => {
+    if (item && item.trabajoId) {
+      console.log("ITEM en USEEFFECT", item);
       reset({ ...item });
     } else {
       reset(defaultValues);
     }
-  }, [item, reset]); */
+    setCargado(true);
+  }, [item, reset]);
 
   const onSubmit = (data) => {
     console.log("ONSUBMIT DATA", data);
@@ -71,60 +74,73 @@ export default function FormDialog(props) {
   return (
     <div>
       <Dialog open={open} onClose={closeModal}>
-        <DialogTitle >Hora de inicio del turno { timeText.substring(0, 5) }Hs</DialogTitle>
+        <DialogTitle>
+          Hora de inicio del turno {timeText.substring(0, 5)}Hs
+        </DialogTitle>
+
         <DialogContent>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Autocomplete
-              style={{ width: 300 }}
-              id="clientes"
-              options={clientes}
-              getOptionLabel={(option) => option.nombre}
-              renderInput={(params) => (
+          {cargado && (
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="clienteId"
+                control={control}
+                defaultValue={defaultValues.clienteId}
+                render={ ({ field: { onChange, ref, ...field } } ) => ( 
+                  <Autocomplete
+                    options={clientes}                    
+                    onChange= { (_, data) => onChange(data.nombre) }
+                    defaultValue={item}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        {...field}
+                        label="Cliente"
+                        variant="outlined"
+                        inputRef={ref}
+                        error={!!errors.clienteId}
+                        helperText={errors.clienteId?.message}
+
+                  />
+                )}
+              />
+            )}
+          />
+
+              {/* <Autocomplete
+                style={{ width: 300 }}
+                
+                options={servicios}
+                getOptionLabel={(option) => option.nombre}
+                onChange={(event, newValue) => {
+                  precioServicio(newValue);
+                  console.log("newValue", newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="servicios"
+                    placeholder="servicios"
+                    {...register("trabajoId", {
+                      required: "Ingrese el servicio",
+                    })}
+                  />
+                )}
+              />
+              {precioSelected && (
                 <TextField
-                  {...params}
-                  label="Clientes"
-                  placeholder="Clientes"
-                  {...register("clienteId", { required: "Ingrese el cliente" })}
-                  
+                  className="mt-3 mb-3"
+                  fullWidth
+                  label="Precio"
+                  value={precioServ}
+                  inputProps={register("precio", {
+                    required: "Please enter nombre",
+                  })}
+                  error={errors.nombre}
+                  helperText={errors.nombre?.message}
                 />
-              )}
-            />
+              )} */}
 
-            <Autocomplete
-              style={{ width: 300 }}
-              id="clientes"
-              options={servicios}
-              getOptionLabel={(option) => option.nombre}
-              onChange={(event, newValue) => {
-                precioServicio(newValue);
-                console.log("newValue", newValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="servicios"
-                  placeholder="servicios"
-                  {...register("trabajoId", { required: "Ingrese el servicio" })}
-                />
-              )}
-            />
-              { precioSelected && 
-               <TextField
-              className="mt-3 mb-3"
-              fullWidth
-              label="Precio"
-              value={precioServ}
-              inputProps={register("precio", {
-                required: "Please enter nombre",
-              })}
-              error={errors.nombre}
-              helperText={errors.nombre?.message}
-
-            />  }
-             
-            
-
-            {/* <TextField
+              {/* <TextField
               className="mt-3 mb-3 w-100 "
               fullWidth
               type="time"
@@ -138,10 +154,14 @@ export default function FormDialog(props) {
               readOnly
             ></TextField> */}
 
-            <Button type="submit" className="bg-red-900 justify-content-center">
-              {/* {edit ? "Editar" : "Crear"} */}Guardar
-            </Button>
-          </form>
+              <Button
+                type="submit"
+                className="bg-red-900 justify-content-center"
+              >
+                {/* {edit ? "Editar" : "Crear"} */}Guardar
+              </Button>
+            </form>
+          )}
         </DialogContent>
       </Dialog>
     </div>
