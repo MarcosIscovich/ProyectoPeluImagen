@@ -23,7 +23,9 @@ export async function  getEvents () {
           clienteId: element.clienteId,
           trabajoId: element.trabajoId,
           fecha_concurrencia: element.fecha_concurrencia,
-          nombreServicio: element.trabajo.nombre
+          nombreServicio: element.trabajo.nombre,
+          nombreCliente: element.cliente.nombre,
+          idTurno: element.id
       }
     
     }

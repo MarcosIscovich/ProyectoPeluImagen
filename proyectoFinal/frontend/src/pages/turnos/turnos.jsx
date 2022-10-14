@@ -48,13 +48,16 @@ export default function Turnos() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [allDay, setAllDay] = useState(false);
-  const [clientes, setClientes] = useState([]);
-  const [servicios, setServicios] = useState([]);
   const [startUpdate, setStartUpdate] = useState("");
   const [endUpdate, setEndUpdate] = useState("");
   const [fechaUpdate, setFechaUpdate] = useState("");
   const [item, setItemSelected] = useState([]);
   const [turnoId , setTurnoId] = useState("");
+  const [editTurno, setEditTurno] = useState(false);
+  const [cargar, setCargar] = useState(false);
+  const [clientes, setClientes] = useState([]);
+  const [servicios, setServicios] = useState([]);
+  const [flagSaveTurno, setFlagSaveTurno] = useState(false);
   //const [INITIAL_EVENTS, setINITIAL_EVENTS] = useState([]);
 
   useEffect(() => {
@@ -64,6 +67,8 @@ export default function Turnos() {
       setCurrentEvents(event);
       console.log("EVENTS", currentEvents);
     });
+    getclientes();
+    getServicios();
 
     
 
@@ -83,30 +88,21 @@ export default function Turnos() {
 
   const getServicios = async () => {
     const data = await getAllTrabajos();
-    console.log("CLIENTES", data.data);
+    console.log("Servicios", data.data);
     setServicios(data.data);
   };
 
-  const openEditModal = (info) => {
+  const openEditModal = async (info) => {
+    setEditTurno(true);
     console.log("INFO", info);
     setItemSelected(info.event.extendedProps);
+    console.log("ITEM", item);
     setOpen(true);
+    setTurnoId(info.event.id);
   };
 
   const openModal = (data) => {
     setOpen(true);
-    getclientes();
-    getServicios();
-    /* if(item === null){
-    let editInfo = {
-      clientId: data.extendedProps.clienteId,
-      trabajoId: data.extendedProps.trabajoId,
-      precio: data.extendedProps.precio,
-    };
-    setItemSelected(editInfo);
-  } */
-    
-    //addEvent(data)
   };
 
   const closeModal = () => {
@@ -115,13 +111,11 @@ export default function Turnos() {
 
   const addTurno = (data) => {
     console.log("addEvent", data);
-    calendarApi.unselect(); // clear date selection
-    let cliente = clientes.find((item) => item.nombre === data.clienteId);
-    let trabajo = servicios.find((item) => item.nombre === data.trabajoId);
+    calendarApi.unselect(); // clear date selection   
 
     calendarApi.addEvent({
       id: createEventId(),
-      title: data.clienteId,
+      title: data.cliente,
       start: start,
       end: end,
       allDay: allDay,
@@ -131,13 +125,13 @@ export default function Turnos() {
       extendedProps: {
         id: createEventId(),
         precio: data.precio,
-        fecha_concurrencia: start /* .substring(0, 10) */,
-        hora_desde: start /* .substring(11, 16) */,
-        hora_hasta: end /* .substring(11, 16) */,
-        nombreCliente: data.clienteId,
-        nombreServicio: data.trabajoId,
-        clienteId: cliente.id,
-        trabajoId: trabajo.id,
+        fecha_concurrencia: start, // .substring(0, 10) ,
+        hora_desde: start, // .substring(11, 16) ,
+        hora_hasta: end, // .substring(11, 16) ,
+        nombreCliente: data.cliente,
+        nombreServicio: data.servicio,
+        clienteId: data.clienteId,
+        trabajoId: data.servicioId,
         allDay: allDay,
       },
     });
@@ -147,16 +141,36 @@ export default function Turnos() {
     console.log("DATA SAVETURNO", data);
     const turno = await createTurno(data.event.extendedProps);
     console.log("TURNO", turno);
+    if (turno.ok ) {
     MySwal.fire({
       title: "Turno creado",
       icon: "success",
       showConfirmButton: false,
       timer: 1500,
     });
+    setFlagSaveTurno(true);
     setTurnoId(turno.data.id)
+  } else {
+    MySwal.fire({
+      title: "Error al crear turno",
+      icon: "error",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
+  };
+
+  const turnosEdit = async (data) => {
+    console.log("DATA EDITTURNO", data);
+    const turno = await updateTurno(data);
+    console.log("TURNO", turno);
+  
+    setItemSelected([])
+    setEditTurno(false)
   };
 
   const updateDataTurno = async (data) => {
+    console.log("DATA UPDATE", data);
     console.log("SAVE TURNO" , turnoId)
     if (data.event === undefined) {
       return;
@@ -169,7 +183,7 @@ export default function Turnos() {
     }
 
     let updateData = {
-      id: turnoId,
+      id: flagSaveTurno ? turnoId : data.event.id,
       hora_desde: data.event.startStr,
       hora_hasta: data.event.endStr,
       fecha_concurrencia: data.event.startStr,
@@ -181,9 +195,12 @@ export default function Turnos() {
     console.log("UpdateData", updateData);
 
     const turnoUpdate = await updateTurno(updateData);
+    
+    setTurnoId("")
+    
     console.log("TURNOUPDATE", turnoUpdate);
     
-      
+     
     MySwal.fire({
       title: "Turno actualizado",
       icon: "success",
@@ -297,15 +314,20 @@ export default function Turnos() {
 
   return (
     <div className=" mx-20 pt-12 pb-2">
-      <TurnosModal
+      
+          <TurnosModal
         open={open}
         item={item}
-        closeModal={closeModal}
+        turnoId={turnoId}
         clientes={clientes}
         servicios={servicios}
+        editTurno={editTurno}
+        closeModal={closeModal}
         timeText={timeText}
         addTurno={addTurno}
+        turnosEdit={turnosEdit}
       />
+      
       <div className="demo-app-calendar">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -345,6 +367,7 @@ export default function Turnos() {
           eventChange={(data) => updateDataTurno(data)}
           eventStartEditable={(data) => console.log("DATA", data)}
           eventRemove={(data) => handleDelete(data.event.id)}
+          
           
         />
       </div>
