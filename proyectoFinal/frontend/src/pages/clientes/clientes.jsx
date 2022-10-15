@@ -104,6 +104,7 @@ export default function clientes() {
     console.log("FICHA", data);
     //setIdCliente(data.id);
     setOpenFicha(true);
+    setItemSelected(data);
   };
 
   const rowsdata = async () => {
@@ -271,6 +272,7 @@ export default function clientes() {
         setOpen={setOpen}
         handleCloseFicha={handleCloseFicha}
         rowsdata={rowsdata}
+        item={item}
       />
 
       <Stack direction="row" spacing={5}>

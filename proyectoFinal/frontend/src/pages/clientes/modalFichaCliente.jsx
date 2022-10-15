@@ -5,8 +5,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { useForm } from "react-hook-form";
-import { useEffect , useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { createFicha, updateFicha } from "../../services/fichaCliente";
 import { Box } from "@mui/system";
 import Card from "@mui/material/Card";
@@ -50,6 +50,7 @@ const MySwal = withReactContent(Swal);
 
 const defaultValues = {
   nombre: "",
+  ocupacion: "",
   tipo_cabello: "",
   estado_cabello: "",
   formula: "",
@@ -70,25 +71,25 @@ const style = {
 };
 
 export default function FormDialog(props) {
-  const { openFicha, handleCloseFicha,  rowsdata } = props;
+  const { openFicha, handleCloseFicha, rowsdata, item } = props;
   //const [nombreCliente , setNombreCliente] = useState("")
 
   const {
     reset,
     register,
     handleSubmit,
-    formState: { errors ,  },
+    control,
+    formState: { errors },
   } = useForm({ defaultValues });
 
   useEffect(() => {
-   // console.log("idCliente", idCliente);
-    /* if (itemFicha && itemFicha.id) {
-        setNombreCliente(itemFicha.nombre)
-      reset({ ...itemFicha });
+    // console.log("idCliente", idCliente);
+    if (item && item.id) {
+      reset({ ...item });
     } else {
       reset(defaultValues);
-    } */
-  }, /* [itemFicha, reset] */);
+    }
+  }, [item, reset]);
 
   const editData = async (data) => {
     const editData = await updateFicha(data);
@@ -123,7 +124,6 @@ export default function FormDialog(props) {
   };
 
   const onSubmit = (data) => {
-
     saveFicha(data);
     /*  if (!edit) {
       console.log("entra a save");
@@ -169,7 +169,7 @@ export default function FormDialog(props) {
             image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
             alt="green iguana" /> */
           >
-            {/* {{nombreCliente}} */} NOMBRE DEL CLIENTE
+            {/* {{nombreCliente}} */} {item.nombre}
           </Typography>
 
           <CardContent>
@@ -186,26 +186,32 @@ export default function FormDialog(props) {
                     boxShadow: 3,
                   }}
                 >
-                  <TextField
-                    sx={{
-                      width: 200,
-                      maxWidth: 200,
-                      minWidth: 200,
-                      backgroundColor: "purple.main",
-                      borderRadius: 2,
-                    }}
-                    inputProps={register("ocupacion", {
-                      required: "Please enter ocupacion",
-                    })}
-                    error={errors.ocupacion}
-                    helperText={errors.ocupacion?.message}
-                    autoFocus
-                    margin="dense"
-                    id="ocupacion"
-                    label="Ocupacion"
-                    type="text"
-                    variant="filled"
-                    color="warning"
+                  <Controller
+                    name="ocupacion"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        sx={{
+                          width: 200,
+                          maxWidth: 200,
+                          minWidth: 200,
+                          backgroundColor: "purple.main",
+                          borderRadius: 2,
+                        }}
+                        name="ocupacion"
+                        error={errors.ocupacion}
+                        helperText={errors.ocupacion?.message}
+                        autoFocus
+                        margin="dense"
+                        id="ocupacion"
+                        label="Ocupacion"
+                        type="text"
+                        variant="filled"
+                        color="warning"
+                      />
+                    )}
                   />
                 </Box>
 
@@ -220,47 +226,62 @@ export default function FormDialog(props) {
                     boxShadow: 3,
                   }}
                 >
-                  <TextField
-                    sx={{
-                      width: 200,
-                      maxWidth: 200,
-                      minWidth: 200,
-                      backgroundColor: "#efb7f7",
-                      borderRadius: 2,
-                      borderColor: "border.color",
-                    }}
-                    defaultValue=""
-                    inputProps={register("tipo_cabello", {
-                      required: "Please enter tipo_cabello",
-                    })}
-                    error={errors.tipo_cabello}
-                    helperText={errors.tipo_cabello?.message}
-                    margin="dense"
-                    id="tipo_cabello"
-                    label="Tipo de Cabello"
-                    type="text"
-                    variant="filled"
+                  <Controller
+                    name="ocupacion"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        sx={{
+                          width: 200,
+                          maxWidth: 200,
+                          minWidth: 200,
+                          backgroundColor: "#efb7f7",
+                          borderRadius: 2,
+                          borderColor: "border.color",
+                        }}
+                        defaultValue=""
+                        inputProps={register("tipo_cabello", {
+                          required: "Please enter tipo_cabello",
+                        })}
+                        error={errors.tipo_cabello}
+                        helperText={errors.tipo_cabello?.message}
+                        margin="dense"
+                        id="tipo_cabello"
+                        label="Tipo de Cabello"
+                        type="text"
+                        variant="filled"
+                      />
+                    )}
                   />
-                  <TextField
-                    sx={{
-                      width: 200,
-                      maxWidth: 200,
-                      minWidth: 200,
-                      backgroundColor: "#efb7f7",
-                      borderRadius: 2,
-                      boxShadow: 3,
-                    }}
-                    defaultValue=""
-                    inputProps={register("estado_cabello", {
-                      required: "Please enter estado_cabello",
-                    })}
-                    error={errors.estado_cabello}
-                    helperText={errors.estado_cabello?.message}
-                    margin="dense"
-                    id="estado_cabello"
-                    label="Estado del Cabello"
-                    type="text"
-                    variant="filled"
+                  <Controller
+                    name="estado_cabello"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <TextField
+                        sx={{
+                          width: 200,
+                          maxWidth: 200,
+                          minWidth: 200,
+                          backgroundColor: "#efb7f7",
+                          borderRadius: 2,
+                          boxShadow: 3,
+                        }}
+                        defaultValue=""
+                        inputProps={register("estado_cabello", {
+                          required: "Please enter estado_cabello",
+                        })}
+                        error={errors.estado_cabello}
+                        helperText={errors.estado_cabello?.message}
+                        margin="dense"
+                        id="estado_cabello"
+                        label="Estado del Cabello"
+                        type="text"
+                        variant="filled"
+                      />
+                    )}
                   />
                 </Box>
 
@@ -275,22 +296,30 @@ export default function FormDialog(props) {
                     boxShadow: 3,
                   }}
                 >
-                  <TextareaAutosize
-                    aria-label="empty textarea"
-                    placeholder="Formula"
-                    style={{
-                      width: 500,
-                      height: 100,
-                      fontSize: 20,
-                      backgroundColor: "#efb7f7",
-                      borderRadius: 5,
-                      boxShadow: 3,
-                    }}
-                    inputProps={register("formula", {
-                      required: "Please enter formula",
-                    })}
-                    error={errors.formula}
-                    helperText={errors.formula?.message}
+                  <Controller
+                    name="formula"
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <TextareaAutosize
+                        {...field}
+                        aria-label="empty textarea"
+                        placeholder="Formula"
+                        style={{
+                          width: 500,
+                          height: 100,
+                          fontSize: 20,
+                          backgroundColor: "#efb7f7",
+                          borderRadius: 5,
+                          boxShadow: 3,
+                        }}
+                        inputProps={register("formula", {
+                          required: "Please enter formula",
+                        })}
+                        error={errors.formula}
+                        helperText={errors.formula?.message}
+                      />
+                    )}
                   />
                 </Box>
                 <Stack
