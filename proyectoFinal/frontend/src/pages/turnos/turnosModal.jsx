@@ -15,18 +15,7 @@ import { Typography } from "@mui/material";
 const MySwal = withReactContent(Swal);
 
 export default function FormDialog(props) {
-  const {
-    turnoId,
-    open,
-    closeModal,
-    addTurno,
-    timeText,
-    editTurno,
-    clientes,
-    servicios,
-    item,
-    turnosEdit,
-  } = props;
+  const { turnoId, open, closeModal, addTurno, timeText, editTurno, clientes, servicios, item, turnosEdit } = props;
 
   const [clienteSelected, setClienteSelected] = useState("");
   const [servicioSelected, setServicioSelected] = useState("");
@@ -44,10 +33,8 @@ export default function FormDialog(props) {
     checkPrecio(false);
   };
 
-
   const guardarTurno = () => {
     let turno = {
-      
       cliente: clienteSelected,
       servicio: servicioSelected,
       precio: precioSelected,
@@ -62,6 +49,7 @@ export default function FormDialog(props) {
   };
 
   const editarturno = () => {
+    console.log("EDITAR TURNOS", turnosEdit);
     let turno = {
       id: turnoId,
       cliente: clienteSelected,
@@ -75,8 +63,6 @@ export default function FormDialog(props) {
     closeModal();
     clearSets();
   };
-
-
 
   return (
     <div>
@@ -95,21 +81,19 @@ export default function FormDialog(props) {
               p: 0,
             }}
           >
-            <div>Hora de inicio del turno {timeText.substring(0, 5)}Hs</div>
-            <div>
-              {editTurno &&
-                "Seleccionar cliente y servicio para editar el turno"}
-            </div>
+            
+              Hora de inicio del turno {timeText.substring(0, 5)}
+              Hs {editTurno ? "Editar Turno" : "Nuevo Turno"}
+            
+            {/* <div>{editTurno && "Seleccionar cliente y servicio para editar el turno"}</div>
             <div>{editTurno && `Cliente Anterior: ${item.nombreCliente}`}</div>
-            <div>
-              {editTurno && `Servicio Anterior: ${item.nombreServicio}`}
-            </div>
+            <div>{editTurno && `Servicio Anterior: ${item.nombreServicio}`}</div> */}
           </Typography>
         </DialogTitle>
         <DialogContent>
           <Autocomplete
             options={clientes}
-            getOptionLabel={(option) => option.nombre}           
+            getOptionLabel={(option) => option.nombre}
             onChange={(event, newValue) => {
               setClienteSelected(newValue.nombre);
               setClienteId(newValue.id);
@@ -120,7 +104,7 @@ export default function FormDialog(props) {
           />
           <Autocomplete
             options={servicios}
-            getOptionLabel={(option) => option.nombre}            
+            getOptionLabel={(option) => option.nombre}
             onChange={(event, newValue) => {
               setServicioSelected(newValue.nombre);
               setServicioId(newValue.id);
@@ -129,9 +113,7 @@ export default function FormDialog(props) {
             }}
             inputValue={servicioSelected}
             sx={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Servicios" />
-            )}
+            renderInput={(params) => <TextField {...params} label="Servicios" />}
           />
 
           {precioOk && (
@@ -148,11 +130,7 @@ export default function FormDialog(props) {
 
           <Box sx={{ display: "flex ", justifyContent: "flex-end" }}>
             <Button onClick={closeModal}>Cancelar</Button>
-            {editTurno ? (
-              <Button onClick={editarturno}>Guardar</Button>
-            ) : (
-              <Button onClick={guardarTurno}>Guardar</Button>
-            )}
+            {editTurno ? <Button onClick={editarturno}>Guardar</Button> : <Button onClick={guardarTurno}>Guardar</Button>}
           </Box>
         </DialogContent>
       </Dialog>

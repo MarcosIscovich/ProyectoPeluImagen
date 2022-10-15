@@ -1,5 +1,5 @@
 import React from "react";
-import FullCalendar, { formatDate } from "@fullcalendar/react";
+import FullCalendar, { formatDate, WindowScrollController } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -69,12 +69,13 @@ export default function Turnos() {
     });
     getclientes();
     getServicios();
+  }, []);
 
     
 
     //setCurrentEvents(INITIAL_EVENTS)
     //console.log("INITIAL_EVENTS", INITIAL_EVENTS);
-  }, []);
+  
 
   const getclientes = async () => {
     try {
@@ -111,7 +112,7 @@ export default function Turnos() {
 
   const addTurno = (data) => {
     console.log("addEvent", data);
-    calendarApi.unselect(); // clear date selection   
+   // calendarApi.unselect(); // clear date selection   
 
     calendarApi.addEvent({
       id: createEventId(),
@@ -164,7 +165,13 @@ export default function Turnos() {
     console.log("DATA EDITTURNO", data);
     const turno = await updateTurno(data);
     console.log("TURNO", turno);
-  
+    MySwal.fire({
+      title: "Turno actualizado",
+      icon: "success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+    
     setItemSelected([])
     setEditTurno(false)
   };
@@ -197,7 +204,7 @@ export default function Turnos() {
     const turnoUpdate = await updateTurno(updateData);
     
     setTurnoId("")
-    
+    console.log("TURNO ID UPDATE" , turnoId);
     console.log("TURNOUPDATE", turnoUpdate);
     
      
@@ -216,10 +223,12 @@ export default function Turnos() {
     setStart(data.startStr);
     setEnd(data.endStr);
     setAllDay(data.allDay);
+
   };
 
   const handleEventClick = (clickInfo) => {
     console.log("CLICK INFO", clickInfo);
+    setTurnoId(clickInfo.event.id);
     setItemSelected(clickInfo.event.extendedProps);
     openModal(true);
   };
