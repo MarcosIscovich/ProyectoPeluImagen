@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { createFicha, updateFicha } from "../../services/fichaCliente";
+import { updateCliente } from "../../services/cliente";
 import { Box } from "@mui/system";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -72,7 +72,7 @@ const style = {
 
 export default function FormDialog(props) {
   const { openFicha, handleCloseFicha, rowsdata, item } = props;
-  const [editFicha , setEditFicha] = useState("")
+  const [editFicha, setEditFicha] = useState(false);
 
   const {
     reset,
@@ -92,46 +92,39 @@ export default function FormDialog(props) {
   }, [item, reset]);
 
   const editData = async (data) => {
-    const editData = await updateFicha(data);
-
-    handleCloseFicha();
-    MySwal.fire({
-      title: "Ficha Editada",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1500,
-    }).then((result) => {
-      reset(editData);
-      rowsdata();
-    });
-  };
-
-  const saveFicha = async (data) => {
-    console.log("DATA", data);
-    /* const save = await createFicha(data);
-    if (save.ok === true) {
+    const editData = await updateCliente(data);
+    if (editData.ok) {
       handleCloseFicha();
       MySwal.fire({
-        title: "Ficha Guardada",
+        title: "Ficha editada",
         icon: "success",
         showConfirmButton: false,
         timer: 1500,
       }).then((result) => {
-        reset(save);
+        reset(editData);
         rowsdata();
+        setEditFicha(false);
       });
-    } */
+    } else {
+      MySwal.fire({
+        title: "Error",
+        text: "No se pudo editar la ficha",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
+
+  const handleEditFicha = () => {
+    console.log("editFicha", editFicha);
+    setEditFicha(true);
+    console.log("editFicha", editFicha);
   };
 
   const onSubmit = (data) => {
-    saveFicha(data);
-    /*  if (!edit) {
-      console.log("entra a save");
-      saveFicha(data);
-    } else {
-      console.log("entra a edit");
-      editData(data);
-    }  */
+    console.log("FICHA", data);
+    editData(data);
   };
 
   return (
@@ -152,7 +145,7 @@ export default function FormDialog(props) {
         <Card sx={{ ...style, width: 600, maxWidth: 600 }}>
           <Typography
             sx={{
-              fontSize: 14,
+              fontSize: 30,
               fontWeight: "bold",
               fontFamily: "Roboto",
               color: "black",
@@ -169,7 +162,7 @@ export default function FormDialog(props) {
             image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
             alt="green iguana" /> */
           >
-            {/* {{nombreCliente}} */} {item.nombre}
+             {item.nombre}
           </Typography>
 
           <CardContent>
@@ -202,7 +195,7 @@ export default function FormDialog(props) {
                         }}
                         name="ocupacion"
                         error={errors.ocupacion}
-                        disabled={ editFicha ? false : true}
+                        disabled={editFicha ? false : true}
                         autoFocus
                         margin="dense"
                         id="ocupacion"
@@ -227,7 +220,7 @@ export default function FormDialog(props) {
                   }}
                 >
                   <Controller
-                    name="ocupacion"
+                    name="tipo_cabello"
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
@@ -241,9 +234,10 @@ export default function FormDialog(props) {
                           borderRadius: 2,
                           borderColor: "border.color",
                         }}
-                        disabled={ editFicha ? false : true}
+                        disabled={editFicha ? false : true}
                         error={errors.tipo_cabello}
-                        label="Tipo de Cabello" color="secondary"
+                        label="Tipo de Cabello"
+                        color="secondary"
                         margin="dense"
                         id="tipo_cabello"
                         type="text"
@@ -266,9 +260,8 @@ export default function FormDialog(props) {
                           borderRadius: 2,
                           boxShadow: 3,
                         }}
-                        
                         error={errors.estado_cabello}
-                        disabled={ editFicha ? false : true}
+                        disabled={editFicha ? false : true}
                         margin="dense"
                         id="estado_cabello"
                         label="Estado del Cabello"
@@ -308,8 +301,7 @@ export default function FormDialog(props) {
                           boxShadow: 3,
                         }}
                         error={errors.formula}
-                        disabled={ editFicha ? false : true}
-                        
+                        disabled={editFicha ? false : true}
                       />
                     )}
                   />
@@ -345,48 +337,47 @@ export default function FormDialog(props) {
                     Cancelar
                   </Button>
 
-                  {!editFicha ? (
-                  <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => { setEditFicha(true); }}
-                    sx={{
-                      marginTop: 2,
-                      color: "black",
-                      backgroundColor: "#BE7DC0",
-                      borderRadius: 1,
-                      width: 100,
-                      height: 40,
-                      fontSize: 14,
-                      fontWeight: "bold",
-                      fontFamily: "Roboto",
-                    }}
-                    type="submit"
-                  >
-                    Editar Ficha
-                  </Button>
-                  ) : (
+                  {editFicha ? (
                     <Button
-                    variant="contained"
-                    color="success"
-                    onClick={() => { setEditFicha(false); }}
-                    sx={{
-                      marginTop: 2,
-                      color: "black",
-                      backgroundColor: "#BE7DC0",
-                      borderRadius: 1,
-                      width: 100,
-                      height: 40,
-                      fontSize: 14,
-                      fontWeight: "bold",
-                      fontFamily: "Roboto",
-                    }}
-                    type="submit"
-                  >
-                    Guardar
-                  </Button>
-                  )}
+                      variant="contained"
+                      color="success"
+                      sx={{
+                        marginTop: 2,
+                        color: "black",
+                        backgroundColor: "#BE7DC0",
+                        borderRadius: 1,
+                        width: 100,
+                        height: 40,
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        fontFamily: "Roboto",
+                      }}
+                      type="submit"
+                    >
+                      Guardar
+                    </Button>
+                  ) : null}
 
+                  {editFicha ? null : (
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={handleEditFicha}
+                      sx={{
+                        marginTop: 2,
+                        color: "black",
+                        backgroundColor: "#BE7DC0",
+                        borderRadius: 1,
+                        width: 100,
+                        height: 40,
+                        fontSize: 12,
+                        fontWeight: "bold",
+                        fontFamily: "Roboto",
+                      }}
+                    >
+                      Editar Ficha
+                    </Button>
+                  )}
                 </Stack>
               </form>
             </ThemeProvider>

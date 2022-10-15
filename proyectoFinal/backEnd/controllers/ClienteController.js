@@ -63,7 +63,7 @@ exports.createCliente = async (req, res) => {
 
 exports.uptadeCliente = (req, res) => {
     try {
-        const { id , nombre, telefono, direccion, email, fecha_nacimiento, red_social} = req.body;
+        const { id , nombre, telefono, direccion, email, fecha_nacimiento, red_social , ocupacion, tipo_cabello, estado_cabello, formula } = req.body;
 
         db.ClienteModel.update({
             nombre,
@@ -71,7 +71,11 @@ exports.uptadeCliente = (req, res) => {
             direccion,
             email,
             fecha_nacimiento,
-            red_social
+            red_social,
+            ocupacion,
+            tipo_cabello,
+            estado_cabello,
+            formula
         },
             {
                 where: {

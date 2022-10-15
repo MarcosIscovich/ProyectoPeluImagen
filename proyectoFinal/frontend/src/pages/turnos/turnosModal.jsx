@@ -83,11 +83,10 @@ export default function FormDialog(props) {
           >
             
               Hora de inicio del turno {timeText.substring(0, 5)}
-              Hs {editTurno ? "Editar Turno" : "Nuevo Turno"}
-            
-            {/* <div>{editTurno && "Seleccionar cliente y servicio para editar el turno"}</div>
-            <div>{editTurno && `Cliente Anterior: ${item.nombreCliente}`}</div>
-            <div>{editTurno && `Servicio Anterior: ${item.nombreServicio}`}</div> */}
+              Hs             
+            <span>{editTurno && "Seleccionar cliente y servicio para editar el turno"}</span>
+            <span>{editTurno && `Cliente Anterior: ${item.nombreCliente}`}</span>
+            <span>{editTurno && `Servicio Anterior: ${item.nombreServicio}`}</span>
           </Typography>
         </DialogTitle>
         <DialogContent>
