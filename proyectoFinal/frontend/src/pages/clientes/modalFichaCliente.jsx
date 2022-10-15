@@ -72,7 +72,7 @@ const style = {
 
 export default function FormDialog(props) {
   const { openFicha, handleCloseFicha, rowsdata, item } = props;
-  //const [nombreCliente , setNombreCliente] = useState("")
+  const [editFicha , setEditFicha] = useState("")
 
   const {
     reset,
@@ -202,7 +202,7 @@ export default function FormDialog(props) {
                         }}
                         name="ocupacion"
                         error={errors.ocupacion}
-                        helperText={errors.ocupacion?.message}
+                        disabled={ editFicha ? false : true}
                         autoFocus
                         margin="dense"
                         id="ocupacion"
@@ -241,15 +241,11 @@ export default function FormDialog(props) {
                           borderRadius: 2,
                           borderColor: "border.color",
                         }}
-                        defaultValue=""
-                        inputProps={register("tipo_cabello", {
-                          required: "Please enter tipo_cabello",
-                        })}
+                        disabled={ editFicha ? false : true}
                         error={errors.tipo_cabello}
-                        helperText={errors.tipo_cabello?.message}
+                        label="Tipo de Cabello" color="secondary"
                         margin="dense"
                         id="tipo_cabello"
-                        label="Tipo de Cabello"
                         type="text"
                         variant="filled"
                       />
@@ -261,6 +257,7 @@ export default function FormDialog(props) {
                     rules={{ required: true }}
                     render={({ field }) => (
                       <TextField
+                        {...field}
                         sx={{
                           width: 200,
                           maxWidth: 200,
@@ -269,12 +266,9 @@ export default function FormDialog(props) {
                           borderRadius: 2,
                           boxShadow: 3,
                         }}
-                        defaultValue=""
-                        inputProps={register("estado_cabello", {
-                          required: "Please enter estado_cabello",
-                        })}
+                        
                         error={errors.estado_cabello}
-                        helperText={errors.estado_cabello?.message}
+                        disabled={ editFicha ? false : true}
                         margin="dense"
                         id="estado_cabello"
                         label="Estado del Cabello"
@@ -313,11 +307,9 @@ export default function FormDialog(props) {
                           borderRadius: 5,
                           boxShadow: 3,
                         }}
-                        inputProps={register("formula", {
-                          required: "Please enter formula",
-                        })}
                         error={errors.formula}
-                        helperText={errors.formula?.message}
+                        disabled={ editFicha ? false : true}
+                        
                       />
                     )}
                   />
@@ -353,9 +345,31 @@ export default function FormDialog(props) {
                     Cancelar
                   </Button>
 
+                  {!editFicha ? (
                   <Button
                     variant="contained"
                     color="success"
+                    onClick={() => { setEditFicha(true); }}
+                    sx={{
+                      marginTop: 2,
+                      color: "black",
+                      backgroundColor: "#BE7DC0",
+                      borderRadius: 1,
+                      width: 100,
+                      height: 40,
+                      fontSize: 14,
+                      fontWeight: "bold",
+                      fontFamily: "Roboto",
+                    }}
+                    type="submit"
+                  >
+                    Editar Ficha
+                  </Button>
+                  ) : (
+                    <Button
+                    variant="contained"
+                    color="success"
+                    onClick={() => { setEditFicha(false); }}
                     sx={{
                       marginTop: 2,
                       color: "black",
@@ -371,6 +385,8 @@ export default function FormDialog(props) {
                   >
                     Guardar
                   </Button>
+                  )}
+
                 </Stack>
               </form>
             </ThemeProvider>
