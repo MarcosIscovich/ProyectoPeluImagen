@@ -119,7 +119,7 @@ export default function ListIcons(props) {
                 </ListItemButton>
                 </Link> 
             </ListItem>
-            <ListItem >
+            {/* <ListItem >
                 <Link to="/fichas" style={{ textDecoration: 'none' }}>
                 <ListItemButton sx={{
                   minHeight: 48,
@@ -137,7 +137,7 @@ export default function ListIcons(props) {
                     <ListItemText primary="Ficha de Clientes" />   
                 </ListItemButton>
                 </Link> 
-            </ListItem>
+            </ListItem> */}
         </List>
 
         <Divider />
@@ -162,7 +162,7 @@ export default function ListIcons(props) {
                 </ListItemButton>
                 </Link> 
             </ListItem>
-            <ListItem >
+            {/* <ListItem >
                 <Link to="/clientes" style={{ textDecoration: 'none' }}>
                 <ListItemButton sx={{
                   minHeight: 48,
@@ -181,7 +181,7 @@ export default function ListIcons(props) {
                     <ListItemText primary="Ver Turnos" />   
                 </ListItemButton>
                 </Link> 
-            </ListItem>
+            </ListItem> */}
         
           {/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>

@@ -15,8 +15,10 @@ export const getAllTurnos = async () => {
 }
 
 export const getTurno = async (id) => {
+    console.log("FUNCIONA GET TURNO", id);
     try{
-      const response = await axios.get(url + id);
+      const response = await axios.get(url+'findTurnos/' + id);
+
     return {ok: true , data:response.data};  
     } 
     catch (error) {
