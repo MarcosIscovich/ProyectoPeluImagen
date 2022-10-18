@@ -18,23 +18,29 @@ export default function ListIcons(props) {
     const open = props.open;
     return (
         <div>
-        <List>
-        <ListItem >
-                <Link to="/" style={{ textDecoration: 'none' }}>
-                <ListItemButton sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
+        <List   sx={{
+          backgroundColor: "#5b6290",
+          height: "100%",
+        }}
+        
+        >
+        <ListItem  >
+                <Link to="/" style={{ textDecoration: 'none'}}>
+                <ListItemButton sx={{     
                   px: 1,
-                }}>
+                }}
+                >
                     <ListItemIcon sx={{
                     minWidth: 5,
                     mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                    color : 'primary.main',
-                  }}>                   
+                    justifyContent: 'center',                    
+                    color: "#e82f34",
+                    
+                  }}
+                  >                   
                      <IoHome className='grid grid-cols-1 place-items-center' />    
                     </ListItemIcon>
-                    <ListItemText primary="Pagina Principal" />   
+                    <ListItemText primary="Pagina Principal" className="text-white border-zinc-900 "/>   
                 </ListItemButton>
                 </Link> 
             </ListItem>
@@ -49,32 +55,17 @@ export default function ListIcons(props) {
                     minWidth: 5,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color : 'primary.main',
-                  }}>                   
+                    color: "#e82f34",
+                  }}
+                  
+                  >                   
                      <GiHairStrands />    
                     </ListItemIcon>
-                    <ListItemText primary="Servicios" />   
+                    <ListItemText primary="Servicios" className="text-white border-zinc-900" />   
                 </ListItemButton>
                 </Link> 
             </ListItem>
-            {/* <ListItem >
-                <Link to="/productos" style={{ textDecoration: 'none' }}>
-                <ListItemButton sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 1,
-                }}>
-                    <ListItemIcon sx={{
-                    minWidth: 5,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}>                   
-                     <GiBarbedNails />    
-                    </ListItemIcon>
-                    <ListItemText primary="Servicios Uñas" />   
-                </ListItemButton>
-                </Link> 
-            </ListItem> */}
+            
             <ListItem >
                 <Link to="/productos" style={{ textDecoration: 'none' }}>
                 <ListItemButton sx={{
@@ -86,63 +77,46 @@ export default function ListIcons(props) {
                     minWidth: 5,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color : 'primary.main',
-                  }}>                   
+                    color: "#e82f34",
+                    
+                  }}
+                  >                   
                      <MdStore />    
                     </ListItemIcon>
-                    <ListItemText primary="Productos" />   
+                    <ListItemText primary="Productos" className="text-white border-zinc-900" />   
                 </ListItemButton>
                 </Link> 
             </ListItem>
-        </List>
-
-        <Divider />
-
-        <List className="mx-2" subheader="Clientes" dense>
-          
-            <ListItem >
+            <ListItemText primary="Clientes" className=" ml-3 border-zinc-900 text-white " />
+            <ListItem  >
                 <Link to="/clientes" style={{ textDecoration: 'none' }}>
                 <ListItemButton sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 1,
-                }}>
+                }}
+                
+                >
                     <ListItemIcon sx={{
                     minWidth: 5,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
-                    color : 'primary.main',
-                  }}>                   
+                    color: "#e82f34",
+                  }}
+                  >                   
                      <BsFillJournalBookmarkFill />    
                     </ListItemIcon>
-                    <ListItemText primary="Agenda" />   
+                    <ListItemText primary="Agenda" className="text-white border-zinc-900" />   
                 </ListItemButton>
                 </Link> 
+                
+                
+                
             </ListItem>
-            {/* <ListItem >
-                <Link to="/fichas" style={{ textDecoration: 'none' }}>
-                <ListItemButton sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 1,
-                }}>
-                    <ListItemIcon sx={{
-                    minWidth: 5,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                    color : 'primary.main',
-                  }}>                   
-                     <GiNotebook />    
-                    </ListItemIcon>
-                    <ListItemText primary="Ficha de Clientes" />   
-                </ListItemButton>
-                </Link> 
-            </ListItem> */}
-        </List>
-
-        <Divider />
-
-        <List className="mx-2" subheader="Turnos" dense>
+            <Divider sx={{
+          backgroundColor: "#F15338",
+        }}  />
+            <ListItemText primary="Turnos" className="ml-3 border-zinc-900 text-white " />
             <ListItem >
                 <Link to="/turnos" style={{ textDecoration: 'none' }}>
                 <ListItemButton sx={{
@@ -153,17 +127,58 @@ export default function ListIcons(props) {
                     <ListItemIcon sx={{
                     minWidth: 5,
                     mr: open ? 3 : 'auto',
-                    color : 'primary.main',
+                    color: "#e82f34",
                     justifyContent: 'center',
-                  }}>                   
+                  }}
+                  >                   
                      <BsCalendar2Plus />    
                     </ListItemIcon>
-                    <ListItemText primary="Turnos" />   
+                    <ListItemText className="text-white border-zinc-900" primary="Turnos" />   
                 </ListItemButton>
                 </Link> 
             </ListItem>
-            {/* <ListItem >
+        </List>
+
+        {/* <Divider sx={{
+          backgroundColor: "#F15338",
+        }}  />
+
+        <List sx={{
+          backgroundColor: "#5b6290",
+          height: "663px"
+        }}  >
+          <ListItemText primary="Clientes" className=" ml-3 border-zinc-900 text-white " />
+            <ListItem  >
                 <Link to="/clientes" style={{ textDecoration: 'none' }}>
+                <ListItemButton sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 1,
+                }}
+                
+                >
+                    <ListItemIcon sx={{
+                    minWidth: 5,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                    color: "#e82f34",
+                  }}
+                  >                   
+                     <BsFillJournalBookmarkFill />    
+                    </ListItemIcon>
+                    <ListItemText primary="Agenda" className="text-white border-zinc-900" />   
+                </ListItemButton>
+                </Link> 
+                
+                
+                
+            </ListItem>
+            <Divider sx={{
+          backgroundColor: "#F15338",
+        }}  />
+            <ListItemText primary="Turnos" className="ml-3 border-zinc-900 text-white " />
+            <ListItem >
+                <Link to="/turnos" style={{ textDecoration: 'none' }}>
                 <ListItemButton sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -172,40 +187,19 @@ export default function ListIcons(props) {
                     <ListItemIcon sx={{
                     minWidth: 5,
                     mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                    color : 'primary.main',
-                    hover: 'su',
-                  }}>                   
-                     <BsCalendarCheck />    
-                    </ListItemIcon>
-                    <ListItemText primary="Ver Turnos" />   
-                </ListItemButton>
-                </Link> 
-            </ListItem> */}
-        
-          {/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 1,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 5,
-                    mr: open ? 3 : 'auto',
+                    color: "#e82f34",
                     justifyContent: 'center',
                   }}
-                >
-                  {index % 2 === 5 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 5 }} />
-              </ListItemButton>
+                  >                   
+                     <BsCalendar2Plus />    
+                    </ListItemIcon>
+                    <ListItemText className="text-white border-zinc-900" primary="Turnos" />   
+                </ListItemButton>
+                </Link> 
             </ListItem>
-          ))} */}
-        </List>
+            
+        </List> */}
+
       
         </div>
 
