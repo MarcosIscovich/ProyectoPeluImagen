@@ -147,8 +147,8 @@ export default function FormDialog(props) {
         }}
       >
         <DialogTitle className="">{edit ? "Editar Cliente" : "Crear Cliente"}</DialogTitle>
-        <DialogContent>
-          <Card sx={{ maxWidth: 800 }}>
+        <Box sx={{ display:"flex" , justifyContent:"center" , width:"100%"  }}>
+          <Card sx={{ display:"flex" , justifyContent:"center", width: "95%" }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/*  <Controller
             name="nombre"
@@ -158,7 +158,7 @@ export default function FormDialog(props) {
               <TextField onChange={onChange} value={value} label={"Nombre"} autoFocus margin="dense" variant="standard" fullWidth/>
             )}
           /> */}
-              <Box>
+              
                 <Grid container direction="column" item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
                   <strong>Nombre: </strong>
                   <BootstrapInput
@@ -177,7 +177,7 @@ export default function FormDialog(props) {
                   />
                 </Grid>
 
-                <Grid container direction="row" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="space-evenly">
+                <Grid container direction="row" item rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="space-between" alignItems="space-between" >
                   <Grid item xs={6} md={6} lg={6}>
                     <strong>Telefono:</strong>
                     <BootstrapInput
@@ -195,8 +195,9 @@ export default function FormDialog(props) {
                       placeholder="Telefono"
                       fullWidth
                     />
+                    
                   </Grid>
-                  <Grid item xs={6} md={6} lg={6}>
+                  <Grid item xs={6} md={6} lg={6} justifyContent="flex-end">
                     <strong>Direccion:</strong>
                     <BootstrapInput
                       defaultValue=""
@@ -273,7 +274,7 @@ export default function FormDialog(props) {
                     />
                   </Grid>
                 </Grid>
-              </Box>
+              
 
               <Grid container direction="column" item xs={12} md={12} lg={12} margin="10px" justifyContent="center" alignItems="center">
                 <Grid item xs={12} >
@@ -287,7 +288,7 @@ export default function FormDialog(props) {
               </Grid>
             </form>
           </Card>
-        </DialogContent>
+          </Box>
       </Dialog>
     </>
   );
