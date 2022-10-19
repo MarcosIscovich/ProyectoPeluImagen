@@ -16,6 +16,9 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { ButtonGroup } from "@mui/material";
+import { alpha } from "@mui/material/styles";
+import InputBase from "@mui/material/InputBase";
+import { purple } from "@mui/material/colors";
 
 const MySwal = withReactContent(Swal);
 
@@ -27,6 +30,46 @@ const defaultValues = {
   fecha_nacimiento: "",
   red_social: "",
 };
+const ColorButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.getContrastText(purple[500]),
+  backgroundColor: purple[500],
+  "&:hover": {
+    backgroundColor: purple[700],
+  },
+}));
+
+const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  "label + &": {
+    marginTop: theme.spacing(3),
+  },
+  "& .MuiInputBase-input": {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.mode === "light" ? "#fcfcfb" : "#2b2b2b",
+    border: "1px solid #ced4da",
+    fontSize: 16,
+    width: "auto",
+    padding: "10px 12px",
+    transition: theme.transitions.create(["border-color", "background-color", "box-shadow"]),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:focus": {
+      boxShadow: purple[700],
+      borderColor: purple[700],
+    },
+  },
+}));
 
 export default function FormDialog(props) {
   const { open, handleClose, item, edit, rowsdata } = props;
@@ -105,7 +148,7 @@ export default function FormDialog(props) {
       >
         <DialogTitle className="">{edit ? "Editar Cliente" : "Crear Cliente"}</DialogTitle>
         <DialogContent>
-          <Card sx={{ maxWidth: 600 }}>
+          <Card sx={{ maxWidth: 800 }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               {/*  <Controller
             name="nombre"
@@ -115,27 +158,29 @@ export default function FormDialog(props) {
               <TextField onChange={onChange} value={value} label={"Nombre"} autoFocus margin="dense" variant="standard" fullWidth/>
             )}
           /> */}
+              <Box>
+                <Grid container direction="column" item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
+                  <strong>Nombre: </strong>
+                  <BootstrapInput
+                    inputProps={register("nombre", {
+                      required: "Por favor ingrese un nombre",
+                    })}
+                    error={errors.nombre}
+                    helperText={errors.nombre?.message}
+                    autoFocus
+                    margin="dense"
+                    id="nombre"
+                    label="Nombre"
+                    type="text"
+                    variant="outlined"
+                    placeholder="Nombre"
+                  />
+                </Grid>
 
-              <Grid container item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
-                <TextField
-                  inputProps={register("nombre", {
-                    required: "Por favor ingrese un nombre",
-                  })}
-                  error={errors.nombre}
-                  helperText={errors.nombre?.message}
-                  autoFocus
-                  margin="dense"
-                  id="nombre"
-                  label="Nombre"
-                  type="text"
-                  variant="outlined"
-                />
-              </Grid>
-
-              <Box sx={{ width: "100%" }}>
-                <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="space-around">
+                <Grid container direction="row" rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="space-evenly">
                   <Grid item xs={6} md={6} lg={6}>
-                    <TextField
+                    <strong>Telefono:</strong>
+                    <BootstrapInput
                       defaultValue=""
                       inputProps={register("telefono", {
                         required: "Por favor ingrese un telefono",
@@ -147,10 +192,13 @@ export default function FormDialog(props) {
                       label="Telefono"
                       type="text"
                       variant="outlined"
+                      placeholder="Telefono"
+                      fullWidth
                     />
                   </Grid>
                   <Grid item xs={6} md={6} lg={6}>
-                    <TextField
+                    <strong>Direccion:</strong>
+                    <BootstrapInput
                       defaultValue=""
                       inputProps={register("direccion", {
                         required: "Por favor ingrese una direccion",
@@ -162,12 +210,16 @@ export default function FormDialog(props) {
                       label="Direccion"
                       type="text"
                       variant="outlined"
+                      placeholder="Direccion"
+                      fullWidth
                     />
                   </Grid>
                 </Grid>
 
-                <Grid item xs={12}>
-                  <TextField
+                <Grid container direction="column" item xs={12} justifyContent="center" alignItems="center">
+                  <strong>Email:</strong>
+
+                  <BootstrapInput
                     defaultValue=""
                     inputProps={register("email", {
                       required: "Por favor ingrese un email",
@@ -178,14 +230,15 @@ export default function FormDialog(props) {
                     id="email"
                     label="Email"
                     type="text"
-                    fullWidth
                     variant="outlined"
+                    placeholder="Email"
                   />
                 </Grid>
 
                 <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justifyContent="space-around">
                   <Grid item xs={6}>
-                    <TextField
+                    <strong>Fecha de Nacimiento:</strong>
+                    <BootstrapInput
                       defaultValue=""
                       inputProps={register("fecha_nacimiento", {
                         required: "Por favor ingrese una fecha de nacimiento",
@@ -198,10 +251,12 @@ export default function FormDialog(props) {
                       type="date"
                       fullWidth
                       variant="outlined"
+                      placeholder="Fecha de nacimiento"
                     />
                   </Grid>
                   <Grid item xs={6}>
-                    <TextField
+                    <strong>Red Social:</strong>
+                    <BootstrapInput
                       defaultValue=""
                       inputProps={register("red_social", {
                         required: "Por favor ingrese una red social",
@@ -214,17 +269,22 @@ export default function FormDialog(props) {
                       type="text"
                       fullWidth
                       variant="outlined"
+                      placeholder="Red social"
                     />
                   </Grid>
                 </Grid>
               </Box>
 
-              <ButtonGroup className="flex space-x-4 justify-end">
-                <Button onClick={handleClose}>Cancelar</Button>
-                <Button type="submit" className="justify-end">
-                  {edit ? "Editar" : "Crear"}
-                </Button>
-              </ButtonGroup>
+              <Grid container direction="column" item xs={12} md={12} lg={12} margin="10px" justifyContent="center" alignItems="center">
+                <Grid item xs={12} >
+                  <ColorButton onClick={handleClose} variant="outlined">
+                    Cancelar
+                  </ColorButton>
+                  <ColorButton type="submit" variant="outlined">
+                    {edit ? "Editar" : "Crear"}
+                  </ColorButton>
+                </Grid>                
+              </Grid>
             </form>
           </Card>
         </DialogContent>
