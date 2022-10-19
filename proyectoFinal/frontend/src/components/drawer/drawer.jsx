@@ -229,7 +229,7 @@ export default function MiniDrawer() {
   );
 
   return (
-    <Box sx={{ display: "flex" }} >
+    <Box sx={{ display: "flex" }}  >
       <CssBaseline />
       <AppBar className="bg-zinc-900" position="fixed" open={open}>
         <Toolbar>
@@ -293,7 +293,7 @@ export default function MiniDrawer() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} onMouseEnter={handleDrawerOpen} onMouseLeave={handleDrawerClose}>	
         <DrawerHeader className="mx-0 px-0">
           <Button onClick={handleDrawerClose} className="mx-0 px-0 py-0">
             {theme.direction === "rtl" ? <ChevronRightIcon /> : <img src={Logo} alt="" width={"100%"} />}
@@ -333,11 +333,11 @@ export default function MiniDrawer() {
               backgroundColor: "#F15338",
             }}
           />
-          <ListItemButton onClick={handleClickServicios} className="rounded-full border-purple-500  ">
+          <ListItemButton onClick={handleClickServicios} className="rounded-full">
         <ListItemIcon>
         <ContentCutIcon sx={{color : "#ef916d"}} />
         </ListItemIcon>
-        <ListItemText primary="Servicios" className="ml-3 border-pink-600 text-white outline-black  " />
+        <ListItemText primary="Servicios" className="ml-3 border-pink-600 text-white   " />
         {openServicios ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={openServicios} timeout="auto" unmountOnExit>
@@ -351,6 +351,7 @@ export default function MiniDrawer() {
                   justifyContent: open ? "initial" : "center",
                   
                 }}
+                
               >
                 <ListItemIcon
                   sx={{
@@ -376,7 +377,7 @@ export default function MiniDrawer() {
             }}
           />
 
-      <ListItemButton onClick={handleClickProductos}>
+      <ListItemButton onClick={handleClickProductos} className="rounded-full">
         <ListItemIcon>
           <ProductionQuantityLimitsIcon sx={{color : "#ef916d"}} />
         </ListItemIcon>
@@ -391,10 +392,7 @@ export default function MiniDrawer() {
               <ListItemButton
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  
-                }}
-              >
+                  justifyContent: open ? "initial" : "center",}}>
                 <ListItemIcon
                   sx={{
                     minWidth: 5,
@@ -426,7 +424,7 @@ export default function MiniDrawer() {
           />
 
 
-<ListItemButton onClick={handleClickClientes}>
+<ListItemButton onClick={handleClickClientes} className="rounded-full">
         <ListItemIcon>
           <Face sx={{color : "#ef916d"}} />
         </ListItemIcon>
@@ -463,19 +461,13 @@ export default function MiniDrawer() {
         </List>
       </Collapse>
 
-
-      
-
-
-
-
           <Divider
             sx={{
               backgroundColor: "#F15338",
             }}
           />
 
-<ListItemButton onClick={handleClickTurnos}>
+<ListItemButton onClick={handleClickTurnos} className="rounded-full">
         <ListItemIcon>
           <EventIcon sx={{color : "#ef916d"}} />
         </ListItemIcon>

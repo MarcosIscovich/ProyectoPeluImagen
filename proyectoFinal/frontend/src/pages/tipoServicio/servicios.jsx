@@ -1,17 +1,17 @@
 import React from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { ButtonGroup} from "@mui/material";
+import { Box, Button, ButtonGroup } from "@mui/material";
 import { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarlbar } from "@mui/x-data-grid";
 import { DeleteOutline } from "@mui/icons-material";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { GiBarbedNails, GiHairStrands } from "react-icons/gi";
-import  ServicioModal  from "./serviciosModal";
+import ServicioModal from "./serviciosModal";
 import Stack from "@mui/material/Stack";
 import { deleteTrabajo, getAllTrabajos } from "../../services/servicios";
-import CreateIcon from '@mui/icons-material/Create';
+import CreateIcon from "@mui/icons-material/Create";
 
 const MySwal = withReactContent(Swal);
 
@@ -33,9 +33,8 @@ export default function Servicios() {
     console.log("DATA", data.data);
     setRowsPelu(data.data.filter((item) => item.tiposervicioId === 1));
     setRowsUñas(data.data.filter((item) => item.tiposervicioId === 2));
+  };
 
-    }
- 
   const showButton = () => {
     setshowButton(!showbutton);
   };
@@ -67,7 +66,7 @@ export default function Servicios() {
   };
 
   const handleDelete = (id) => {
- console.log("ID", id);
+    console.log("ID", id);
     MySwal.fire({
       title: "¿Estás seguro?",
       text: "No podrás revertir esto!",
@@ -79,21 +78,26 @@ export default function Servicios() {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteTrabajo(id);
-        MySwal.fire(
-          "Yo te Adverti!",
-          "El cliente ha sido eliminado.",
-          "success"
-        );
+        MySwal.fire("Yo te Adverti!", "El cliente ha sido eliminado.", "success");
         rowsdata();
       }
     });
   };
 
-  
-
   const columns = [
     /* { field: "id", headerName: "ID", width: 70 }, */
-    { field: "nombre", headerName: "Nombre", width: 130 },
+    {
+      field: "nombre",
+      headerName: "Nombre",
+      width: 130,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
     { field: "duracion", headerName: "Duracion", width: 100 },
     { field: "precio", headerName: "Precio", width: 100 },
     {
@@ -104,7 +108,7 @@ export default function Servicios() {
         return (
           <div className="flex space-x-2 ">
             <CreateIcon onClick={() => handleEdit(params.row)} className="fill-black-500 md:fill-black-700" />
-             {/*  Editar
+            {/*  Editar
             </button> */}
 
             <DeleteOutline onClick={() => handleDelete(params.row.id)} className="fill-red-500 md:fill-red-700" />
@@ -117,15 +121,14 @@ export default function Servicios() {
   return (
     <div className="m-20">
       <div className="flex flex-row justify-center items-center...">
-        <Fab
+        <Button
           onClick={showButton}
           variant="extended"
-          color="primary"
-          aria-label="add"
+          className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
         >
           <AddIcon sx={{ mr: 1 }} />
           Agregar un Servicio
-        </Fab>
+        </Button>
         {/* <Button
           onClick={showButton}
           className=" bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
@@ -136,13 +139,21 @@ export default function Servicios() {
       <div className="flex flex-row justify-center items-center m-10 ...">
         {showbutton ? (
           <ButtonGroup className="flex space-x-4">
-            <Fab onClick={handleClickOpenPelu} variant="extended">
-              <GiHairStrands sx={{ mr: 1 }} />
+            <Fab
+              onClick={handleClickOpenPelu}
+              variant="extended"
+              className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            >
+              <GiHairStrands className="mr-2" />
               Peluqueria
             </Fab>
 
-            <Fab onClick={handleClickOpenUñas} variant="extended">
-              <GiBarbedNails sx={{ mr: 1 }} />
+            <Fab
+              onClick={handleClickOpenUñas}
+              variant="extended"
+              className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            >
+              <GiBarbedNails className="mr-2" />
               Uñas
             </Fab>
           </ButtonGroup>
@@ -171,6 +182,9 @@ export default function Servicios() {
           autoHeight={true}
           align="center"
           columnHeaderHeight={50}
+          className="bg-white shadow-lg drop-shadow-2xl rounded-lg my-6 border-solid border-1 border-purple-900
+          w-full text-sm text-left text-violet-800 dark:text-violet-900 
+          "
         />
         <DataGrid
           style={{ height: 500, margin: 10, width: "85%" }}
@@ -182,9 +196,11 @@ export default function Servicios() {
           autoHeight={true}
           align="center"
           columnHeaderHeight={50}
+          className="bg-white shadow-lg drop-shadow-2xl rounded-lg my-6 border-solid border-1 border-purple-900
+          w-full text-sm text-left text-violet-800 dark:text-violet-900 
+          "
         />
       </div>
     </div>
   );
 }
-
