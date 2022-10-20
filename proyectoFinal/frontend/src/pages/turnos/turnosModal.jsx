@@ -301,7 +301,7 @@ export default function FormDialog(props) {
             </Box>
           )}
 
-          <Box sx={{ display: "flex ", justifyContent: "space-evenly" , marginTop: "10"  }}>
+          <Box sx={{ display: "flex ", justifyContent: "flex-end" , margin:"5" }}>
             <ButtonPurple onClick={closeModal}>Cancelar</ButtonPurple>
             {editTurno ? <ButtonPurple onClick={editarturno}>Guardar</ButtonPurple> : <ButtonPurple onClick={guardarTurno}>Guardar</ButtonPurple>}
           </Box>

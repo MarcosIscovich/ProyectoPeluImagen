@@ -20,6 +20,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ModalFicha from "./modalFichaCliente";
 import { Button } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
+import purple from "@mui/material/colors/purple";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -274,7 +275,11 @@ export default function clientes() {
 
         <Search>
           <SearchIconWrapper>
-            <SearchIcon />
+            <SearchIcon sx={{
+                    fontSize: 30,
+                    justifyContent: "center",
+                    color: purple[700],
+                  }} />
           </SearchIconWrapper>
           <StyledInputBase placeholder="Buscar Cliente" inputProps={{ "aria-label": "search" }} onChange={(e) => search(e.target.value)} />
         </Search>

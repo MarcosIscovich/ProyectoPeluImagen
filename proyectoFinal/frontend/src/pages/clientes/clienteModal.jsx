@@ -122,6 +122,23 @@ export default function NestedModal(props) {
             </Typography>
             <Typography
               variant="body2"
+              color="text.secondary"
+              sx={{
+                fontSize: 20,
+                fontWeight: "bold",
+                fontFamily: "Roboto",
+                color: purple[500],
+                textAlign: "center",
+                marginTop: 2,
+                marginBottom: 2,
+                borderRadius: "10px",
+                boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+              }}
+            >
+              {item.telefono}
+            </Typography>
+            <Typography
+              variant="body2"
               sx={{
                 fontSize: 20,
                 fontWeight: "bold",

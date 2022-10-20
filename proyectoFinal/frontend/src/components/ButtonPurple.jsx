@@ -9,6 +9,7 @@ const ButtonPurple = styled(Button)(({ theme }) => ({
     "&:hover": {
       backgroundColor: purple[700],
     },
+    marginRight: "5px",
   }));
 
  export default ButtonPurple;

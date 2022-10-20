@@ -10,13 +10,13 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import CreateIcon from "@mui/icons-material/Create";
-import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-import { Box, Button, ButtonGroup } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { deleteProducto, getProductos } from "../../services/productos";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
+import { purple } from "@mui/material/colors";
 
 
 const Search = styled("div")(({ theme }) => ({
@@ -226,7 +226,7 @@ export default function productos() {
 
   return (
     <div>
-      <div className="  flex mx-15 pt-12 pb-2">
+      <div className="flex mx-15 pt-12 pb-2">
         <Button
           onClick={handleClickOpen}
           variant="extended"
@@ -238,7 +238,11 @@ export default function productos() {
 
         <Search>
           <SearchIconWrapper>
-            <SearchIcon />
+            <SearchIcon sx={{
+                    fontSize: 30,
+                    justifyContent: "center",
+                    color: purple[700],
+                  }} />
           </SearchIconWrapper>
           <StyledInputBase placeholder="Buscar Producto" inputProps={{ "aria-label": "search" }} onChange={(e) => search(e.target.value)} />
         </Search>
