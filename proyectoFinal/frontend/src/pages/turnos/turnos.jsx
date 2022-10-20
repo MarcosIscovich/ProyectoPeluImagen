@@ -171,9 +171,16 @@ export default function Turnos() {
       showConfirmButton: false,
       timer: 1500,
     });
-    
+
+    await setCurrentEvents("")    
     setItemSelected([])
     setEditTurno(false)
+    getEvents().then((res) => {
+      console.log("RES", res);
+      let event = res;
+      setCurrentEvents(event);
+      console.log("EVENTS", currentEvents);
+    });
   };
 
   const updateDataTurno = async (data) => {
@@ -230,7 +237,7 @@ export default function Turnos() {
     console.log("CLICK INFO", clickInfo);
     setTurnoId(clickInfo.event.id);
     setItemSelected(clickInfo.event.extendedProps);
-    openModal(true);
+    openEditModal(clickInfo);
   };
 
   const eventRemove = async (data) => {
