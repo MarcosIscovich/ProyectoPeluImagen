@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import "./clientes.css";
 import { createCliente, updateCliente } from "../../services/cliente";
 import Swal from "sweetalert2";
@@ -7,7 +6,6 @@ import withReactContent from "sweetalert2-react-content";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
 import Card from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { purple } from "@mui/material/colors";
@@ -17,6 +15,7 @@ import CardContent from "@mui/material/CardContent";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Stack } from "@mui/system";
 import TextFieldForms from "../../components/textFieldForms"
+import ButtonPurple from "../../components/ButtonPurple"
 
 
 const MySwal = withReactContent(Swal);
@@ -70,13 +69,6 @@ const theme = createTheme({
   },
 });
 
-const ColorButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.getContrastText(purple[500]),
-  backgroundColor: purple[500],
-  "&:hover": {
-    backgroundColor: purple[700],
-  },
-}));
 
 
 
@@ -467,12 +459,12 @@ export default function FormDialog(props) {
                   direction="row"
                   spacing={2}
                 >
-                  <ColorButton onClick={handleClose} variant="outlined">
+                  <ButtonPurple onClick={handleClose} variant="outlined">
                     Cancelar
-                  </ColorButton>
-                  <ColorButton type="submit" variant="outlined">
+                  </ButtonPurple>
+                  <ButtonPurple type="submit" variant="outlined">
                     {edit ? "Editar" : "Crear"}
-                  </ColorButton>
+                  </ButtonPurple>
                 </Stack>
               </form>
             </ThemeProvider>

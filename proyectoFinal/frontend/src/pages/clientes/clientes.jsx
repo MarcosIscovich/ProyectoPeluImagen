@@ -16,7 +16,6 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import Box from "@mui/material/Box";
 import CreateIcon from "@mui/icons-material/Create";
-import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import ModalFicha from "./modalFichaCliente";
 import { Button } from "@mui/material";
@@ -68,7 +67,7 @@ export default function clientes() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [rows, setRows] = useState([]);
   const [item, setItemSelected] = useState([]);
-  const [idCliente, setIdCliente] = useState([]);
+  //const [idCliente, setIdCliente] = useState([]);
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
   const [openCard, setOpenCard] = useState(false);
@@ -275,7 +274,7 @@ export default function clientes() {
       </div>
 
       <CardModal item={item} openCard={openCard} handleCloseCard={handleCloseCard} />
-      <ModalFicha idCliente={idCliente} openFicha={openFicha} setOpen={setOpen} handleCloseFicha={handleCloseFicha} rowsdata={rowsdata} item={item} />
+      <ModalFicha  openFicha={openFicha} setOpen={setOpen} handleCloseFicha={handleCloseFicha} rowsdata={rowsdata} item={item} />
 
       <Stack direction="row" spacing={5}>
         <br />
