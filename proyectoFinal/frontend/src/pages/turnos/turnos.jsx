@@ -6,39 +6,42 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { createEventId, getEvents } from "./events";
 import { getAllClientes } from "../../services/cliente";
 import { getAllTrabajos } from "../../services/servicios";
-import {
-  createTurno,
-  updateTurno,
-  deleteTurno,
-} from "../../services/turnos";
+import { createTurno, updateTurno, deleteTurno } from "../../services/turnos";
 import { useState, useEffect } from "react";
 import TurnosModal from "./turnosModal";
 import allLocales from "@fullcalendar/core/locales-all";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { DatasetLinked, DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline } from "@mui/icons-material";
 import CreateIcon from "@mui/icons-material/Create";
-import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { styled } from '@mui/material/styles';
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
+import { useSnackbar } from "notistack";
 
 const MySwal = withReactContent(Swal);
 
-const BootstrapTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} arrow classes={{ popper: className }} />
-))(({ theme }) => ({
+const BootstrapTooltip = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(({ theme }) => ({
   [`& .${tooltipClasses.arrow}`]: {
     color: theme.palette.common.black,
   },
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#BE7DC0' /* 'rgba(244, 7, 247, 0.54)' */  /* 'rgba(204, 165, 0)' */,
-    color:"#121417",
+    backgroundColor: "#BE7DC0" /* 'rgba(244, 7, 247, 0.54)' */ /* 'rgba(204, 165, 0)' */,
+    color: "#121417",
     fontWeight: "bold",
     display: "flex",
-    alignItems: 'center',
-    height:"50px",   
+    alignItems: "center",
+    height: "50px",
     whiteSpace: "pre-line",
   },
 }));
+
+const SnackBar = [
+  {
+    variant: "success",
+    message: "Turno Actualizado Correctamente",
+  },
+  { variant: "error", message: "Error Al Modificar El turno" },
+];
 
 export default function Turnos() {
   const [currentEvents, setCurrentEvents] = useState([]);
@@ -52,12 +55,12 @@ export default function Turnos() {
   const [endUpdate, setEndUpdate] = useState("");
   const [fechaUpdate, setFechaUpdate] = useState("");
   const [item, setItemSelected] = useState([]);
-  const [turnoId , setTurnoId] = useState("");
+  const [turnoId, setTurnoId] = useState("");
   const [editTurno, setEditTurno] = useState(false);
-  const [cargar, setCargar] = useState(false);
   const [clientes, setClientes] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [flagSaveTurno, setFlagSaveTurno] = useState(false);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   //const [INITIAL_EVENTS, setINITIAL_EVENTS] = useState([]);
 
   useEffect(() => {
@@ -71,11 +74,8 @@ export default function Turnos() {
     getServicios();
   }, []);
 
-    
-
-    //setCurrentEvents(INITIAL_EVENTS)
-    //console.log("INITIAL_EVENTS", INITIAL_EVENTS);
-  
+  //setCurrentEvents(INITIAL_EVENTS)
+  //console.log("INITIAL_EVENTS", INITIAL_EVENTS);
 
   const getclientes = async () => {
     try {
@@ -112,7 +112,7 @@ export default function Turnos() {
 
   const addTurno = (data) => {
     console.log("addEvent", data);
-   // calendarApi.unselect(); // clear date selection   
+    // calendarApi.unselect(); // clear date selection
 
     calendarApi.addEvent({
       id: createEventId(),
@@ -142,39 +142,36 @@ export default function Turnos() {
     console.log("DATA SAVETURNO", data);
     const turno = await createTurno(data.event.extendedProps);
     console.log("TURNO", turno);
-    if (turno.ok ) {
-    MySwal.fire({
-      title: "Turno creado",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-    setFlagSaveTurno(true);
-    setTurnoId(turno.data.id)
-  } else {
-    MySwal.fire({
-      title: "Error al crear turno",
-      icon: "error",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  }
+    if (turno.ok) {
+      MySwal.fire({
+        title: "Turno creado",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      setFlagSaveTurno(true);
+      setTurnoId(turno.data.id);
+    } else {
+      MySwal.fire({
+        title: "Error al crear turno",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   const turnosEdit = async (data) => {
     console.log("DATA EDITTURNO", data);
     const turno = await updateTurno(data);
     console.log("TURNO", turno);
-    MySwal.fire({
-      title: "Turno actualizado",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    turno.ok
+      ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant })
+      : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
 
-    await setCurrentEvents("")    
-    setItemSelected([])
-    setEditTurno(false)
+    await setCurrentEvents("");
+    setItemSelected([]);
+    setEditTurno(false);
     getEvents().then((res) => {
       console.log("RES", res);
       let event = res;
@@ -185,7 +182,7 @@ export default function Turnos() {
 
   const updateDataTurno = async (data) => {
     console.log("DATA UPDATE", data);
-    console.log("SAVE TURNO" , turnoId)
+    console.log("SAVE TURNO", turnoId);
     if (data.event === undefined) {
       return;
     } else {
@@ -209,19 +206,12 @@ export default function Turnos() {
     console.log("UpdateData", updateData);
 
     const turnoUpdate = await updateTurno(updateData);
-    
-    setTurnoId("")
-    console.log("TURNO ID UPDATE" , turnoId);
+    setTurnoId("");
+    console.log("TURNO ID UPDATE", turnoId);
     console.log("TURNOUPDATE", turnoUpdate);
-    
-     
-    MySwal.fire({
-      title: "Turno actualizado",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  
+    turnoUpdate.ok
+      ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant })
+      : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
   };
 
   const handleDateSelect = (data) => {
@@ -230,10 +220,10 @@ export default function Turnos() {
     setStart(data.startStr);
     setEnd(data.endStr);
     setAllDay(data.allDay);
-
   };
 
   const handleEventClick = (clickInfo) => {
+    console.log("ABRIO MODAL")
     console.log("CLICK INFO", clickInfo);
     setTurnoId(clickInfo.event.id);
     setItemSelected(clickInfo.event.extendedProps);
@@ -257,19 +247,17 @@ export default function Turnos() {
     });
   };
 
-    const handleDelete = async (id) => {
-      const dataDelete = await deleteTurno(id)
-        console.log("DELETE", dataDelete);
-        if (dataDelete.ok === true) {
-          MySwal.fire({
-            title: "Turno eliminado",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      
-
+  const handleDelete = async (id) => {
+    const dataDelete = await deleteTurno(id);
+    console.log("DELETE", dataDelete);
+    if (dataDelete.ok === true) {
+      MySwal.fire({
+        title: "Turno eliminado",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
   };
 
   const handleEvents = (events) => {
@@ -287,31 +275,23 @@ export default function Turnos() {
 
   function renderEventContent(eventInfo) {
     //console.log("RENDER INFO", eventInfo);
-    
-    return (
-      
-      <>
 
+    return (
+      <>
         <div className="flex flex-row space-x-2 justify-start items-start ...">
-          <BootstrapTooltip 
-          data-html="true"          
-          title={` Horario: ${eventInfo.timeText} 
+          <BootstrapTooltip
+            data-html="true"
+            title={` Horario: ${eventInfo.timeText} 
           Servicio: ${eventInfo.event.extendedProps.nombreServicio}
            Precio: $${eventInfo.event.extendedProps.precio} `}
-           placement="bottom-start" arrow>
-            
-              <i className="bg-gray-200 text-gray-700 rounded-full px-4 text-sm font-semibold">{eventInfo.event.title}</i>
-            
-          </BootstrapTooltip>  
-          <CreateIcon
-            className="fill-orange-500 md:fill-orange-700  h-5"
-            onClick={() => openEditModal(eventInfo)}
-          />
+            placement="bottom-start"
+            arrow
+          >
+            <i className="bg-gray-200 text-gray-700 rounded-full px-4 text-sm font-semibold">{eventInfo.event.title}</i>
+          </BootstrapTooltip>
+          <CreateIcon className="fill-orange-500 md:fill-orange-700  h-5" onClick={() => openEditModal(eventInfo)} />
 
-          <DeleteOutline
-            className="fill-red-500 md:fill-red-700 h-5"
-            onClick={() => eventRemove(eventInfo)}
-          />
+          <DeleteOutline className="fill-red-500 md:fill-red-700 h-5" onClick={() => eventRemove(eventInfo)} />
         </div>
         {/* <div>
         
@@ -323,15 +303,13 @@ export default function Turnos() {
       
           
         </div> */}
-        
       </>
     );
   }
 
   return (
     <div className=" mx-20 pt-12 pb-2">
-      
-          <TurnosModal
+      <TurnosModal
         open={open}
         item={item}
         turnoId={turnoId}
@@ -343,7 +321,7 @@ export default function Turnos() {
         addTurno={addTurno}
         turnosEdit={turnosEdit}
       />
-      
+
       <div className="demo-app-calendar">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -356,6 +334,7 @@ export default function Turnos() {
           locale="es"
           timeZone="local"
           initialView="timeGridDay"
+          allDaySlot={false}
           editable={true}
           selectable={true}
           selectMirror={true}
@@ -383,8 +362,6 @@ export default function Turnos() {
           eventChange={(data) => updateDataTurno(data)}
           eventStartEditable={(data) => console.log("DATA", data)}
           eventRemove={(data) => handleDelete(data.event.id)}
-          
-          
         />
       </div>
     </div>

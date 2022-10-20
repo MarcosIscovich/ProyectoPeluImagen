@@ -2,7 +2,6 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
-//import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Swal from "sweetalert2";
@@ -11,6 +10,7 @@ import { useEffect, useState } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
+import { purple } from "@mui/material/colors";
 
 const MySwal = withReactContent(Swal);
 
@@ -69,25 +69,81 @@ export default function FormDialog(props) {
       <Dialog open={open} onClose={closeModal}>
         <DialogTitle>
           <Typography
-            paragraph
-            variant="h6"
             sx={{
+              fontSize: 30,
               fontWeight: "bold",
-              color: "#3f51b5",
-              textAlign: "center",
-              fontSize: "1.5rem",
               fontFamily: "Roboto",
-              m: 0,
-              p: 0,
+              color: "white",
+              textAlign: "center",
+              marginTop: 2,
+              marginBottom: 2,
+              backgroundColor: purple[700],
+              borderRadius: 1,
+              padding: 1,
+              boxShadow: 3,
             }}
           >
-            
-              Hora de inicio del turno {timeText.substring(0, 5)}
-              Hs             
-            <span>{editTurno && "Seleccionar cliente y servicio para editar el turno"}</span>
-            <span>{editTurno && `Cliente Anterior: ${item.nombreCliente}`}</span>
-            <span>{editTurno && `Servicio Anterior: ${item.nombreServicio}`}</span>
+            Hora de inicio del turno {timeText.substring(0, 5)}
+            Hs
           </Typography>
+
+          {editTurno && (
+            <Typography
+              paragraph
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                color: "#3f51b5",
+                textAlign: "center",
+                fontSize: "1.5rem",
+                fontFamily: "Roboto",
+                m: 0,
+                p: 0,
+              }}
+            >
+              <span
+                style={{
+                  color: purple[700],
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  fontFamily: "Roboto",
+                  textAlign: "center",
+                  marginTop: 2,
+                  marginBottom: 2,
+                }}
+              >
+                {editTurno && "Seleccionar cliente y servicio para editar el turno"}
+              </span>
+              <br />
+              <span
+                style={{
+                  color: purple[700],
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  fontFamily: "Roboto",
+                  textAlign: "center",
+                  marginTop: 2,
+                  marginBottom: 2,
+                }}
+              >
+                {editTurno && `Cliente Anterior: ${item.nombreCliente}`}
+              </span>
+              <br />
+              <span
+                style={{
+                  color: purple[700],
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  fontFamily: "Roboto",
+                  textAlign: "center",
+                  marginTop: 2,
+                  marginBottom: 2,
+                }}
+              >
+                {editTurno && `Servicio Anterior: ${item.nombreServicio}`}
+              </span>
+            </Typography>
+          )}
         </DialogTitle>
         <DialogContent>
           <Autocomplete
