@@ -37,8 +37,6 @@ const Search = styled("div")(({ theme }) => ({
   },
 }));
 
-
-
 const SearchIconWrapper = styled("div")(({ theme }) => ({
   padding: theme.spacing(0, 2),
   height: "100%",
@@ -149,11 +147,7 @@ export default function clientes() {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteCliente(id);
-        MySwal.fire(
-          "Yo te Adverti!",
-          "El cliente ha sido eliminado.",
-          "success"
-        );
+        MySwal.fire("Yo te Adverti!", "El cliente ha sido eliminado.", "success");
         rowsdata();
       }
     });
@@ -163,74 +157,97 @@ export default function clientes() {
     {
       field: "nombre",
       headerName: "Nombre",
-      width: 130,
+      flex: 1,
       headerAlign: "center",
       align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
     {
       field: "telefono",
       headerName: "Telefono",
-      width: 130,
+      flex: 1,
       headerAlign: "center",
       align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
     {
       field: "direccion",
       headerName: "Direccion",
-      width: 150,
+      flex: 1,
       headerAlign: "center",
       align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
     {
       field: "email",
       headerName: "E-mail",
-      width: 250,
+      flex: 1,
       headerAlign: "center",
       align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
     {
       field: "fecha_nacimiento",
       headerName: "Fecha de Nacimiento",
-      width: 160,
+      flex: 1,
       headerAlign: "center",
       align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
     {
       field: "red_social",
       headerName: "Red Social",
-      width: 130,
+      flex: 1,
       headerAlign: "center",
       align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
     {
       field: "acciones",
       headerName: "Acciones",
-      width: 160,
+      flex: 1,
       headerAlign: "center",
       align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
       renderCell: (params) => {
         return (
           <div className="flex space-x-2 ">
-            <NoteAltIcon
-              className="cursor-pointer fill-blue-500 md:fill-blue-700 "
-              onClick={() => openFichaModal(params.row)}
-            />
-            <Face
-              className=" fill-green-500 md:fill-green-700"
-              onClick={() => cardOpen(params.row)}
-            />
+            <NoteAltIcon className="cursor-pointer fill-blue-500 md:fill-blue-700 " onClick={() => openFichaModal(params.row)} />
+            <Face className=" fill-green-500 md:fill-green-700" onClick={() => cardOpen(params.row)} />
 
-            <CreateIcon
-              className="fill-black-500 md:fill-black-700"
-              onClick={() => handleEdit(params.row)}
-            />
+            <CreateIcon className="fill-black-500 md:fill-black-700" onClick={() => handleEdit(params.row)} />
             {/*  Editar
             </button> */}
 
-            <DeleteOutline
-              className="fill-red-500 md:fill-red-700"
-              onClick={() => handleDelete(params.row.id)}
-            />
+            <DeleteOutline className="fill-red-500 md:fill-red-700" onClick={() => handleDelete(params.row.id)} />
           </div>
         );
       },
@@ -243,47 +260,26 @@ export default function clientes() {
         <Button
           onClick={handleClickOpen}
           variant="extended"
-          className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"        >
+          className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        >
           <AddIcon sx={{ mr: 1 }} />
-          Agregar Cliente
+          Nuevo Cliente
         </Button>
 
         <Search>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Buscar Cliente"
-            inputProps={{ "aria-label": "search" }}
-            onChange={(e) => search(e.target.value)}
-          />
+          <StyledInputBase placeholder="Buscar Cliente" inputProps={{ "aria-label": "search" }} onChange={(e) => search(e.target.value)} />
         </Search>
       </div>
 
-      <CardModal
-        item={item}
-        openCard={openCard}
-        handleCloseCard={handleCloseCard}
-      />
-      <ModalFicha
-        idCliente={idCliente}
-        openFicha={openFicha}
-        setOpen={setOpen}
-        handleCloseFicha={handleCloseFicha}
-        rowsdata={rowsdata}
-        item={item}
-      />
+      <CardModal item={item} openCard={openCard} handleCloseCard={handleCloseCard} />
+      <ModalFicha idCliente={idCliente} openFicha={openFicha} setOpen={setOpen} handleCloseFicha={handleCloseFicha} rowsdata={rowsdata} item={item} />
 
       <Stack direction="row" spacing={5}>
         <br />
-        <Modal
-          edit={edit}
-          item={item}
-          open={open}
-          setOpen={setOpenFicha}
-          handleClose={handleClose}
-          rowsdata={rowsdata}
-        />
+        <Modal edit={edit} item={item} open={open} setOpen={setOpenFicha} handleClose={handleClose} rowsdata={rowsdata} />
       </Stack>
       <Box sx={{ height: 400, margin: 10, width: "95%" }}>
         <DataGrid

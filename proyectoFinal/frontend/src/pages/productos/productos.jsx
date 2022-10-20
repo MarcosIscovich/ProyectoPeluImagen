@@ -9,15 +9,12 @@ import ModalProducto from "./modalProducto";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import CreateIcon from '@mui/icons-material/Create';
+import CreateIcon from "@mui/icons-material/Create";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
-
-
+import { Box, Button, ButtonGroup } from "@mui/material";
 import { deleteProducto, getProductos } from "../../services/productos";
-import { Button } from "@mui/material";
 //import CardModal from "./clienteModal"
-
 
 export default function productos() {
   useEffect(() => {
@@ -28,11 +25,11 @@ export default function productos() {
   const [item, setItemSelected] = useState([]);
   const [open, setOpen] = useState(false);
   const [edit, setEdit] = useState(false);
-/*   const [openCard, setOpenCard] = useState(false); */
+  /*   const [openCard, setOpenCard] = useState(false); */
 
   const MySwal = withReactContent(Swal);
 
-/*   const cardOpen = (data) => {
+  /*   const cardOpen = (data) => {
     console.log("CARD", data);
     setItemSelected(data);
     setOpenCard(true);
@@ -40,10 +37,10 @@ export default function productos() {
 
   const rowsdata = async () => {
     const data = await getProductos();
-      setRows( data.data);
-    }
-  
- /*  const handleCloseCard = () => {
+    setRows(data.data);
+  };
+
+  /*  const handleCloseCard = () => {
     setOpenCard(false);
   }; */
 
@@ -66,7 +63,6 @@ export default function productos() {
   };
 
   const handleDelete = (id) => {
-
     MySwal.fire({
       title: "¿Estás seguro?",
       text: "No podrás revertir esto!",
@@ -78,11 +74,7 @@ export default function productos() {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteProducto(id);
-        MySwal.fire(
-          "Yo te Adverti!",
-          "El cliente ha sido eliminado.",
-          "success"
-        );
+        MySwal.fire("Yo te Adverti!", "El cliente ha sido eliminado.", "success");
         rowsdata();
       }
     });
@@ -90,70 +82,108 @@ export default function productos() {
 
   const columns = [
     /* { field: "id", headerName: "ID", width: 70 }, */
-    { field: "nombre", headerName: "Nombre", width: 130 , headerAlign: 'center',
-    align: 'center' },
-    { field: "descripcion", headerName: "Descripcion", width: 130 , headerAlign: 'center',
-    align: 'center' },
-    { field: "stock", headerName: "Stock", width: 130 , headerAlign: 'center',
-    align: 'center' },
-    { field: "precio", headerName: "Precio", width: 180 , headerAlign: 'center',
-    align: 'center'},
+    {
+      field: "nombre",
+      headerName: "Nombre",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "descripcion",
+      headerName: "Descripcion",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "stock",
+      headerName: "Stock",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "precio",
+      headerName: "Precio",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
     {
       field: "imagen",
       headerName: "Imagen",
-      width: 160,
-      headerAlign: 'center',
-      align: 'center'
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
     {
       field: "acciones",
       headerName: "Acciones",
-      width: 130,
-      headerAlign: 'center',
-    align: 'center',
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
       renderCell: (params) => {
         return (
-        <div className="flex space-x-2 ">
-            
-      <CreateIcon className="fill-orange-500 md:fill-orange-700 mx-5 cursor-pointer"  onClick={() => handleEdit(params.row)}/>
-      {/*   Editar
+          <div className="flex space-x-2 ">
+            <CreateIcon className="fill-orange-500 md:fill-orange-700 mx-5 cursor-pointer" onClick={() => handleEdit(params.row)} />
+            {/*   Editar
       </ImPencil> */}
 
-      <DeleteOutline
-        className="fill-red-500 md:fill-red-700 cursor-pointer"
-        onClick={() => handleDelete(params.row.id)}
-      />
-    </div>
-  );
+            <DeleteOutline className="fill-red-500 md:fill-red-700 cursor-pointer" onClick={() => handleDelete(params.row.id)} />
+          </div>
+        );
       },
     },
   ];
 
   return (
-
-    <div >
+    <div>
       <div className=" mx-20 pt-12 pb-2">
-      <Button
-        onClick={handleClickOpen}
-        variant="extended"
-        className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-      >
-        <AddIcon sx={{ mr: 1 }} />
-      Agregar Producto
-      </Button>
+        <Button
+          onClick={handleClickOpen}
+          variant="extended"
+          className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        >
+          <AddIcon sx={{ mr: 1 }} />
+          Nuevo Producto
+        </Button>
       </div>
-     {/* <CardModal item={item} openCard={openCard} handleCloseCard={handleCloseCard} />  */} 
+      {/* <CardModal item={item} openCard={openCard} handleCloseCard={handleCloseCard} />  */}
 
       <Stack direction="row" spacing={5}>
         <br />
-        <ModalProducto
-          edit={edit}
-          item={item}
-          open={open}
-          setOpen={setOpen}
-          handleClose={handleClose}
-          rowsdata={rowsdata}
-        />
+        <ModalProducto edit={edit} item={item} open={open} setOpen={setOpen} handleClose={handleClose} rowsdata={rowsdata} />
       </Stack>
 
       <DataGrid
