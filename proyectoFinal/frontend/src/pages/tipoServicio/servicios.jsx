@@ -12,6 +12,49 @@ import ServicioModal from "./serviciosModal";
 import Stack from "@mui/material/Stack";
 import { deleteTrabajo, getAllTrabajos } from "../../services/servicios";
 import CreateIcon from "@mui/icons-material/Create";
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 const MySwal = withReactContent(Swal);
 
@@ -27,6 +70,28 @@ export default function Servicios() {
   useEffect(() => {
     rowsdata();
   }, []);
+
+  const search = (e) => {
+    if (e.length > 3) {
+      filtrar(e);
+    } else {
+      rowsdata();
+    }
+  };
+
+  const filtrar = (filtrado) => {
+    console.log("FILTRADO", filtrado);
+    let resultado = rowsPelu.filter((row) => {
+      return row.nombre.toLowerCase().includes(filtrado);
+    });
+    let resultado2 = rowsUñas.filter((row) => {
+      return row.nombre.toLowerCase().includes(filtrado);
+    });
+    console.log("RESULTADO", resultado);
+
+    setRowsPelu(resultado);
+    setRowsUñas(resultado2);
+  };
 
   const rowsdata = async () => {
     const data = await getAllTrabajos();
@@ -156,6 +221,12 @@ export default function Servicios() {
           <AddIcon sx={{ mr: 1 }} />
           Agregar Servicio
         </Button>
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase placeholder="Buscar Servicio" inputProps={{ "aria-label": "search" }} onChange={(e) => search(e.target.value)} />
+        </Search>
         {/* <Button
           onClick={showButton}
           className=" bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"

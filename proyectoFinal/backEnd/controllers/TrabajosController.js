@@ -16,13 +16,13 @@ exports.getAllTrabajos = (req, res) => {
 
 exports.createTrabajo = (req, res) => {
     try {
-        const { nombre, duracion, precio , cantTrabajadores, tiposervicioId } = req.body;
+        const { nombre, duracion, precio ,  tiposervicioId } = req.body;
 
         db.TrabajoModel.create({
             nombre,
             duracion,
             precio,
-            cantTrabajadores,
+            
             tiposervicioId
         }).then(trabajo => {
             res.status(200).send(trabajo);

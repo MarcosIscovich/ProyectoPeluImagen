@@ -67,6 +67,7 @@ export default function clientes() {
   }, []);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [rows, setRows] = useState([]);
+
   const [item, setItemSelected] = useState([]);
   //const [idCliente, setIdCliente] = useState([]);
   const [open, setOpen] = useState(false);
@@ -77,21 +78,23 @@ export default function clientes() {
   const MySwal = withReactContent(Swal);
 
   const search = (e) => {
+    if (e.length > 3) {
     filtrar(e);
+    } else {
+      rowsdata();
+    }
   };
 
   const filtrar = (filtrado) => {
+    
     console.log("FILTRADO", filtrado);
-    /*   let resultado = rows.filter((data) => {
-      if (data.title.toString().toLowerCase().includes(filtrado.toLowerCase())
-        || data.category.toString().toLowerCase().includes(filtrado.toLowerCase())
-        || data.price.toString().toLowerCase().includes(filtrado.toLowerCase())
-      ) {
-        return data;
-      }
-
-    }) 
-   rowsdata(resultado);*/
+    let resultado = rows.filter((row) => {
+      return row.nombre.toLowerCase().includes(filtrado);
+    });
+    console.log("RESULTADO", resultado);
+    setRows(resultado);
+       
+    
   };
 
   const cardOpen = (data) => {

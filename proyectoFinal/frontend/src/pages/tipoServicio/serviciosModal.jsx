@@ -22,7 +22,7 @@ const defaultValues = {
   nombre: "",
   duracion: "",
   precio: "",
-  cantTrabajadores: "",
+  /* cantTrabajadores: "", */
   tiposervicioId: "",
 };
 
@@ -101,18 +101,28 @@ export default function FormDialog(props) {
 
   const saveTrabajo = async (data) => {
     data.tiposervicioId = tipoServicio;
-    console.log(data);
+    console.log("GUARDAR SERVICIO",data);
     const save = await createTrabajo(data);
-    handleClose();
-    MySwal.fire({
-      title: "SERVICIO Guardado",
-      icon: "success",
-      showConfirmButton: false,
-      timer: 1500,
-    }).then((result) => {
-      reset(save);
-      rowsdata();
-    });
+    if(save.ok){
+      handleClose();
+      MySwal.fire({
+        title: "Servicio guardado",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500,
+      }).then((result) => {
+        reset(save);
+        rowsdata();
+      });
+    } else {
+      MySwal.fire({
+        title: "Error al guardar",
+        icon: "error",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+   
   };
 
   const onSubmit = (data) => {

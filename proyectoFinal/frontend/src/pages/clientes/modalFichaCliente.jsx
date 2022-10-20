@@ -131,6 +131,8 @@ export default function FormDialog(props) {
     editData(data);
   };
 
+ 
+
   return (
     <>
       <Modal
@@ -152,12 +154,13 @@ export default function FormDialog(props) {
               fontSize: 30,
               fontWeight: "bold",
               fontFamily: "Roboto",
-              color: "black",
+              color: "white",
               textAlign: "center",
               marginTop: 2,
               marginBottom: 2,
-              backgroundColor: "primary.main",
+              backgroundColor: purple[700],
               borderRadius: 1,
+              boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
               padding: 1,
             }}
           >

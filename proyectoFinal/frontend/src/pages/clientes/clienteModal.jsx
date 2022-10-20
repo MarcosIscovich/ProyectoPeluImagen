@@ -3,9 +3,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-//import Box from '@mui/material/Box';
 import Modal from "@mui/material/Modal";
 import { getTurno } from "../../services/turnos";
 import { styled } from "@mui/material/styles";
@@ -13,9 +11,9 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Logo2 from "../../images/logo2.jpg";
 import Grid from "@mui/material/Grid";
-import moment from "moment";
 import { purple } from "@mui/material/colors";
 import ButtonPurple from "../../components/ButtonPurple";
+import { DataGrid } from "@mui/x-data-grid";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -49,10 +47,40 @@ export default function NestedModal(props) {
     console.log("handleOpenModal2", item.id);
     const turnosCliente = await getTurno(item.id);
     setTurnoCliente(turnosCliente.data);
-    console.log("turnosCliente", turnosCliente);
+    console.log("turnosCliente OPEN MODAL", turnosCliente);
     setOpenModal2(true);
   };
   const handleCloseModal2 = () => setOpenModal2(false);
+
+  const columns = [
+    /* { field: "id", headerName: "ID", width: 70 }, */
+    {
+      field: "fecha_concurrencia",
+      headerName: "Fecha de Concurrencia",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "servicio_realizado",
+      headerName: "Servicio Realizado",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderCell: (params) => ( <span>{params.row.trabajo.nombre}</span>),
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -159,34 +187,45 @@ export default function NestedModal(props) {
       </Modal>
 
       <Modal open={openModal2} onClose={handleCloseModal2} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
-        <Card sx={{ ...style, width: 500 }}>
-          <CardContent>
-            <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-              {turnoCliente.map((item) => (
-                <Typography
-                  gutterBottom
-                  variant="body2"
-                  sx={{
-                    width: "100%",
-                    maxWidth: 360,
-                    bgcolor: "background.paper",
-                    p: 1,
-                    m: 1,
-                    border: 1,
-                    borderColor: "text.primary",
-                    borderRadius: 1,
-                  }}
-                  component="div"
-                >
-                  <span>
-                    fecha de Concurrencia : {item.fecha_concurrencia.substring(0, 10)}
-                    <br />
-                  </span>
-                  <span>Servicio Realizado: {item.trabajo.nombre}</span>
-                </Typography>
-              ))}
-            </Box>
-          </CardContent>
+        <Card sx={{ ...style, width: 600 , margin : 0 , height: 600, display: "flex" , justifyContent: "center"  }}>
+           <> 
+          <Grid container direction="column"  item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">  
+        <Typography
+          gutterBottom
+            sx={{
+              fontSize: 30,
+              fontWeight: "bold",
+              fontFamily: "Roboto",
+              color: "white",
+              textAlign: "center",
+              marginTop: 2,
+              marginBottom: 2,
+              backgroundColor: purple[700],
+              borderRadius: 1,
+              boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+              padding: 1,
+            }}
+          >
+           Servicios Realizados a : {item.nombre}
+          </Typography>
+
+          <DataGrid
+            style={{ height: 400,  width: "90%" }}
+            rows={turnoCliente}
+            disableSelectionOnClick
+            columns={columns}
+            pageSize={6}
+            rowsPerPageOptions={[6]}
+            experimentalFeatures={{ newEditingApi: true }}
+            sx={{
+              backgroundColor: "white",
+              borderRadius: "10px",
+              boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+
+            }}
+          />
+          </Grid>
+          </>
         </Card>
       </Modal>
     </>

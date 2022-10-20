@@ -14,7 +14,50 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Button, ButtonGroup } from "@mui/material";
 import { deleteProducto, getProductos } from "../../services/productos";
-//import CardModal from "./clienteModal"
+import { styled, alpha } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 export default function productos() {
   useEffect(() => {
@@ -29,11 +72,25 @@ export default function productos() {
 
   const MySwal = withReactContent(Swal);
 
-  /*   const cardOpen = (data) => {
-    console.log("CARD", data);
-    setItemSelected(data);
-    setOpenCard(true);
-  }; */
+  const search = (e) => {
+    if (e.length > 3) {
+    filtrar(e);
+    } else {
+      rowsdata();
+    }
+  };
+
+  const filtrar = (filtrado) => {
+    
+    console.log("FILTRADO", filtrado);
+    let resultado = rows.filter((row) => {
+      return row.nombre.toLowerCase().includes(filtrado);
+    });
+    console.log("RESULTADO", resultado);
+    setRows(resultado);
+       
+    
+  };
 
   const rowsdata = async () => {
     const data = await getProductos();
@@ -169,7 +226,7 @@ export default function productos() {
 
   return (
     <div>
-      <div className=" mx-20 pt-12 pb-2">
+      <div className="  flex mx-15 pt-12 pb-2">
         <Button
           onClick={handleClickOpen}
           variant="extended"
@@ -178,6 +235,13 @@ export default function productos() {
           <AddIcon sx={{ mr: 1 }} />
           Nuevo Producto
         </Button>
+
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase placeholder="Buscar Producto" inputProps={{ "aria-label": "search" }} onChange={(e) => search(e.target.value)} />
+        </Search>
       </div>
       {/* <CardModal item={item} openCard={openCard} handleCloseCard={handleCloseCard} />  */}
 
