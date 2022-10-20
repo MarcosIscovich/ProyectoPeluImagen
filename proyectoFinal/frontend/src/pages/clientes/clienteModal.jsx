@@ -11,8 +11,11 @@ import { getTurno } from "../../services/turnos";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
+import Logo2 from "../../images/logo2.jpg";
 import Grid from "@mui/material/Grid";
 import moment from "moment";
+import { purple } from "@mui/material/colors";
+import ButtonPurple from "../../components/ButtonPurple";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -55,18 +58,88 @@ export default function NestedModal(props) {
     <>
       <Modal open={openCard} onClose={handleCloseCard} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
         <Card sx={{ ...style, width: 500 }}>
-          <CardMedia component="img" height="140" image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg" alt="green iguana" />
+          <CardMedia
+            component="img"
+            image={Logo2}
+            alt="Logo"
+            sx={{
+              width: "95%",
+              height: "auto",
+              margin: "auto",
+              marginTop: "10px",
+              marginBottom: "10px",
+              borderRadius: "10px",
+              boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+            }}
+          />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              sx={{
+                fontSize: 30,
+                fontWeight: "bold",
+                fontFamily: "Roboto",
+                color: "white",
+                textAlign: "center",
+                marginTop: 2,
+                marginBottom: 2,
+                backgroundColor: purple[700],
+                borderRadius: 1,
+                padding: 1,
+              }}
+            >
               {item.nombre}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: 20,
+                fontWeight: "bold",
+                fontFamily: "Roboto",
+                color: purple[500],
+                textAlign: "center",
+                marginTop: 2,
+                marginBottom: 2,
+                borderRadius: "10px",
+                boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+              }}
+            >
               {item.direccion}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                fontSize: 20,
+                fontWeight: "bold",
+                fontFamily: "Roboto",
+                color: purple[500],
+                textAlign: "center",
+                marginTop: 2,
+                marginBottom: 2,
+                borderRadius: "10px",
+                boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+              }}
+            >
               {item.red_social}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{
+                fontSize: 20,
+                fontWeight: "bold",
+                fontFamily: "Roboto",
+                color: purple[500],
+                textAlign: "center",
+                marginTop: 2,
+                marginBottom: 2,
+                borderRadius: "10px",
+                boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+              }}
+            >
               Ocupacion:{item.ocupacion} <br />
               Tipo De Cabello :{item.tipo_cabello} <br />
               Estado De Cabello :{item.estado_cabello} <br />
@@ -75,9 +148,12 @@ export default function NestedModal(props) {
           </CardContent>
           <CardActions>
             {/* <Button size="small">Ver Ficha</Button> */}
-            <Button size="small" onClick={() => handleOpenModal2()}>
-              Ver servicios realizados
-            </Button>
+
+            <Grid container direction="column" item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
+              <ButtonPurple variant="outlined" onClick={() => handleOpenModal2()}>
+                Ver servicios realizados
+              </ButtonPurple>
+            </Grid>
           </CardActions>
         </Card>
       </Modal>

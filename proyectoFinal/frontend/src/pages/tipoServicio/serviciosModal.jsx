@@ -161,7 +161,7 @@ export default function FormDialog(props) {
             image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
             alt="green iguana" /> */
           >
-            {edit ? "Editar Servicio" : "Agendar Nuevo Servicio"}
+            {edit ? "Editar Servicio" : "Agregar Nuevo Servicio"}
           </Typography>
 
           <CardContent>

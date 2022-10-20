@@ -19,6 +19,7 @@ import CreateIcon from "@mui/icons-material/Create";
 import AddIcon from "@mui/icons-material/Add";
 import ModalFicha from "./modalFichaCliente";
 import { Button } from "@mui/material";
+import Tooltip from "@mui/material/Tooltip";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -239,9 +240,12 @@ export default function clientes() {
       renderCell: (params) => {
         return (
           <div className="flex space-x-2 ">
+            <Tooltip title="Ver y Editar Ficha del Cliente">
             <NoteAltIcon className="cursor-pointer fill-blue-500 md:fill-blue-700 " onClick={() => openFichaModal(params.row)} />
+            </Tooltip>
+            <Tooltip title="Datos del Cliente Y Servicios Realizados">
             <Face className=" fill-green-500 md:fill-green-700" onClick={() => cardOpen(params.row)} />
-
+          </Tooltip>
             <CreateIcon className="fill-black-500 md:fill-black-700" onClick={() => handleEdit(params.row)} />
             {/*  Editar
             </button> */}
@@ -274,7 +278,7 @@ export default function clientes() {
       </div>
 
       <CardModal item={item} openCard={openCard} handleCloseCard={handleCloseCard} />
-      <ModalFicha  openFicha={openFicha} setOpen={setOpen} handleCloseFicha={handleCloseFicha} rowsdata={rowsdata} item={item} />
+      <ModalFicha openFicha={openFicha} setOpen={setOpen} handleCloseFicha={handleCloseFicha} rowsdata={rowsdata} item={item} />
 
       <Stack direction="row" spacing={5}>
         <br />

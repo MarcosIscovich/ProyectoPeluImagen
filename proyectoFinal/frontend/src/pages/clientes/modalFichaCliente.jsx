@@ -19,6 +19,10 @@ import CardMedia from "@mui/material/CardMedia";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import { Stack } from "@mui/system";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
+import { purple } from "@mui/material/colors";
+import TextFieldForms from "../../components/textFieldForms";
+import ButtonPurple from "../../components/ButtonPurple";
 
 const theme = createTheme({
   status: {
@@ -128,7 +132,7 @@ export default function FormDialog(props) {
   };
 
   return (
-    <div>
+    <>
       <Modal
         open={openFicha}
         onClose={handleCloseFicha}
@@ -156,13 +160,8 @@ export default function FormDialog(props) {
               borderRadius: 1,
               padding: 1,
             }}
-            /*<CardMedia 
-            component="img"
-            height="140"
-            image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-            alt="green iguana" /> */
           >
-             {item.nombre}
+            {item.nombre}
           </Typography>
 
           <CardContent>
@@ -176,136 +175,183 @@ export default function FormDialog(props) {
                     m: 1,
                     bgcolor: "background.paper",
                     borderRadius: 1,
-                    boxShadow: 3,
+                    boxShadow: 6,
                   }}
                 >
-                  <Controller
-                    name="ocupacion"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        sx={{
-                          width: 200,
-                          maxWidth: 200,
-                          minWidth: 200,
-                          backgroundColor: "purple.main",
-                          borderRadius: 2,
-                        }}
-                        name="ocupacion"
-                        error={errors.ocupacion}
-                        disabled={editFicha ? false : true}
-                        autoFocus
-                        margin="dense"
-                        id="ocupacion"
-                        label="Ocupacion"
-                        type="text"
-                        variant="filled"
-                        color="warning"
-                      />
-                    )}
-                  />
+                  <Grid container direction="column" item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
+                    <span
+                      style={{
+                        color: purple[700],
+                        fontSize: 20,
+                        fontWeight: "bold",
+                        fontFamily: "Roboto",
+                        textAlign: "center",
+                        marginTop: 2,
+                        marginBottom: 2,
+                      }}
+                    >
+                      Ocupacion:
+                    </span>
+                    <Controller
+                      name="ocupacion"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <TextFieldForms
+                          {...field}
+                          sx={{
+                            borderRadius: 2,
+                            boxShadow: 6,
+                          }}
+                          name="ocupacion"
+                          id="ocupacion"
+                          type="text"
+                          placeholder="Ocupacion"
+                          disabled={!editFicha}
+                        />
+                      )}
+                    />
+                    {errors.ocupacion && <span style={{ color: "red" }}>Este campo es requerido</span>}
+                  </Grid>
                 </Box>
 
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "space-evenly",
+                    justifyContent: "center",
                     p: 1,
                     m: 1,
                     bgcolor: "background.paper",
                     borderRadius: 2,
-                    boxShadow: 3,
+                    boxShadow: 6,
                   }}
                 >
-                  <Controller
-                    name="tipo_cabello"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        sx={{
-                          width: 200,
-                          maxWidth: 200,
-                          minWidth: 200,
-                          backgroundColor: "#efb7f7",
-                          borderRadius: 2,
-                          borderColor: "border.color",
-                        }}
-                        disabled={editFicha ? false : true}
-                        error={errors.tipo_cabello}
-                        label="Tipo de Cabello"
-                        color="secondary"
-                        margin="dense"
-                        id="tipo_cabello"
-                        type="text"
-                        variant="filled"
-                      />
-                    )}
-                  />
-                  <Controller
-                    name="estado_cabello"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        sx={{
-                          width: 200,
-                          maxWidth: 200,
-                          minWidth: 200,
-                          backgroundColor: "#efb7f7",
-                          borderRadius: 2,
-                          boxShadow: 3,
-                        }}
-                        error={errors.estado_cabello}
-                        disabled={editFicha ? false : true}
-                        margin="dense"
-                        id="estado_cabello"
-                        label="Estado del Cabello"
-                        type="text"
-                        variant="filled"
-                      />
-                    )}
-                  />
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-evenly",
-                    p: 1,
-                    m: 1,
-                    bgcolor: "background.paper",
-                    borderRadius: 2,
-                    boxShadow: 3,
-                  }}
-                >
-                  <Controller
-                    name="formula"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextareaAutosize
-                        {...field}
-                        aria-label="empty textarea"
-                        placeholder="Formula"
+                  <Grid container direction="row" item rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                    <Grid item xs={6} md={6} lg={6}>
+                      <strong
                         style={{
-                          width: 500,
-                          height: 100,
+                          color: purple[700],
                           fontSize: 20,
-                          backgroundColor: "#efb7f7",
-                          borderRadius: 5,
-                          boxShadow: 3,
+                          fontWeight: "bold",
+                          fontFamily: "Roboto",
+                          textAlign: "center",
+                          marginTop: 2,
+                          marginBottom: 2,
+                          boxShadow: 6,
                         }}
-                        error={errors.formula}
-                        disabled={editFicha ? false : true}
+                      >
+                        Estado del cabello:
+                      </strong>
+                      <Controller
+                        name="estado_cabello"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                          <TextFieldForms
+                            {...field}
+                            sx={{
+                              borderRadius: 2,
+                              boxShadow: 6,
+                            }}
+                            margin="dense"
+                            id="estado_cabello"
+                            type="text"
+                            placeholder="estado_cabello"
+                            disabled={!editFicha}
+                          />
+                        )}
                       />
-                    )}
-                  />
+                      {errors.estado_cabello && <span style={{ color: "red" }}>Este campo es requerido</span>}
+                    </Grid>
+                    <Grid item xs={6} md={6} lg={6}>
+                      <strong
+                        style={{
+                          color: purple[700],
+                          fontSize: 20,
+                          fontWeight: "bold",
+                          fontFamily: "Roboto",
+                          textAlign: "center",
+                          marginTop: 2,
+                          marginBottom: 2,
+                          boxShadow: 6,
+                        }}
+                      >
+                        Tipo de cabello:
+                      </strong>
+                      <Controller
+                        name="tipo_cabello"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                          <TextFieldForms
+                            {...field}
+                            sx={{
+                              borderRadius: 2,
+                              boxShadow: 6,
+                            }}
+                            id="tipo_cabello"
+                            type="text"
+                            placeholder="Tipo Cabello"
+                            disabled={!editFicha}
+                          />
+                        )}
+                      />
+                      {errors.tipo_cabello && <span style={{ color: "red" }}>Este campo es requerido</span>}
+                    </Grid>
+                  </Grid>
                 </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    p: 1,
+                    m: 1,
+                    bgcolor: "background.paper",
+                    borderRadius: 1,
+                    boxShadow: 6,
+                  }}
+                >
+                  <Grid container direction="column" item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
+                    <span
+                      style={{
+                        color: purple[700],
+                        fontSize: 20,
+                        fontWeight: "bold",
+                        fontFamily: "Roboto",
+                        textAlign: "center",
+                        marginTop: 2,
+                        marginBottom: 2,
+                      }}
+                    >
+                      Formula:
+                    </span>
+                    <Controller
+                      name="formula"
+                      control={control}
+                      rules={{ required: true }}
+                      render={({ field }) => (
+                        <TextareaAutosize
+                          {...field}
+                          style={{
+                            width: "90%",
+                            height: "100px",
+                            borderRadius: 5,
+                            boxShadow: 6,
+                            borderColor: purple[700],
+                          }}
+                          name="formula"
+                          id="formula"
+                          placeholder="Formula"
+                          disabled={!editFicha}
+                        />
+                      )}
+                    />
+
+                    {errors.formula && <span style={{ color: "red" }}>Este campo es requerido</span>}
+                  </Grid>
+                </Box>
+
                 <Stack
                   sx={{
                     display: "flex-row",
@@ -317,78 +363,27 @@ export default function FormDialog(props) {
                   direction="row"
                   spacing={2}
                 >
-                  <Button
-                    variant="contained"
-                    color="error"
-                    component="label"
-                    sx={{
-                      marginTop: 2,
-                      color: "black",
-                      backgroundColor: "#BE7DC0",
-                      borderRadius: 2,
-                      width: 100,
-                      height: 40,
-                      fontSize: 14,
-                      fontWeight: "bold",
-                      fontFamily: "Roboto",
-                    }}
-                    onClick={handleCloseFicha}
-                  >
+                  <ButtonPurple variant="contained" color="error" component="label" onClick={handleCloseFicha}>
                     Cancelar
-                  </Button>
+                  </ButtonPurple>
 
                   {editFicha ? (
-                    <Button
-                      variant="contained"
-                      color="success"
-                      sx={{
-                        marginTop: 2,
-                        color: "black",
-                        backgroundColor: "#BE7DC0",
-                        borderRadius: 1,
-                        width: 100,
-                        height: 40,
-                        fontSize: 14,
-                        fontWeight: "bold",
-                        fontFamily: "Roboto",
-                      }}
-                      type="submit"
-                    >
+                    <ButtonPurple variant="contained" color="success" type="submit">
                       Guardar
-                    </Button>
+                    </ButtonPurple>
                   ) : null}
 
                   {editFicha ? null : (
-                    <Button
-                      variant="contained"
-                      color="success"
-                      onClick={handleEditFicha}
-                      sx={{
-                        marginTop: 2,
-                        color: "black",
-                        backgroundColor: "#BE7DC0",
-                        borderRadius: 1,
-                        width: 100,
-                        height: 40,
-                        fontSize: 12,
-                        fontWeight: "bold",
-                        fontFamily: "Roboto",
-                      }}
-                    >
+                    <ButtonPurple variant="contained" color="success" onClick={handleEditFicha}>
                       Editar Ficha
-                    </Button>
+                    </ButtonPurple>
                   )}
                 </Stack>
               </form>
             </ThemeProvider>
           </CardContent>
-
-          {/*  <CardActions>
-      
-        <Button size="small">Ver servicios realizados</Button>
-      </CardActions> */}
         </Card>
       </Modal>
-    </div>
+    </>
   );
 }
