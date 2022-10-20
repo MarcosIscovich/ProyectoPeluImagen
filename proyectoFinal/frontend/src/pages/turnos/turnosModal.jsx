@@ -11,6 +11,30 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 import { purple } from "@mui/material/colors";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import { Modal } from "@mui/material";
+import TextFieldForms from "../../components/textFieldForms";
+import Paper from '@mui/material/Paper';
+import ButtonPurple from "../../components/ButtonPurple"
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};
+
+const CustomPaper = (props) => {
+  return <Paper elevation={8} {...props} />;
+};
 
 const MySwal = withReactContent(Swal);
 
@@ -65,9 +89,19 @@ export default function FormDialog(props) {
   };
 
   return (
-    <div>
-      <Dialog open={open} onClose={closeModal}>
-        <DialogTitle>
+    <>
+      <Modal
+        open={open}
+        onClose={closeModal}
+        sx={{
+          border: "2px solid #000",
+          boxShadow: 24,
+          pt: 2,
+          px: 4,
+          pb: 3,
+        }}
+      >
+        <Card sx={{ ...style, width: 800, maxWidth: 800 }}>
           <Typography
             sx={{
               fontSize: 30,
@@ -144,51 +178,135 @@ export default function FormDialog(props) {
               </span>
             </Typography>
           )}
-        </DialogTitle>
-        <DialogContent>
-          <Autocomplete
-            options={clientes}
-            getOptionLabel={(option) => option.nombre}
-            onChange={(event, newValue) => {
-              setClienteSelected(newValue.nombre);
-              setClienteId(newValue.id);
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              p: 1,
+              m: 1,
+              bgcolor: "background.paper",
+              borderRadius: 2,
+              boxShadow: 6,
             }}
-            inputValue={clienteSelected}
-            sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Clientes" />}
-          />
-          <Autocomplete
-            options={servicios}
-            getOptionLabel={(option) => option.nombre}
-            onChange={(event, newValue) => {
-              setServicioSelected(newValue.nombre);
-              setServicioId(newValue.id);
-              setPrecioSelected(newValue.precio);
-              checkPrecio(true);
-            }}
-            inputValue={servicioSelected}
-            sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Servicios" />}
-          />
+          >
+            <Grid container direction="row" item rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+              <Grid item xs={6} md={6} lg={6}>
+                <strong
+                  style={{
+                    color: purple[700],
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    fontFamily: "Roboto",
+                    textAlign: "center",
+                    marginTop: 2,
+                    marginBottom: 2,
+                    boxShadow: 6,
+                  }}
+                >
+                  Clientes:
+                </strong>
+                <Autocomplete
+                  options={clientes}
+                  getOptionLabel={(option) => option.nombre}
+                  onChange={(event, newValue) => {
+                    setClienteSelected(newValue.nombre);
+                    setClienteId(newValue.id);
+                  }}
+                  PaperComponent={CustomPaper}
+                  inputValue={clienteSelected}
+                  sx={{ width: 300 , borderRadius: 2,
+                    boxShadow: 6, }}
+                  renderInput={(params) => <TextField {...params} variant="outlined" label="Clientes"/>}
+                />
+                
+              </Grid>
+                    
+              <Grid item xs={6} md={6} lg={6}>
+                <strong
+                  style={{
+                    color: purple[700],
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    fontFamily: "Roboto",
+                    textAlign: "center",
+                    marginTop: 2,
+                    marginBottom: 2,
+                    boxShadow: 6,
+                  }}
+                >
+                  Servicios:
+                </strong>
+                <Autocomplete
+                  options={servicios}
+                  getOptionLabel={(option) => option.nombre}
+                  onChange={(event, newValue) => {
+                    setServicioSelected(newValue.nombre);
+                    setServicioId(newValue.id);
+                    setPrecioSelected(newValue.precio);
+                    checkPrecio(true);
+                  }}
+                  PaperComponent={CustomPaper}
+                  inputValue={servicioSelected}
+                  color="secondary"
+                  sx={{ width: 300 , borderRadius: 2,
+                    boxShadow: 6, }}
+
+                  renderInput={(params) => <TextField {...params} label= "Servicios" />}
+                />              
+              </Grid>
+            </Grid>
+          </Box>
 
           {precioOk && (
-            <TextField
-              autoFocus
-              margin="dense"
-              id="precio"
-              label="Precio"
-              type="text"
-              value={precioSelected}
-              /* onChange={(e) => setPrecioSelected(e.target.value)} */
-            />
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                p: 1,
+                m: 1,
+                bgcolor: "background.paper",
+                borderRadius: 1,
+                boxShadow: 6,
+              }}
+            >
+              <Grid container direction="column" item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
+                <span
+                  style={{
+                    color: purple[700],
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    fontFamily: "Roboto",
+                    textAlign: "center",
+                    marginTop: 2,
+                    marginBottom: 2,
+                  }}
+                >
+                  Precio:
+                </span>
+                <TextFieldForms
+                  sx={{
+                    borderRadius: 2,
+                    boxShadow: 6,
+                  }}
+                  autoFocus
+                  margin="dense"
+                  id="precio"
+                  label="Precio"
+                  type="text"
+                  value={precioSelected}
+                  /* onChange={(e) => setPrecioSelected(e.target.value)} */
+                />
+              </Grid>
+            </Box>
           )}
 
-          <Box sx={{ display: "flex ", justifyContent: "flex-end" }}>
-            <Button onClick={closeModal}>Cancelar</Button>
-            {editTurno ? <Button onClick={editarturno}>Guardar</Button> : <Button onClick={guardarTurno}>Guardar</Button>}
+          <Box sx={{ display: "flex ", justifyContent: "space-evenly" , marginTop: "10"  }}>
+            <ButtonPurple onClick={closeModal}>Cancelar</ButtonPurple>
+            {editTurno ? <ButtonPurple onClick={editarturno}>Guardar</ButtonPurple> : <ButtonPurple onClick={guardarTurno}>Guardar</ButtonPurple>}
           </Box>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </Card>
+      </Modal>
+    </>
   );
 }
