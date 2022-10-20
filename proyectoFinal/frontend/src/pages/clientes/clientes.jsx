@@ -262,7 +262,7 @@ export default function clientes() {
   ];
 
   return (
-    <div>
+    <>
       <div className=" flex mx-15 pt-12 pb-2">
         <Button
           onClick={handleClickOpen}
@@ -307,6 +307,6 @@ export default function clientes() {
           "
         />
       </Box>
-    </div>
+    </>
   );
 }

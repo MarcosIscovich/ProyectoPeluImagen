@@ -22,6 +22,7 @@ import { Routes, Route } from "react-router-dom";
 import Clientes from "../../pages/clientes/clientes";
 import Productos from "../../pages/productos/productos";
 import Servicios from "../../pages/tipoServicio/servicios";
+import Home from "../../pages/home/Home";
 import FichaClientes from "../../pages/fichaCliente/fichaCliente";
 import Turnos from "../../pages/turnos/turnos";
 import EventIcon from '@mui/icons-material/Event';
@@ -509,7 +510,7 @@ export default function MiniDrawer() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/productos" element={<Productos />} />
           <Route path="/servicios" element={<Servicios />} />
