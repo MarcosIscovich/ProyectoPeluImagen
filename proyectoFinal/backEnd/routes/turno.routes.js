@@ -3,6 +3,8 @@ const TurnoController = require('../controllers/TurnoController');
 
 TurnoRoutes.get('/', TurnoController.getAllTurnos);
 TurnoRoutes.get('/findTurnos/:id', TurnoController.getTurno);
+TurnoRoutes.post('/turnosWeek', TurnoController.turnosWeek);
+TurnoRoutes.post('/turnosMonth', TurnoController.turnosMonth);
 TurnoRoutes.post('/create', TurnoController.createTurno);
 TurnoRoutes.put('/update', TurnoController.updateTurno);
 TurnoRoutes.delete('/delete/:id', TurnoController.deleteTurno);

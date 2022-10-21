@@ -1,12 +1,6 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
@@ -36,7 +30,7 @@ const CustomPaper = (props) => {
   return <Paper elevation={8} {...props} />;
 };
 
-const MySwal = withReactContent(Swal);
+
 
 export default function FormDialog(props) {
   const { turnoId, open, closeModal, addTurno, timeText, editTurno, clientes, servicios, item, turnosEdit } = props;

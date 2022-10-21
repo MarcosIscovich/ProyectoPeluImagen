@@ -333,7 +333,7 @@ export default function Turnos() {
             center: "title",
             right: "dayGridMonth,timeGridWeek,timeGridDay",
           }}
-          titleFormat={{ year: "numeric", month: "long" }}
+          
           locales={allLocales}
           locale="es"
           timeZone="local"
