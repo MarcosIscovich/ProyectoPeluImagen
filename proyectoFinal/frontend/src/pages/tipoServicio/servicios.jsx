@@ -180,6 +180,11 @@ export default function Servicios() {
       headerName: "Precio",
       headerAlign: "center",
       flex: 1,
+      renderCell: (params) => (
+        <Box>
+          <strong> $ {params.value}</strong>
+        </Box>
+      ),
       renderHeader: (params) => (
         <Box>
           <strong>{params.colDef.headerName}</strong>

@@ -40,7 +40,7 @@ exports.getTurno = (req, res) => {
         {
             model: db.TrabajoModel,
             as: "trabajo",
-            attributes: ["nombre"],
+            attributes: ["nombre" , "precio"],
         },
     ],
     

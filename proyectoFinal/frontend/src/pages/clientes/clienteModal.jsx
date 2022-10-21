@@ -14,6 +14,7 @@ import Grid from "@mui/material/Grid";
 import { purple } from "@mui/material/colors";
 import ButtonPurple from "../../components/ButtonPurple";
 import { DataGrid } from "@mui/x-data-grid";
+import moment from "moment";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -46,8 +47,19 @@ export default function NestedModal(props) {
   const handleOpenModal2 = async () => {
     console.log("handleOpenModal2", item.id);
     const turnosCliente = await getTurno(item.id);
-    setTurnoCliente(turnosCliente.data);
-    console.log("turnosCliente OPEN MODAL", turnosCliente);
+
+    console.log("turnosCliente", turnosCliente.data);
+
+    let allTurnos = turnosCliente.data.map((turno) => {
+      return {
+        id: turno.clienteId,
+        fecha_concurrencia: moment(turno.fecha_concurrencia).format("DD/MM/YYYY"),
+        servicio_realizado: turno.trabajo.nombre,
+        precio: "$" + turno.trabajo.precio
+      };
+    });
+    setTurnoCliente(allTurnos);
+    console.log("turnosCliente OPEN MODAL", allTurnos);
     setOpenModal2(true);
   };
   const handleCloseModal2 = () => setOpenModal2(false);
@@ -73,7 +85,20 @@ export default function NestedModal(props) {
       flex: 1,
       headerAlign: "center",
       align: "center",
-      renderCell: (params) => ( <span>{params.row.trabajo.nombre}</span>),
+      /* renderCell: (params) => ( <span>{params.row.trabajo.nombre}</span>), */
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "precio",
+      headerName: "Precio",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+
       renderHeader: (params) => (
         <Box>
           <strong>{params.colDef.headerName}</strong>

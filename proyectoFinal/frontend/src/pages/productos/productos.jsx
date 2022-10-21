@@ -181,6 +181,11 @@ export default function productos() {
       flex: 1,
       headerAlign: "center",
       align: "center",
+      renderCell: (params) => (
+        <Box>
+          <strong> $ {params.value}</strong>
+        </Box>
+      ),
       renderHeader: (params) => (
         <Box>
           <strong>{params.colDef.headerName}</strong>

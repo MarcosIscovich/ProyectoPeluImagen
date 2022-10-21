@@ -108,6 +108,9 @@ export default function Turnos() {
 
   const closeModal = () => {
     setOpen(false);
+    setTurnoId("");
+    setItemSelected([]);
+    setEditTurno(false);
   };
 
   const addTurno = (data) => {

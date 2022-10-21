@@ -291,11 +291,12 @@ export default function FormDialog(props) {
                   }}
                   autoFocus
                   margin="dense"
+                  
                   id="precio"
                   label="Precio"
                   type="text"
                   value={precioSelected}
-                  /* onChange={(e) => setPrecioSelected(e.target.value)} */
+                  onChange={(e) => setPrecioSelected(e.target.value)}
                 />
               </Grid>
             </Box>
