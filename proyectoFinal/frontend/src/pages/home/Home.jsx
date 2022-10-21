@@ -47,6 +47,7 @@ export default function Home() {
 
   useEffect(() => {
     turnosSemana();
+    turnosMes();
   }, []);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -127,6 +128,19 @@ export default function Home() {
       });
       console.log("infoMes", infoMes);
       setDataTurnosMes(infoMes);
+
+      //calculo ventas por dia
+      lastMonth.map((dia) => {
+        let ventasDia = mesTurnos.data.filter((turno) => turno.fecha_concurrencia === dia);
+
+        let totalDia = 0;
+        ventasDia.map((venta) => {
+          return (totalDia += venta.precio);
+        });
+        return infoVentasMes.push({ name: dia, ventas: totalDia });
+      });
+      setDataVentasMes(infoVentasMes);
+      console.log("infoVentasMes", infoVentasMes);
     } catch (error) {
       console.log(error);
     }
@@ -174,6 +188,7 @@ export default function Home() {
                 <XAxis dataKey="name" />
                 <YAxis dataKey="" />
                 <Tooltip />
+                <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
                 <Area type="monotone" color="purple[700]" dataKey="Turnos" stroke="#8884d8" fill="#8884d8" />
               </AreaChart>
             </ResponsiveContainer>
@@ -215,6 +230,7 @@ export default function Home() {
                 <XAxis dataKey="name" />
                 <YAxis dataKey="" />
                 <Tooltip />
+                <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
                 <Area type="monotone" dataKey="ventas" stroke="#8884d8" fill="#8884d8" />
               </AreaChart>
             </ResponsiveContainer>
@@ -251,26 +267,26 @@ export default function Home() {
         <span className="text-2xl font-bold">Turnos en los ultimos 30 dias</span>
       </Typography>
       <ResponsiveContainer width="90%" height="40%">
-        <BarChart
-          width={500}
-          height={300}
-          data={dataTurnosMes}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend verticalAlign="top" wrapperStyle={{ lineHeight: "40px" }} />
-          <ReferenceLine y={0} stroke="#000" dataKey="turnos" />
-          <Brush dataKey="turnos" height={30} stroke="#8884d8" />
-        </BarChart>
-      </ResponsiveContainer>
+              <AreaChart
+                width={500}
+                height={400}
+                data={dataTurnosMes}
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}
+              >
+                <CartesianGrid strokeDasharray="5 5" />
+                <XAxis dataKey="name" />
+                <YAxis dataKey="" />
+                <Tooltip />
+                <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+                <Area type="monotone" color="purple[700]" dataKey="Turnos" stroke="#8884d8" fill="#8884d8" />
+              </AreaChart>
+            </ResponsiveContainer>
+   
 
       <ButtonPurple aria-describedby={id} onClick={turnosMes}>
         Ventas en la ultima semana
