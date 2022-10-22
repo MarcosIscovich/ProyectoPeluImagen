@@ -129,7 +129,7 @@ export default function Turnos() {
       extendedProps: {
         id: createEventId(),
         precio: data.precio,
-        fecha_concurrencia: start, // .substring(0, 10) ,
+        fecha_concurrencia: start.substring(0, 10) ,
         hora_desde: start, // .substring(11, 16) ,
         hora_hasta: end, // .substring(11, 16) ,
         nombreCliente: data.cliente,

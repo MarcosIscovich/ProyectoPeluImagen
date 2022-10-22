@@ -2,7 +2,7 @@ module.exports = function (sequelize, Datatypes) {
     return sequelize.define('turnos', {
 
         fecha_concurrencia: {
-            type: Datatypes.DATE,
+            type: Datatypes.STRING,
             allowNull: false,
         },
         precio: {

@@ -57,6 +57,7 @@ exports.getTurno = (req, res) => {
 
 exports.createTurno = (req, res) => {
 	try {
+		
 		const {
 			precio,
 			hora_desde,
@@ -65,6 +66,7 @@ exports.createTurno = (req, res) => {
 			trabajoId,
 			fecha_concurrencia,
 		} = req.body;
+		console.log("BODY", fecha_concurrencia);
 		db.TurnoModel.create({
 			precio,
 			fecha_concurrencia,
@@ -172,13 +174,13 @@ exports.turnosWeek = (req, res) => {
 };
 
 exports.turnosMonth = (req, res) => {
-  const { fechahoy, fechaMes } = req.body;
-  console.log("FECHA HOY", fechahoy);
-  console.log("FECHA MES", fechaMes);
+  const { fechainicio, fechafin } = req.body;
+  console.log("FECHA HOY", fechainicio);
+  console.log("FECHA MES", fechafin);
 	db.TurnoModel.findAll({
 		where: {
 			fecha_concurrencia: {
-				[Op.between]: [fechaMes, fechahoy],
+				[Op.between]: [fechainicio, fechafin],
 			},
 		},
 		include: [
