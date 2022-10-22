@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
-import { turnosWeek, turnosMonth } from "../../services/turnos";
+import { turnosSelected } from "../../services/turnos";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import moment from "moment";
 import Typography from "@mui/material/Typography";
 import { purple } from "@mui/material/colors";
 import ButtonPurple from "../../components/ButtonPurple";
 import Box from "@mui/material/Box";
-import Popper from "@mui/material/Popper";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -23,6 +20,7 @@ import getMonth from "date-fns/getMonth";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Button } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 
 const MySwal = withReactContent(Swal);
 
@@ -35,21 +33,12 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function Home() {
-  const todayDate = moment().format("YYYY-MM-DD HH:mm:ss");
-  const WeekDate = moment().subtract(8, "days").format("YYYY-MM-DD HH:mm:ss");
-  const MonthDate = moment().subtract(31, "days").format("YYYY-MM-DD HH:mm:ss");
-  const [ventasSemanales, setVentasSemanales] = useState(0);
-  const [ventasMensuales, setVentasMensuales] = useState(0);
-  const [dataTurnos, setDataTurnos] = useState([]);
-  const [dataVentas, setDataVentas] = useState([]);
+  const [ventasTotales, setVentasTotales] = useState(0);
+  const [turnosTotales, setTurnosTotales] = useState(0);
   const [dataTurnosMes, setDataTurnosMes] = useState([]);
   const [dataVentasMes, setDataVentasMes] = useState([]);
-  const [lastWeek, setLastWeek] = useState([...new Array(8)].map((_, i) => moment().subtract(i, "days").format("DD/MM/YYYY")));
-  const [lastMonth, setLastMonth] = useState([...new Array(31)].map((_, i) => moment().subtract(i, "days").format("DD/MM/YYYY")));
-
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [isOpen, setIsOpen] = useState(false);
 
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -61,104 +50,9 @@ export default function Home() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const OpenDatePicker = (e) => {
-    e.preventDefault();
-    setIsOpen(!isOpen);
-  };
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
-
-  const turnosSemana = async () => {
-    let infoSemana = [];
-    let infoVentasSemana = [];
-    let fechasBack = {
-      fechahoy: todayDate,
-      fechaSemana: WeekDate,
-    };
-    const semanaTurnos = await turnosWeek(fechasBack);
-
-    console.log("LASTWEEK", lastWeek);
-    //transformo fecha de BD a formato DD/MM/YYYY
-    semanaTurnos.data.map((turno) => {
-      return (turno.fecha_concurrencia = moment(turno.fecha_concurrencia).format("DD/MM/YYYY"));
-    });
-
-    console.log("semanaTurnos", semanaTurnos.data);
-
-    lastWeek.map((dia) => {
-      let turnosDia = semanaTurnos.data.filter((turno) => turno.fecha_concurrencia === dia);
-
-      return infoSemana.push({ name: dia, Turnos: turnosDia.length });
-    });
-
-    setDataTurnos(infoSemana);
-
-    //calculo ventas por dia
-    lastWeek.map((dia) => {
-      let ventasDia = semanaTurnos.data.filter((turno) => turno.fecha_concurrencia === dia);
-
-      let totalDia = 0;
-      ventasDia.map((venta) => {
-        return (totalDia += venta.precio);
-      });
-      return infoVentasSemana.push({ name: dia, ventas: totalDia });
-    });
-    setDataVentas(infoVentasSemana);
-    console.log("infoVentasSemana", infoVentasSemana);
-
-    //calculo ventas total en 7 dias
-    let totalSemana = 0;
-    infoVentasSemana.map((venta) => {
-      return (totalSemana += venta.ventas);
-    });
-    setVentasSemanales(totalSemana);
-  };
-
-  const turnosMes = async () => {
-    let infoMes = [];
-    let infoVentasMes = [];
-    try {
-      let fechasBackMonth = {
-        fechahoy: todayDate,
-        fechaMes: MonthDate,
-      };
-
-      const mesTurnos = await turnosMonth(fechasBackMonth);
-      //transformo fecha de BD a formato DD/MM/YYYY
-
-      mesTurnos.data.map((turno) => {
-        return (turno.fecha_concurrencia = moment(turno.fecha_concurrencia).format("DD/MM/YYYY"));
-      });
-      console.log("mesTurnos", mesTurnos);
-
-      lastMonth.map((dia) => {
-        let turnosDia = mesTurnos.data.filter((turno) => turno.fecha_concurrencia === dia);
-        return infoMes.push({ name: dia, Turnos: turnosDia.length });
-      });
-      console.log("infoMes", infoMes);
-      setDataTurnosMes(infoMes);
-
-      //calculo ventas por dia
-      lastMonth.map((dia) => {
-        let ventasDia = mesTurnos.data.filter((turno) => turno.fecha_concurrencia === dia);
-
-        let totalDia = 0;
-        ventasDia.map((venta) => {
-          return (totalDia += venta.precio);
-        });
-        return infoVentasMes.push({ name: dia, ventas: totalDia });
-      });
-      setDataVentasMes(infoVentasMes);
-      console.log("infoVentasMes", infoVentasMes);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const SelectDates = async () => {
     let fechainicio = moment(startDate).format("YYYY-MM-DD");
@@ -177,12 +71,14 @@ export default function Home() {
         title: "Oops...",
         text: "Las fechas deben ser diferentes",
       });
+      return;
     } else if (fechainicio > fechafin) {
       MySwal.fire({
         icon: "error",
         title: "Oops...",
         text: "La fecha de inicio debe ser menor a la fecha de fin",
       });
+      return;
     } else {
       daycount = moment(fechafin).diff(moment(fechainicio), "days");
     }
@@ -191,13 +87,15 @@ export default function Home() {
 
     console.log("fechasBack", fechasBack);
 
-    const result = await turnosMonth(fechasBack);
+    const result = await turnosSelected(fechasBack);
 
     console.log("result", result.data);
-
+    
+    //armo array para recorrer y sumar los turnos por dia
     let dias = [...new Array(daycount + 1)].map((_, i) => moment(fechainicio).add(i, "days").format("YYYY-MM-DD"));
     console.log("DIAS", dias);
 
+    //recorro el array de dias y agrego los turnos por dia
     dias.map((dia) => {
       let turnosdia = result.data.filter((turno) => turno.fecha_concurrencia === dia);
       return DataTurnos.push({ name: dia, Turnos: turnosdia.length });
@@ -205,11 +103,18 @@ export default function Home() {
 
     setDataTurnosMes(DataTurnos);
 
+    //cuento la cantidad de turnos totales
+    let turnosTotales = 0;
+    DataTurnos.map((turno) => (turnosTotales += turno.Turnos));
+    setTurnosTotales(turnosTotales);
+
     console.log("result", DataTurnos);
 
+    //cargo la cantidad de ventas por dia
     dias.map((dia) => {
       let ventasdia = result.data.filter((turno) => turno.fecha_concurrencia === dia);
 
+      //sumo las ventas por dia
       let totalDia = 0;
       ventasdia.map((venta) => {
         return (totalDia += venta.precio);
@@ -217,25 +122,24 @@ export default function Home() {
       return ventasXdia.push({ name: dia, ventas: totalDia });
     });
     setDataVentasMes(ventasXdia);
+ 
+    //cuento la cantidad de ventas totales
+    let totalVentas = 0;
+    ventasXdia.map((venta) => {
+      return (totalVentas += venta.ventas);
+    });
+    setVentasTotales(totalVentas);
   };
 
   return (
     <>
       <div className=" flex mx-15 pt-12 pb-2"></div>
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          flexWrap: "no-wrap",
-          width: "30%",
-        }}
-      >
-        {/*                         className="mx-2 border-purple-900 border-2 rounded-md p-3 text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15"
-         */}
-        <DatePicker
+      <Grid container spacing={3} justifyContent="flex-start"
+  alignItems="center" >
+  <Grid item xs={2}>
+    <span className=" text-purple-900 ml-5 text-2xl font-bold">Fecha desde</span>
+    <DatePicker
           renderCustomHeader={({ date, changeYear, changeMonth, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
             <div
               style={{
@@ -249,7 +153,7 @@ export default function Home() {
                 onClick={decreaseMonth}
                 disabled={prevMonthButtonDisabled}
               >
-                <KeyboardDoubleArrowLeftIcon/>
+                <KeyboardDoubleArrowLeftIcon />
               </button>
               <select
                 className="border-purple-900 border-2 rounded-md text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15"
@@ -290,8 +194,10 @@ export default function Home() {
           endDate={endDate}
           className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
         />
-
-        <DatePicker
+  </Grid>
+  <Grid item xs={2}>
+  <span className="text-purple-900 ml-5 text-2xl font-bold">Fecha hasta</span>
+  <DatePicker
           renderCustomHeader={({ date, changeYear, changeMonth, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
             <div
               style={{
@@ -305,7 +211,7 @@ export default function Home() {
                 onClick={decreaseMonth}
                 disabled={prevMonthButtonDisabled}
               >
-                <KeyboardDoubleArrowLeftIcon/>
+                <KeyboardDoubleArrowLeftIcon />
               </button>
               <select
                 className="border-purple-900 border-2 rounded-md text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15"
@@ -347,10 +253,19 @@ export default function Home() {
           minDate={startDate}
           className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
         />
-        <Button className="mx-2 border-purple-900 border-2 rounded-md p-3 text-purple-900  hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15" aria-describedby={id} onClick={SelectDates}>
+  </Grid>
+  <Grid item xs  >
+  <Button
+  
+          onClick={SelectDates}
+          variant="extended"
+          className=" text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        >
+          <SearchIcon sx={{ mr: 1 }} />
           Buscar Fechas
         </Button>
-      </Box>
+  </Grid>
+</Grid>
 
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} columns={12}>
@@ -372,7 +287,7 @@ export default function Home() {
                 padding: 1,
               }}
             >
-              <span className="text-2xl font-bold">Cantidad de Turnos</span>
+              <span className="text-2xl font-bold">Cantidad de Turnos: {turnosTotales} </span>
             </Typography>
             <ResponsiveContainer width="100%" height="85%">
               <AreaChart
@@ -413,7 +328,7 @@ export default function Home() {
                 padding: 1,
               }}
             >
-              <span className="text-2xl font-bold">Ventas por dia</span>
+              <span className="text-2xl font-bold">Ventas Totales: ${ventasTotales}</span>
             </Typography>
 
             <ResponsiveContainer width="100%" height="85%">
@@ -440,61 +355,14 @@ export default function Home() {
         </Grid>
       </Box>
 
-      <Grid className="mt-10" container spacing={2} columns={12} justifyContent="center">
+      {/*   <Grid className="mt-10" container spacing={2} columns={12} justifyContent="center">
         <ButtonPurple aria-describedby={id} onClick={handleClick}>
           Ventas en la ultima semana
         </ButtonPurple>
         <Popper id={id} open={open} anchorEl={anchorEl}>
           <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>${ventasSemanales}</Box>
         </Popper>
-      </Grid>
-
-      {/* <Typography
-        gutterBottom
-        variant="h5"
-        component="div"
-        sx={{
-          fontSize: 30,
-          fontWeight: "bold",
-          fontFamily: "Roboto",
-          color: "white",
-          textAlign: "center",
-          marginTop: 10,
-          marginBottom: 2,
-          backgroundColor: purple[700],
-          borderRadius: 1,
-          padding: 1,
-        }}
-      >
-        <span className="text-2xl font-bold">Turnos en los ultimos 30 dias</span>
-      </Typography>
-      <ResponsiveContainer width="90%" height="40%">
-        <AreaChart
-          width={500}
-          height={400}
-          data={dataTurnosMes}
-          margin={{
-            top: 10,
-            right: 30,
-            left: 0,
-            bottom: 0,
-          }}
-        >
-          <CartesianGrid strokeDasharray="5 5" />
-          <XAxis dataKey="name" />
-          <YAxis dataKey="" />
-          <Tooltip />
-          <Legend verticalAlign="top" wrapperStyle={{ lineHeight: "40px" }} />
-          <Area type="monotone" dataKey="Turnos" stroke="#8884d8" fill="#8884d8" />
-        </AreaChart>
-      </ResponsiveContainer>
-
-      <ButtonPurple aria-describedby={id} onClick={turnosMes}>
-        Ventas en la ultima semana
-      </ButtonPurple>
-      <Popper id={id} open={open} anchorEl={anchorEl}>
-        <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>${ventasSemanales}</Box>
-      </Popper> */}
+      </Grid> */}
     </>
   );
 }

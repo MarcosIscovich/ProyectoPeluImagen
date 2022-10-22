@@ -61,19 +61,9 @@ export const deleteTurno = async (id) => {
     }
 }
 
-export const turnosWeek = async (data) => {
+export const turnosSelected = async (data) => {
     try{
-        const response = await axios.post(url +'turnosWeek', data);
-        return {ok: true , data:response.data};  
-    } 
-    catch (error) {
-        console.log(error);
-        return {ok: false , message: error.message};
-    }
-}
-export const turnosMonth = async (data) => {
-    try{
-        const response = await axios.post(url +'turnosMonth', data);
+        const response = await axios.post(url +'turnosSelected', data);
         return {ok: true , data:response.data};  
     } 
     catch (error) {

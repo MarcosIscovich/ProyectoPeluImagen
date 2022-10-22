@@ -140,40 +140,7 @@ exports.deleteTurno = (req, res) => {
 		});
 };
 
-exports.turnosWeek = (req, res) => {
-	const { fechahoy, fechaSemana } = req.body;
-	console.log("FECHA HOY", fechahoy);
-	console.log("FECHA SEMANA", fechaSemana);
-	db.TurnoModel.findAll({
-		where: {
-			fecha_concurrencia: {
-				/* [Op.gte]: moment().subtract(7, "days").toDate(), */
-        [Op.between]: [fechaSemana , fechahoy],
-			},
-		},
-		include: [
-			{
-				model: db.ClienteModel,
-				as: "cliente",
-				attributes: ["nombre"],
-			},
-			{
-				model: db.TrabajoModel,
-				as: "trabajo",
-				attributes: ["nombre", "precio"],
-			},
-		],
-	})
-		.then((turnos) => {
-			console.log("TURNOS", turnos);
-			res.status(200).send(turnos);
-		})
-		.catch((error) => {
-			res.status(500).send(error);
-		});
-};
-
-exports.turnosMonth = (req, res) => {
+exports.turnosSelected = (req, res) => {
   const { fechainicio, fechafin } = req.body;
   console.log("FECHA HOY", fechainicio);
   console.log("FECHA MES", fechafin);
