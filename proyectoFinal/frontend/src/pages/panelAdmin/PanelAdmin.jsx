@@ -18,30 +18,29 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import Clientes from "../../pages/clientes/clientes";
 import Productos from "../../pages/productos/productos";
 import Servicios from "../../pages/tipoServicio/servicios";
-import Home from "../../pages/Dashboard/Dashboard";
+import Home from "../Dashboard/Dashboard";
 import FichaClientes from "../../pages/fichaCliente/fichaCliente";
 import Turnos from "../../pages/turnos/turnosV2";
-import EventIcon from '@mui/icons-material/Event';
+import EventIcon from "@mui/icons-material/Event";
 import Logo from "../../images/logo.jpg";
 import { Button } from "@mui/material";
 import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { ListItemButton } from "@mui/material";
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { Link } from "react-router-dom";
 //import { GiBarbedNails } from "react-icons/gi";
 import { BsFillJournalBookmarkFill, BsCalendar2Plus } from "react-icons/bs";
-import ContentCutIcon from '@mui/icons-material/ContentCut';
-import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import ContentCutIcon from "@mui/icons-material/ContentCut";
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import { IoHome } from "react-icons/io5";
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import Collapse from '@mui/material/Collapse';
-
-
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import Collapse from "@mui/material/Collapse";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 255;
 
@@ -108,9 +107,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
   }),
 }));
 
-
-
-export default function MiniDrawer() {
+export default function PanelAdmin() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -160,7 +157,6 @@ export default function MiniDrawer() {
   };
 
   const logOut = () => {
-
     localStorage.removeItem("token");
     window.location.href = "/login";
   };
@@ -183,8 +179,8 @@ export default function MiniDrawer() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      
-      <MenuItem onClick={logOut}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={logOut}>LogOut</MenuItem>
     </Menu>
   );
 
@@ -237,7 +233,7 @@ export default function MiniDrawer() {
   );
 
   return (
-    <Box sx={{ display: "flex" }}  >
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar className="bg-zinc-900" position="fixed" open={open}>
         <Toolbar>
@@ -301,7 +297,7 @@ export default function MiniDrawer() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <Drawer variant="permanent" open={open} onMouseEnter={handleDrawerOpen} onMouseLeave={handleDrawerClose}>	
+      <Drawer variant="permanent" open={open} onMouseEnter={handleDrawerOpen} onMouseLeave={handleDrawerClose}>
         <DrawerHeader className="mx-0 px-0">
           <Button onClick={handleDrawerClose} className="mx-0 px-0 py-0">
             {theme.direction === "rtl" ? <ChevronRightIcon /> : <img src={Logo} alt="" width={"100%"} />}
@@ -342,132 +338,40 @@ export default function MiniDrawer() {
             }}
           />
           <ListItemButton onClick={handleClickServicios} className="rounded-full">
-        <ListItemIcon>
-        <ContentCutIcon sx={{color : "#ef916d"}} />
-        </ListItemIcon>
-        <ListItemText primary="Servicios" className="ml-3 border-pink-600 text-white   " />
-        {openServicios ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={openServicios} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-          <ListItem>
-            <Link to="/panelAdmin/servicios" style={{ textDecoration: "none" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  
-                }}
-                
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 5,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "#e82f34",
-                  }}
-                >
-                  <LibraryAddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Nuevo Servicio" className="text-white border-zinc-900" />
-              </ListItemButton>
-            </Link>
-          </ListItem>
+            <ListItemIcon>
+              <ContentCutIcon sx={{ color: "#ef916d" }} />
+            </ListItemIcon>
+            <ListItemText primary="Servicios" className="ml-3 border-pink-600 text-white   " />
+            {openServicios ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
-        </List>
-      </Collapse>
-
-      <Divider
-            sx={{
-              backgroundColor: "#F15338",
-            }}
-          />
-
-      <ListItemButton onClick={handleClickProductos} className="rounded-full">
-        <ListItemIcon>
-          <ProductionQuantityLimitsIcon sx={{color : "#ef916d"}} />
-        </ListItemIcon>
-        <ListItemText primary="Productos" className="ml-3 border-zinc-900 text-white " />
-        {openProductos ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={openProductos} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-          <ListItem>
-            <Link to="/panelAdmin/productos" style={{ textDecoration: "none" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",}}>
-                <ListItemIcon
-                  sx={{
-                    minWidth: 5,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "#e82f34",
-                  }}
-                >
-                  <LibraryAddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Nuevo Producto" className="text-white border-zinc-900" />
+          <Collapse in={openServicios} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItem>
+                  <Link to="/panelAdmin/servicios" style={{ textDecoration: "none" }}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 5,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                          color: "#e82f34",
+                        }}
+                      >
+                        <LibraryAddIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Nuevo Servicio" className="text-white border-zinc-900" />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
               </ListItemButton>
-            </Link>
-          </ListItem>
-          <Divider
-            sx={{
-              backgroundColor: "#F15338",
-            }}
-          />
-          </ListItemButton>
-        </List>
-      </Collapse>
-
-
-      <Divider
-            sx={{
-              backgroundColor: "#F15338",
-            }}
-          />
-
-
-<ListItemButton onClick={handleClickClientes} className="rounded-full">
-        <ListItemIcon>
-          <Face sx={{color : "#ef916d"}} />
-        </ListItemIcon>
-        <ListItemText primary="Clientes" className=" ml-3 border-zinc-900 text-white " />
-        {openClientes ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={openClientes} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-          <ListItem>
-            <Link to="/panelAdmin/clientes" style={{ textDecoration: "none" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 5,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "#e82f34",
-                  }}
-                >
-                  <BsFillJournalBookmarkFill />
-                </ListItemIcon>
-                <ListItemText primary="Agenda de Clientes" className="text-white border-zinc-900" />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-          </ListItemButton>
-        </List>
-      </Collapse>
+            </List>
+          </Collapse>
 
           <Divider
             sx={{
@@ -475,60 +379,157 @@ export default function MiniDrawer() {
             }}
           />
 
-<ListItemButton onClick={handleClickTurnos} className="rounded-full">
-        <ListItemIcon>
-          <EventIcon sx={{color : "#ef916d"}} />
-        </ListItemIcon>
-        <ListItemText primary="Turnos" className="ml-3 border-zinc-900 text-white " />
-        {openTurnos ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={openTurnos} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-          <ListItem>
-            <Link to="/panelAdmin/turnos" style={{ textDecoration: "none" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 5,
-                    mr: open ? 3 : "auto",
-                    color: "#e82f34",
-                    justifyContent: "center",
-                  }}
-                >
-                  <BsCalendar2Plus />
-                </ListItemIcon>
-                <ListItemText className="text-white border-zinc-900" primary="Ver Turnos" />
-              </ListItemButton>
-            </Link>
-          </ListItem>
+          <ListItemButton onClick={handleClickProductos} className="rounded-full">
+            <ListItemIcon>
+              <ProductionQuantityLimitsIcon sx={{ color: "#ef916d" }} />
+            </ListItemIcon>
+            <ListItemText primary="Productos" className="ml-3 border-zinc-900 text-white " />
+            {openProductos ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
-        </List>
-      </Collapse>
-          
-          
-        </List>
+          <Collapse in={openProductos} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItem>
+                  <Link to="/panelAdmin/productos" style={{ textDecoration: "none" }}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 5,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                          color: "#e82f34",
+                        }}
+                      >
+                        <LibraryAddIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Nuevo Producto" className="text-white border-zinc-900" />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+                <Divider
+                  sx={{
+                    backgroundColor: "#F15338",
+                  }}
+                />
+              </ListItemButton>
+            </List>
+          </Collapse>
 
-        <Button variant="contained" color="secondary" className="mt-5" onClick={logOut}>
-          Cerrar Sesión
-        </Button>
+          <Divider
+            sx={{
+              backgroundColor: "#F15338",
+            }}
+          />
+
+          <ListItemButton onClick={handleClickClientes} className="rounded-full">
+            <ListItemIcon>
+              <Face sx={{ color: "#ef916d" }} />
+            </ListItemIcon>
+            <ListItemText primary="Clientes" className=" ml-3 border-zinc-900 text-white " />
+            {openClientes ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openClientes} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItem>
+                  <Link to="/panelAdmin/clientes" style={{ textDecoration: "none" }}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 5,
+                          mr: open ? 3 : "auto",
+                          justifyContent: "center",
+                          color: "#e82f34",
+                        }}
+                      >
+                        <BsFillJournalBookmarkFill />
+                      </ListItemIcon>
+                      <ListItemText primary="Agenda de Clientes" className="text-white border-zinc-900" />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              </ListItemButton>
+            </List>
+          </Collapse>
+
+          <Divider
+            sx={{
+              backgroundColor: "#F15338",
+            }}
+          />
+
+          <ListItemButton onClick={handleClickTurnos} className="rounded-full">
+            <ListItemIcon>
+              <EventIcon sx={{ color: "#ef916d" }} />
+            </ListItemIcon>
+            <ListItemText primary="Turnos" className="ml-3 border-zinc-900 text-white " />
+            {openTurnos ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={openTurnos} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItem>
+                  <Link to="/panelAdmin/turnos" style={{ textDecoration: "none" }}>
+                    <ListItemButton
+                      sx={{
+                        minHeight: 48,
+                        justifyContent: open ? "initial" : "center",
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 5,
+                          mr: open ? 3 : "auto",
+                          color: "#e82f34",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <BsCalendar2Plus />
+                      </ListItemIcon>
+                      <ListItemText className="text-white border-zinc-900" primary="Ver Turnos" />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              </ListItemButton>
+            </List>
+          </Collapse>
+        </List>
+        <Divider
+          sx={{
+            backgroundColor: "#F15338",
+          }}
+        />
+        <Box sx={{ p: 2, backgroundColor: "#5b6290", display: "flex" }}>
+          <LogoutIcon
+            sx={{
+              minWidth: 5,
+              ml: 1,
+              mr: open ? 3 : "auto",
+              color: "#e82f34",
+              justifyContent: "center",
+              alignSelf: "center",
+              cursor: "pointer",
+            }}
+            onClick={logOut}
+          />
+          <Typography variant="h6" className="text-white border-zinc-900 ml-5" onClick={logOut}>
+            Cerrar Sesión
+          </Typography>
+        </Box>
       </Drawer>
-      {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/clientes" element={<Clientes />} />
-          <Route path="/productos" element={<Productos />} />
-          <Route path="/servicios" element={<Servicios />} />
-          <Route path="/fichas" element={<FichaClientes />} />
-          <Route path="/turnos" element={<Turnos />} />
-        </Routes>
-      </Box> */}
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Outlet />
+      </Box>
     </Box>
   );
 }

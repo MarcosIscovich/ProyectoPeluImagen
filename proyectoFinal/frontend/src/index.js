@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { SnackbarProvider } from "notistack";
 import App from "./App";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +16,10 @@ root.render(
         horizontal: "center",
       }}
     >
+      <BrowserRouter>
       <App />
+      </BrowserRouter>
+      
     </SnackbarProvider>
   </React.StrictMode>
 );

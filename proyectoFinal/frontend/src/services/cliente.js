@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 let url = 'http://localhost:3000/clientes/';
-
+let token = localStorage.getItem('token');
 if (process.env.NODE_ENV === 'production'){
     url = 'http://www.miapp.com.ar';
 }
 
 export const getAllClientes = async () => {
     try{
-      const response = await axios.get(url);
+      const response = await axios.get(url , {headers: {Authorization: `Bearer ${token}`}});
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -20,7 +20,7 @@ export const getAllClientes = async () => {
 
 export const getCliente = async (id) => {
     try{
-      const response = await axios.get(url + id);
+      const response = await axios.get(url + id , {headers: {Authorization: `Bearer ${token}`}});
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -32,7 +32,7 @@ export const getCliente = async (id) => {
 
 export const createCliente = async (cliente) => {
     try{
-        const response = await axios.post(url +'create', cliente);
+        const response = await axios.post(url +'create', cliente , {headers: {Authorization: `Bearer ${token}`}});
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -43,7 +43,7 @@ export const createCliente = async (cliente) => {
 
 export const updateCliente = async (cliente) => {
     try{
-        const response = await axios.put(url +'update', cliente);
+        const response = await axios.put(url +'update', cliente , {headers: {Authorization: `Bearer ${token}`}});
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -54,7 +54,7 @@ export const updateCliente = async (cliente) => {
 
 export const deleteCliente = async (id) => {
     try{
-        const response = await axios.delete(url +'delete/'+id);
+        const response = await axios.delete(url +'delete/'+id , {headers: {Authorization: `Bearer ${token}`}});
         return {ok: true , data:response.data};  
     } 
     catch (error) {

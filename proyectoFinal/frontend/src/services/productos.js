@@ -2,6 +2,7 @@ import axios from 'axios';
 
 
 let url = 'http://localhost:3000/productos/';
+let token = localStorage.getItem('token');
 
 if (process.env.NODE_ENV === 'production'){
     url = 'http://www.miapp.com.ar';
@@ -9,7 +10,7 @@ if (process.env.NODE_ENV === 'production'){
 
 export const getProductos = async () => {
     try{
-      const response = await axios.get(url);
+      const response = await axios.get(url , {headers: {Authorization: `Bearer ${token}`}});
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -21,7 +22,7 @@ export const getProductos = async () => {
 
 export const createProducto = async (producto) => {
     try{
-        const response = await axios.post(url +'create', producto);
+        const response = await axios.post(url +'create', producto, {headers: {Authorization: `Bearer ${token}`}});
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -32,7 +33,7 @@ export const createProducto = async (producto) => {
 
 export const updateProducto = async (producto) => {
     try{
-        const response = await axios.put(url +'update', producto);
+        const response = await axios.put(url +'update', producto, {headers: {Authorization: `Bearer ${token}`}});
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -43,7 +44,7 @@ export const updateProducto = async (producto) => {
 
 export const deleteProducto = async (id) => {
     try{
-        const response = await axios.delete(url +'delete/'+id);
+        const response = await axios.delete(url +'delete/'+id , {headers: {Authorization: `Bearer ${token}`}});
         return {ok: true , data:response.data};  
     } 
     catch (error) {
