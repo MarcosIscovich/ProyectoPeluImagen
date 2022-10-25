@@ -254,7 +254,7 @@ export default function Turnos() {
       console.log("DATAUPDATE", data.event);
       setStartUpdate(data.event.startStr);
       setEndUpdate(data.event.endStr);
-      setFechaUpdate(data.event.startStr);
+      setFechaUpdate(moment(data.event.startStr).format("YYYY-MM-DD"));
       console.log("DATAUPDATE", data.event.startStr);
     }
 
@@ -262,7 +262,7 @@ export default function Turnos() {
       id: flagSaveTurno ? turnoId : data.event.id,
       hora_desde: data.event.startStr,
       hora_hasta: data.event.endStr,
-      fecha_concurrencia: data.event.startStr,
+      fecha_concurrencia: moment(data.event.startStr).format("YYYY-MM-DD"),
       clienteId: data.event.extendedProps.clienteId,
       trabajoId: data.event.extendedProps.trabajoId,
       precio: data.event.extendedProps.precio,

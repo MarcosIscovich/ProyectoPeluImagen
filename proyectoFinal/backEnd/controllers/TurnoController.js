@@ -28,7 +28,7 @@ exports.getAllTurnos = (req, res) => {
 };
 
 exports.getTurno = (req, res) => {
-	console.log("FUNCIONA GET TURNO BACK", req.params.id);
+	
 	const clienteId = req.params.id;
 	db.TurnoModel.findAll({
 		where: {
