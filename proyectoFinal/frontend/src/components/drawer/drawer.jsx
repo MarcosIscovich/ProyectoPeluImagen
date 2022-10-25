@@ -24,7 +24,7 @@ import Productos from "../../pages/productos/productos";
 import Servicios from "../../pages/tipoServicio/servicios";
 import Home from "../../pages/home/Home";
 import FichaClientes from "../../pages/fichaCliente/fichaCliente";
-import Turnos from "../../pages/turnos/turnos";
+import Turnos from "../../pages/turnos/turnosV2";
 import EventIcon from '@mui/icons-material/Event';
 import Logo from "../../images/logo.jpg";
 import { Button } from "@mui/material";

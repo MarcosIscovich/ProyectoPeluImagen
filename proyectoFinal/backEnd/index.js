@@ -21,7 +21,7 @@ const db = require('./database/models');
 //routes
 require('./routes/index.routes')(app);
 
-db.sequelize.sync({ alter: false }).then(() => {
+db.sequelize.sync({ alter: true }).then(() => {
     console.log('Tablas creadas correctamente');
 }
 ).catch(error => {

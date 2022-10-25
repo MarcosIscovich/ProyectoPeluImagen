@@ -1,6 +1,6 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
@@ -11,6 +11,9 @@ import { Modal } from "@mui/material";
 import TextFieldForms from "../../components/textFieldForms";
 import Paper from '@mui/material/Paper';
 import ButtonPurple from "../../components/ButtonPurple"
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
 
 const style = {
   position: "absolute",
@@ -33,7 +36,7 @@ const CustomPaper = (props) => {
 
 
 export default function FormDialog(props) {
-  const { turnoId, open, closeModal, addTurno, timeText, editTurno, clientes, servicios, item, turnosEdit } = props;
+  const { turnoId, open, closeModal, addTurno, timeText, editTurno, clientes, servicios, item, turnosEdit , eventRemove } = props;
 
   const [clienteSelected, setClienteSelected] = useState("");
   const [servicioSelected, setServicioSelected] = useState("");
@@ -41,6 +44,16 @@ export default function FormDialog(props) {
   const [clienteIdselected, setClienteId] = useState("");
   const [servicioIdselected, setServicioId] = useState("");
   const [precioOk, checkPrecio] = useState(false);
+
+  useEffect(() => {
+    if (item) {
+      setClienteSelected(item.cliente);
+      setServicioSelected(item.servicio);
+      setPrecioSelected(item.precio);
+      setClienteId(item.clienteId);
+      setServicioId(item.servicioId);
+    }
+  }, [item]);
 
   const clearSets = () => {
     setClienteSelected("");
@@ -64,22 +77,44 @@ export default function FormDialog(props) {
     console.log("GUARDAR TURNOS", turno);
     closeModal();
     clearSets();
+  }; 
+
+  const eliminarTurno = () => {
+    eventRemove(turnoId);
+    closeModal();
+    clearSets();
   };
 
+
   const editarturno = () => {
-    console.log("EDITAR TURNOS", turnosEdit);
-    let turno = {
-      id: turnoId,
-      cliente: clienteSelected,
-      servicio: servicioSelected,
-      precio: precioSelected,
-      clienteId: clienteIdselected,
-      trabajoId: servicioIdselected,
-    };
-    turnosEdit(turno);
+    
+   
+    if (clienteSelected === undefined || servicioSelected === undefined || precioSelected === undefined) {
+      
+      MySwal.fire ({
+        title: "Error",
+        text: "Todos los campos son obligatorios",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return
+    } else {
+      let turno = {
+        id: turnoId,
+        cliente: clienteSelected,
+        servicio: servicioSelected,
+        precio: precioSelected,
+        clienteId: clienteIdselected,
+        trabajoId: servicioIdselected,
+      };
+      turnosEdit(turno);
     console.log("EDITAR TURNOS", turno);
     closeModal();
     clearSets();
+    }
+      
+    
+    
   };
 
   return (
@@ -213,7 +248,23 @@ export default function FormDialog(props) {
                     boxShadow: 6, }}
                   renderInput={(params) => <TextField {...params} variant="outlined" label="Clientes"/>}
                 />
-                
+                {clienteSelected === undefined && (
+                  <Typography
+                    sx={{
+                      color: "red",
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      fontFamily: "Roboto",
+                      textAlign: "center",
+                      marginTop: 2,
+                      marginBottom: 2,
+                    }}
+                  >
+                    Debe seleccionar un cliente
+                  </Typography>
+                )}
+
+                    
               </Grid>
                     
               <Grid item xs={6} md={6} lg={6}>
@@ -297,8 +348,9 @@ export default function FormDialog(props) {
           )}
 
           <Box sx={{ display: "flex ", justifyContent: "flex-end" , margin:"5" }}>
+            
             <ButtonPurple onClick={closeModal}>Cancelar</ButtonPurple>
-            {editTurno ? <ButtonPurple onClick={editarturno}>Guardar</ButtonPurple> : <ButtonPurple onClick={guardarTurno}>Guardar</ButtonPurple>}
+            {editTurno ?<> <ButtonPurple onClick={eliminarTurno}>Eliminar</ButtonPurple> <ButtonPurple onClick={editarturno}>Guardar</ButtonPurple> </> : <ButtonPurple onClick={guardarTurno}>Guardar</ButtonPurple>}
           </Box>
         </Card>
       </Modal>
