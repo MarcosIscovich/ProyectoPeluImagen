@@ -259,7 +259,7 @@ export default function FormDialog(props) {
                             margin="dense"
                             id="estado_cabello"
                             type="text"
-                            placeholder="estado_cabello"
+                            placeholder="Estado Cabello"
                             disabled={!editFicha}
                           />
                         )}
