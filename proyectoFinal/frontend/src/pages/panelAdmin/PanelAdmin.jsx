@@ -522,7 +522,7 @@ export default function PanelAdmin() {
             }}
             onClick={logOut}
           />
-          <Typography variant="h6" className="text-white border-zinc-900 ml-5" onClick={logOut}>
+          <Typography variant="h6" sx={{ cursor:"pointer"}} className="text-white border-zinc-900 ml-5" onClick={logOut}>
             Cerrar Sesión
           </Typography>
         </Box>

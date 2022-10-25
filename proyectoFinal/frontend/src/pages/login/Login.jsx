@@ -7,44 +7,44 @@ import Logo2 from "../../images/logo2.jpg";
 import { login } from "../../services/auth";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { useSnackbar } from "notistack";
+
+const SnackBar = [
+  {
+    variant: "error",
+    message: "Error en Usuario o Contraseña",
+  },
+];
 
 export default function Login() {
-  const MySwal = withReactContent(Swal);
-
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: {
       username: "",
       password: "",
     },
-
   });
 
   const onSubmit = async (data) => {
     console.log("DATA LOGIN", data);
     const res = await login(data);
+    console.log("RES", res);
     localStorage.setItem("token", res.data.accessToken);
     if (res.ok) {
+      
       window.location.href = "/panelAdmin/turnos";
     } else {
-      MySwal.fire({
-        title: "Error al iniciar sesion",
-        icon: "error",
-        confirmButtonText: "Ok",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = "/login";
-        }
-      });
+      enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant });
+      setValue("password", "");
+      setValue("username", "");
     }
-    
   };
-
-
 
   return (
     <>
@@ -90,7 +90,7 @@ export default function Login() {
                 rules={{ required: true }}
                 render={({ field }) => (
                   <TextFieldForms
-                    {...field}                    
+                    {...field}
                     error={!!errors.username}
                     label="Username"
                     variant="outlined"
@@ -117,7 +117,7 @@ export default function Login() {
                   />
                 )}
               />
-                {errors.password && <span style={{ color: "red" }}>Este campo es requerido</span>}
+              {errors.password && <span style={{ color: "red" }}>Este campo es requerido</span>}
               <div className="flex items-center mt-3 justify-center">
                 <ButtonPurple type="submit">Login</ButtonPurple>
               </div>
