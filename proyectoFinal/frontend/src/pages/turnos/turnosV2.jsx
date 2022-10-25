@@ -441,6 +441,8 @@ export default function Turnos() {
           selectMirror={true}
           dayMaxEvents={true}
           weekends={true}
+          hiddenDays={[0]}
+          navLinkDayClick="timeGridPlugin"
           slotLabelFormat={{
             hour: "2-digit",
             minute: "2-digit",
