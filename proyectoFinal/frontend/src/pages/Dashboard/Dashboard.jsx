@@ -50,7 +50,6 @@ export default function Home() {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
 
@@ -90,9 +89,9 @@ export default function Home() {
     const result = await turnosSelected(fechasBack);
 
     console.log("result", result.data);
-    
+
     //armo array para recorrer y sumar los turnos por dia
-    let dias = [...new Array(daycount + 1)].map((_, i) => moment(fechainicio).add(i, "days").format("YYYY-MM-DD"));
+    let dias = [...new Array(daycount + 1)].map((_, i) => moment(fechainicio).add(i, "days").format("DD-MM-YYYY"));
     console.log("DIAS", dias);
 
     //recorro el array de dias y agrego los turnos por dia
@@ -100,6 +99,8 @@ export default function Home() {
       let turnosdia = result.data.filter((turno) => turno.fecha_concurrencia === dia);
       return DataTurnos.push({ name: dia, Turnos: turnosdia.length });
     });
+
+    console.log("DataTurnos", DataTurnos);
 
     setDataTurnosMes(DataTurnos);
 
@@ -122,7 +123,7 @@ export default function Home() {
       return ventasXdia.push({ name: dia, ventas: totalDia });
     });
     setDataVentasMes(ventasXdia);
- 
+
     //cuento la cantidad de ventas totales
     let totalVentas = 0;
     ventasXdia.map((venta) => {
@@ -135,137 +136,151 @@ export default function Home() {
     <>
       <div className=" flex mx-15 pt-12 pb-2"></div>
 
-      <Grid container spacing={3} justifyContent="flex-start"
-  alignItems="center" >
-  <Grid item xs={2}>
-    <span className=" text-purple-900 ml-5 text-2xl font-bold">Fecha desde</span>
-    <DatePicker
-          renderCustomHeader={({ date, changeYear, changeMonth, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
-            <div
-              style={{
-                margin: 10,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <button
-                className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
-                onClick={decreaseMonth}
-                disabled={prevMonthButtonDisabled}
+      <Grid container spacing={3} justifyContent="flex-start" alignItems="center">
+        <Grid item xs={2}>
+          <span className=" text-purple-900 ml-5 text-2xl font-bold">Fecha desde</span>
+          <DatePicker
+            renderCustomHeader={({
+              date,
+              changeYear,
+              changeMonth,
+              decreaseMonth,
+              increaseMonth,
+              prevMonthButtonDisabled,
+              nextMonthButtonDisabled,
+            }) => (
+              <div
+                style={{
+                  margin: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                <KeyboardDoubleArrowLeftIcon />
-              </button>
-              <select
-                className="border-purple-900 border-2 rounded-md text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15"
-                value={getYear(date)}
-                onChange={({ target: { value } }) => changeYear(value)}
-              >
-                {years.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                <button
+                  className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
+                  onClick={decreaseMonth}
+                  disabled={prevMonthButtonDisabled}
+                >
+                  <KeyboardDoubleArrowLeftIcon />
+                </button>
+                <select
+                  className="border-purple-900 border-2 rounded-md text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15"
+                  value={getYear(date)}
+                  onChange={({ target: { value } }) => changeYear(value)}
+                >
+                  {years.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-              <select
-                className=" border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
-                value={months[getMonth(date)]}
-                onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
-              >
-                {months.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                <select
+                  className=" border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
+                  value={months[getMonth(date)]}
+                  onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
+                >
+                  {months.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-              <button
-                className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
-                onClick={increaseMonth}
-                disabled={nextMonthButtonDisabled}
+                <button
+                  className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
+                  onClick={increaseMonth}
+                  disabled={nextMonthButtonDisabled}
+                >
+                  <KeyboardDoubleArrowRightIcon />
+                </button>
+              </div>
+            )}
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            startDate={startDate}
+            endDate={endDate}
+            className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <span className="text-purple-900 ml-5 text-2xl font-bold">Fecha hasta</span>
+          <DatePicker
+            renderCustomHeader={({
+              date,
+              changeYear,
+              changeMonth,
+              decreaseMonth,
+              increaseMonth,
+              prevMonthButtonDisabled,
+              nextMonthButtonDisabled,
+            }) => (
+              <div
+                style={{
+                  margin: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
-                <KeyboardDoubleArrowRightIcon />
-              </button>
-            </div>
-          )}
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          startDate={startDate}
-          endDate={endDate}
-          className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
-        />
-  </Grid>
-  <Grid item xs={2}>
-  <span className="text-purple-900 ml-5 text-2xl font-bold">Fecha hasta</span>
-  <DatePicker
-          renderCustomHeader={({ date, changeYear, changeMonth, decreaseMonth, increaseMonth, prevMonthButtonDisabled, nextMonthButtonDisabled }) => (
-            <div
-              style={{
-                margin: 10,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <button
-                className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
-                onClick={decreaseMonth}
-                disabled={prevMonthButtonDisabled}
-              >
-                <KeyboardDoubleArrowLeftIcon />
-              </button>
-              <select
-                className="border-purple-900 border-2 rounded-md text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15"
-                value={getYear(date)}
-                onChange={({ target: { value } }) => changeYear(value)}
-              >
-                {years.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                <button
+                  className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
+                  onClick={decreaseMonth}
+                  disabled={prevMonthButtonDisabled}
+                >
+                  <KeyboardDoubleArrowLeftIcon />
+                </button>
+                <select
+                  className="border-purple-900 border-2 rounded-md text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-13 w-15"
+                  value={getYear(date)}
+                  onChange={({ target: { value } }) => changeYear(value)}
+                >
+                  {years.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-              <select
-                className=" border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
-                value={months[getMonth(date)]}
-                onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
-              >
-                {months.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
+                <select
+                  className=" border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
+                  value={months[getMonth(date)]}
+                  onChange={({ target: { value } }) => changeMonth(months.indexOf(value))}
+                >
+                  {months.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
 
-              <button
-                className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
-                onClick={increaseMonth}
-                disabled={nextMonthButtonDisabled}
-              >
-                <KeyboardDoubleArrowRightIcon />
-              </button>
-            </div>
-          )}
-          selected={endDate}
-          onChange={(date) => setEndDate(date)}
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
-        />
-  </Grid>
-  <Grid item xs  >
-  <Button
-  
-          onClick={SelectDates}
-          variant="extended"
-          className=" text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-        >
-          <SearchIcon sx={{ mr: 1 }} />
-          Buscar Fechas
-        </Button>
-  </Grid>
-</Grid>
+                <button
+                  className="border-purple-900 border-2 rounded-md  text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out"
+                  onClick={increaseMonth}
+                  disabled={nextMonthButtonDisabled}
+                >
+                  <KeyboardDoubleArrowRightIcon />
+                </button>
+              </div>
+            )}
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
+          />
+        </Grid>
+        <Grid item xs>
+          <Button
+            onClick={SelectDates}
+            variant="extended"
+            className=" text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+          >
+            <SearchIcon sx={{ mr: 1 }} />
+            Buscar Fechas
+          </Button>
+        </Grid>
+      </Grid>
 
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2} columns={12}>

@@ -578,6 +578,7 @@ export default function Turnos() {
                         onChange={(event, value) => {
                           field.onChange(value);
                           checkPrecio(true);
+                          setValue("precio", value.precio);
                         }}
                         PaperComponent={CustomPaper}
                         color="secondary"
