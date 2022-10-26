@@ -39,6 +39,7 @@ export default function Home() {
   const [dataVentasMes, setDataVentasMes] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  
 
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -91,15 +92,17 @@ export default function Home() {
     console.log("result", result.data);
 
     //armo array para recorrer y sumar los turnos por dia
-    let dias = [...new Array(daycount + 1)].map((_, i) => moment(fechainicio).add(i, "days").format("DD-MM-YYYY"));
+    let dias = [...new Array(daycount + 1)].map((_, i) => moment(fechainicio).add(i, "days").format("YYYY-MM-DD"));
     console.log("DIAS", dias);
 
     //recorro el array de dias y agrego los turnos por dia
     dias.map((dia) => {
       let turnosdia = result.data.filter((turno) => turno.fecha_concurrencia === dia);
-      return DataTurnos.push({ name: dia, Turnos: turnosdia.length });
+      return DataTurnos.push({ name: moment(dia).format("DD-MM-YYYY"), Turnos: turnosdia.length });
     });
 
+   
+    
     console.log("DataTurnos", DataTurnos);
 
     setDataTurnosMes(DataTurnos);

@@ -332,8 +332,8 @@ export default function Turnos() {
     servicios.map((servicio) => {
       if (servicio.id === clickInfo.event.extendedProps.trabajoId) {
         setValue("servicio", servicio);
-        setValue("precio", servicio.precio);
       }
+      setValue("precio", clickInfo.event.extendedProps.precio);
     });
     
     console.log("CLIENTE SELECTED", clienteSelected);
