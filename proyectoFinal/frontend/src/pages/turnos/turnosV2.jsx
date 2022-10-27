@@ -74,8 +74,8 @@ export default function Turnos() {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [allDay, setAllDay] = useState(false);
-  const [startUpdate, setStartUpdate] = useState("");
-  const [endUpdate, setEndUpdate] = useState("");
+  //const [startUpdate, setStartUpdate] = useState("");
+  //const [endUpdate, setEndUpdate] = useState("");
   const [fechaUpdate, setFechaUpdate] = useState("");
   const [item, setItemSelected] = useState([]);
   const [turnoId, setTurnoId] = useState("");
@@ -122,7 +122,7 @@ export default function Turnos() {
 
   async function getEvents() {
     const data = await getAllTurnos();
-    /* console.log("DATA EVENTS", data.data); */
+    console.log("DATA EVENTS", data.data);
     return data.data.map((element) => {
       return {
         id: element.id,
@@ -248,16 +248,18 @@ export default function Turnos() {
   const updateDataTurno = async (data) => {
     console.log("DATA UPDATE", data);
     console.log("SAVE TURNO", turnoId);
+   
     if (data.event === undefined) {
       return;
     } else {
-      console.log("DATAUPDATE", data.event);
-      setStartUpdate(data.event.startStr);
-      setEndUpdate(data.event.endStr);
-      setFechaUpdate(moment(data.event.startStr).format("YYYY-MM-DD"));
-      console.log("DATAUPDATE", data.event.startStr);
+      console.log("DATAUPDATE ELSE", data.event);
+      await setStart(data.event.startStr);
+      await setEnd(data.event.endStr);
+      await setFechaUpdate(moment(data.event.startStr).format("YYYY-MM-DD"));
+      console.log("DATAUPDATE ELSE", data.event.startStr);
     }
-
+    console.log("data end" , end)
+    console.log("data start" , start)
     let updateData = {
       id: flagSaveTurno ? turnoId : data.event.id,
       hora_desde: data.event.startStr,
@@ -442,7 +444,7 @@ export default function Turnos() {
           dayMaxEvents={true}
           weekends={true}
           hiddenDays={[0]}
-          navLinkDayClick="timeGridPlugin"
+          //navLinkDayClick="timeGridPlugin"
           slotLabelFormat={{
             hour: "2-digit",
             minute: "2-digit",
