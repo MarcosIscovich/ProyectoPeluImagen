@@ -19,11 +19,23 @@ import CreateIcon from "@mui/icons-material/Create";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import { useSnackbar } from "notistack";
-import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import moment from "moment";
 import { purple } from "@mui/material/colors";
 import { Box } from "@mui/system";
-import ButtonPurple from "../../components/ButtonPurple";
+import ButtonPurple from "../../components/ButtonPurple"
 
 const MySwal = withReactContent(Swal);
 
@@ -75,7 +87,7 @@ export default function Turnos() {
   //const [INITIAL_EVENTS, setINITIAL_EVENTS] = useState([]);
   const [clienteSelected, setClienteSelected] = useState("");
   const [precioOk, checkPrecio] = useState(false);
-  const [selectEventRemove, setEventRemove] = useState([]);
+  const [selectEventRemove , setEventRemove] = useState([]);
 
   const {
     register,
@@ -155,57 +167,58 @@ export default function Turnos() {
   const onSubmit = async (data) => {
     if (!editTurno) {
       console.log("DATA", data);
-      let fecha = calendarApi.getDate();
+    let fecha = calendarApi.getDate();
 
-      let fechaConcurrencia = moment(fecha).format("YYYY-MM-DD");
-      let horaDesde = start;
-      let horaHasta = end;
-      /* let allDay = calendarApi.view.type === "dayGridMonth" ? true : false; */
-      let cliente = data.cliente;
-      let trabajo = data.servicio;
-      let precio = data.precio;
+    let fechaConcurrencia = moment(fecha).format("YYYY-MM-DD");
+    let horaDesde = start;
+    let horaHasta = end;
+    /* let allDay = calendarApi.view.type === "dayGridMonth" ? true : false; */
+    let cliente = data.cliente;
+    let trabajo = data.servicio;
+    let precio = data.precio;
 
-      let turno = {
-        fecha_concurrencia: fechaConcurrencia,
+    let turno = {
+      fecha_concurrencia: fechaConcurrencia,
+      hora_desde: horaDesde,
+      hora_hasta: horaHasta,
+      allDay: allDay,
+      cliente: cliente,
+      trabajo: trabajo,
+      precio: precio,
+    };
+
+    console.log("TURNO", turno);
+
+    calendarApi.addEvent({
+      title: cliente.nombre,
+      start: start,
+      end: end,
+      allDay: allDay,
+      backgroundColor: "rgb(121, 134, 203)",
+      borderColor: "#fff",
+      textColor: "#fff",
+
+      extendedProps: {
+        precio: precio,
         hora_desde: horaDesde,
         hora_hasta: horaHasta,
-        allDay: allDay,
+        clienteId: cliente.id,
+        trabajoId: trabajo.id,
+        fecha_concurrencia: fechaConcurrencia,
+        nombreServicio: trabajo.nombre,
+        nombreCliente: cliente.nombre,
         cliente: cliente,
         trabajo: trabajo,
         precio: precio,
-      };
-
-      console.log("TURNO", turno);
-
-      calendarApi.addEvent({
-        title: cliente.nombre,
-        start: start,
-        end: end,
-        allDay: allDay,
-        backgroundColor: "rgb(121, 134, 203)",
-        borderColor: "#fff",
-        textColor: "#fff",
-
-        extendedProps: {
-          precio: precio,
-          hora_desde: horaDesde,
-          hora_hasta: horaHasta,
-          clienteId: cliente.id,
-          trabajoId: trabajo.id,
-          fecha_concurrencia: fechaConcurrencia,
-          nombreServicio: trabajo.nombre,
-          nombreCliente: cliente.nombre,
-          cliente: cliente,
-          trabajo: trabajo,
-          precio: precio,
-        },
-      });
-      handleClose();
+      },
+    });
+    handleClose();
     } else {
       console.log("DATA EDit", data);
       console.log("TURNO ID", turnoId);
       turnosEdit(data);
     }
+    
   };
 
   const saveTurno = async (data) => {
@@ -220,10 +233,8 @@ export default function Turnos() {
         timer: 1500,
       });
       setFlagSaveTurno(true);
-      window.localStorage.setItem("turnoId", turno.data.id);
-      //setTurnoId(turno.data.id);
+      setTurnoId(turno.data.id);
       setEditTurno(false);
-      //window.location.reload();
     } else {
       MySwal.fire({
         title: "Error al crear turno",
@@ -237,7 +248,7 @@ export default function Turnos() {
   const updateDataTurno = async (data) => {
     console.log("DATA UPDATE", data);
     console.log("SAVE TURNO", turnoId);
-
+   
     if (data.event === undefined) {
       return;
     } else {
@@ -247,8 +258,8 @@ export default function Turnos() {
       await setFechaUpdate(moment(data.event.startStr).format("YYYY-MM-DD"));
       console.log("DATAUPDATE ELSE", data.event.startStr);
     }
-    console.log("data end", end);
-    console.log("data start", start);
+    console.log("data end" , end)
+    console.log("data start" , start)
     let updateData = {
       id: flagSaveTurno ? turnoId : data.event.id,
       hora_desde: data.event.startStr,
@@ -266,7 +277,9 @@ export default function Turnos() {
     setEditTurno(false);
     console.log("TURNO ID UPDATE", turnoId);
     console.log("TURNOUPDATE", turnoUpdate);
-    turnoUpdate.ok ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant }) : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
+    turnoUpdate.ok
+      ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant })
+      : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
   };
 
   const handleDateSelect = (data) => {
@@ -282,21 +295,22 @@ export default function Turnos() {
     console.log("DATA EDITTURNO", data);
 
     let dataEditTurno = {
-      id: window.localStorage.getItem("turnoId"),
-      cliente: data.cliente.nombre,
+      id: turnoId,
+      cliente: data.cliente.nombre ,
       servicio: data.servicio.nombre,
-      precio: data.precio,
+      precio: data.precio ,
       clienteId: data.cliente.id,
       trabajoId: data.servicio.id,
     };
     const turno = await updateTurno(dataEditTurno);
     console.log("TURNO", turno);
-    turno.ok ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant }) : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
+    turno.ok
+      ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant })
+      : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
     handleClose();
-    window.localStorage.removeItem("turnoId");
+    await setCurrentEvents("");
     setItemSelected([]);
     setEditTurno(false);
-    await setCurrentEvents("");
     getEvents().then((res) => {
       console.log("RES", res);
       let event = res;
@@ -323,7 +337,7 @@ export default function Turnos() {
       }
       setValue("precio", clickInfo.event.extendedProps.precio);
     });
-
+    
     console.log("CLIENTE SELECTED", clienteSelected);
     checkPrecio(true);
     setOpen(true);
@@ -349,6 +363,7 @@ export default function Turnos() {
   };
 
   const handleDelete = async (data) => {
+    
     const dataDelete = await deleteTurno(data.event.extendedProps.idTurno);
     console.log("DELETE", dataDelete);
     if (dataDelete.ok === true) {
@@ -369,8 +384,10 @@ export default function Turnos() {
     }) */
   };
   const eventDidMount = (info) => {
+    
     setTimeText(info.timeText);
     setCalendarApi(info.view.calendar);
+    
 
     renderEventContent(info);
   };
@@ -441,9 +458,9 @@ export default function Turnos() {
           events={currentEvents}
           //initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
           select={handleDateSelect}
-          /*  dateClick={function () {
+          dateClick={function () {
             console.log("dateClick");
-          }} */
+          }}
           eventContent={renderEventContent} // custom render function
           eventClick={handleEventClick}
           eventsSet={function () {}} // called after events are initialized/added/changed/removed
@@ -525,7 +542,7 @@ export default function Turnos() {
                         PaperComponent={CustomPaper}
                         color={purple[700]}
                         sx={{ width: 300, borderRadius: 2, boxShadow: 6 }}
-                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        renderInput={(params) => <TextField {...params}  variant="outlined" />}
                       />
                     )}
                   />
@@ -568,7 +585,7 @@ export default function Turnos() {
                         PaperComponent={CustomPaper}
                         color="secondary"
                         sx={{ width: 300, borderRadius: 2, boxShadow: 6 }}
-                        renderInput={(params) => <TextField {...params} variant="outlined" />}
+                        renderInput={(params) => <TextField {...params}  variant="outlined" />}
                       />
                     )}
                   />
@@ -606,7 +623,15 @@ export default function Turnos() {
                     name="precio"
                     control={control}
                     defaultValue=""
-                    render={({ field }) => <TextField {...field} id="precio" variant="outlined" type="number" sx={{ width: 300, borderRadius: 2, boxShadow: 6 }} />}
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        id="precio"                        
+                        variant="outlined"
+                        type="number"
+                        sx={{ width: 300, borderRadius: 2, boxShadow: 6 }}
+                      />
+                    )}
                   />
                 </Grid>
               </Box>
@@ -615,25 +640,26 @@ export default function Turnos() {
             <Box sx={{ display: "flex ", justifyContent: "flex-end", margin: "5" }}>
               <Grid container spacing={3} sx={{ flexGrow: 1 }}>
                 <Grid item xs={6} md={6} lg={6}>
-                  <ButtonPurple variant="contained" color="secondary" onClick={eventRemove}>
+                <ButtonPurple variant="contained" color="secondary" onClick={eventRemove} >
                     Eliminar Turno
                   </ButtonPurple>
-                </Grid>
-                <Grid item xs={2} md={2} lg={2}></Grid>
+                  </Grid>
+                <Grid item xs={2} md={2} lg={2}>
+                  </Grid>
                 <Grid item xs={2} md={2} lg={2} justifyContent="end" alignItems="flex-end">
-                  <ButtonPurple variant="contained" color="secondary" onClick={handleClose}>
+                  <ButtonPurple variant="contained" color="secondary" onClick={handleClose}  >
                     Cancelar
                   </ButtonPurple>
                 </Grid>
                 <Grid item xs={2} md={2} lg={2} justifyContent="end" alignItems="flex-end">
-                  {/*  {editTurno ? (
+                 {/*  {editTurno ? (
                     <ButtonPurple variant="contained" onClick={turnosEdit} color="primary" >
                       EDitar
                     </ButtonPurple>
                   ) : ( */}
-                  <ButtonPurple variant="contained" color="primary" type="submit">
-                    Guardar
-                  </ButtonPurple>
+                    <ButtonPurple variant="contained" color="primary" type="submit" >
+                      Guardar
+                    </ButtonPurple>
                   {/* )} */}
                 </Grid>
               </Grid>
