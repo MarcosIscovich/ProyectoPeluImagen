@@ -4,7 +4,7 @@ import "./clientes.css";
 import { DataGrid } from "@mui/x-data-grid";
 import { DeleteOutline, Face } from "@mui/icons-material";
 import NoteAltIcon from "@mui/icons-material/NoteAlt";
-import Stack from "@mui/material/Stack";
+import {Stack , styled, alpha , Button , Tooltip , InputBase , Box} from "@mui/material";
 import Modal from "./modalForm";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
@@ -12,15 +12,11 @@ import withReactContent from "sweetalert2-react-content";
 import CardModal from "./clienteModal";
 import { deleteCliente, getAllClientes } from "../../services/cliente";
 import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
-import Box from "@mui/material/Box";
 import CreateIcon from "@mui/icons-material/Create";
 import AddIcon from "@mui/icons-material/Add";
 import ModalFicha from "./modalFichaCliente";
-import { Button } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
 import purple from "@mui/material/colors/purple";
+import  translate from "../../components/Translate/translate";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -294,6 +290,7 @@ export default function clientes() {
       </Stack>
       <Box sx={{ height: 400, margin: 10, width: "95%" }}>
         <DataGrid
+          localeText={translate}
           autoHeight
           rows={rows}
           disableSelectionOnClick

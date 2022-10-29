@@ -55,7 +55,7 @@ export default function NestedModal(props) {
         id: turno.clienteId,
         fecha_concurrencia: moment(turno.fecha_concurrencia).format("DD/MM/YYYY"),
         servicio_realizado: turno.trabajo.nombre,
-        precio: "$" + turno.trabajo.precio
+        precio: "$" + turno.trabajo.precio,
       };
     });
     setTurnoCliente(allTurnos);
@@ -153,14 +153,21 @@ export default function NestedModal(props) {
                 fontWeight: "bold",
                 fontFamily: "Roboto",
                 color: purple[500],
-                textAlign: "center",
+                textAlign: "start",
                 marginTop: 2,
                 marginBottom: 2,
                 borderRadius: "10px",
                 boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
               }}
             >
-              {item.telefono}
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  marginLeft: 10,
+                }}
+              >
+                Telefono: {item.telefono}
+              </span>
             </Typography>
             <Typography
               variant="body2"
@@ -169,14 +176,21 @@ export default function NestedModal(props) {
                 fontWeight: "bold",
                 fontFamily: "Roboto",
                 color: purple[500],
-                textAlign: "center",
+                textAlign: "start",
                 marginTop: 2,
                 marginBottom: 2,
                 borderRadius: "10px",
                 boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
               }}
             >
-              {item.direccion}
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  marginLeft: 10,
+                }}
+              >
+                Direccion: {item.direccion}
+              </span>
             </Typography>
             <Typography
               variant="body2"
@@ -186,14 +200,21 @@ export default function NestedModal(props) {
                 fontWeight: "bold",
                 fontFamily: "Roboto",
                 color: purple[500],
-                textAlign: "center",
+                textAlign: "start",
                 marginTop: 2,
                 marginBottom: 2,
                 borderRadius: "10px",
                 boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
               }}
             >
-              {item.red_social}
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  marginLeft: 10,
+                }}
+              >
+                Red Social: {item.red_social}
+              </span>
             </Typography>
             <Typography
               variant="body2"
@@ -203,17 +224,48 @@ export default function NestedModal(props) {
                 fontWeight: "bold",
                 fontFamily: "Roboto",
                 color: purple[500],
-                textAlign: "center",
+                textAlign: "start",
                 marginTop: 2,
                 marginBottom: 2,
                 borderRadius: "10px",
                 boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
               }}
             >
-              Ocupacion:{item.ocupacion} <br />
-              Tipo De Cabello :{item.tipo_cabello} <br />
-              Estado De Cabello :{item.estado_cabello} <br />
-              Formula :{item.formula} <br />
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  marginLeft: 10,
+                }}
+              >
+                {" "}
+                Ocupacion:{item.ocupacion} <br />
+              </span>
+
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  marginLeft: 10,
+                }}
+              >
+                Tipo De Cabello :{item.tipo_cabello} <br />{" "}
+              </span>
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  marginLeft: 10,
+                }}
+              >
+                {" "}
+                Estado De Cabello :{item.estado_cabello} <br />{" "}
+              </span>
+              <span
+                style={{
+                  fontFamily: "Roboto",
+                  marginLeft: 10,
+                }}
+              >
+                Formula :{item.formula} <br />
+              </span>
             </Typography>
           </CardContent>
           <CardActions>
@@ -229,44 +281,43 @@ export default function NestedModal(props) {
       </Modal>
 
       <Modal open={openModal2} onClose={handleCloseModal2} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
-        <Card sx={{ ...style, width: 600 , margin : 0 , height: 600, display: "flex" , justifyContent: "center"  }}>
-           <> 
-          <Grid container direction="column"  item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">  
-        <Typography
-          gutterBottom
-            sx={{
-              fontSize: 30,
-              fontWeight: "bold",
-              fontFamily: "Roboto",
-              color: "white",
-              textAlign: "center",
-              marginTop: 2,
-              marginBottom: 2,
-              backgroundColor: purple[700],
-              borderRadius: 1,
-              boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
-              padding: 1,
-            }}
-          >
-           Servicios Realizados a : {item.nombre}
-          </Typography>
+        <Card sx={{ ...style, width: 600, margin: 0, height: 600, display: "flex", justifyContent: "center" }}>
+          <>
+            <Grid container direction="column" item xs={12} md={12} lg={12} justifyContent="center" alignItems="center">
+              <Typography
+                gutterBottom
+                sx={{
+                  fontSize: 30,
+                  fontWeight: "bold",
+                  fontFamily: "Roboto",
+                  color: "white",
+                  textAlign: "center",
+                  marginTop: 2,
+                  marginBottom: 2,
+                  backgroundColor: purple[700],
+                  borderRadius: 1,
+                  boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+                  padding: 1,
+                }}
+              >
+                Servicios Realizados a : {item.nombre}
+              </Typography>
 
-          <DataGrid
-            style={{ height: 400,  width: "90%" }}
-            rows={turnoCliente}
-            disableSelectionOnClick
-            columns={columns}
-            pageSize={6}
-            rowsPerPageOptions={[6]}
-            experimentalFeatures={{ newEditingApi: true }}
-            sx={{
-              backgroundColor: "white",
-              borderRadius: "10px",
-              boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
-
-            }}
-          />
-          </Grid>
+              <DataGrid
+                style={{ height: 400, width: "90%" }}
+                rows={turnoCliente}
+                disableSelectionOnClick
+                columns={columns}
+                pageSize={6}
+                rowsPerPageOptions={[6]}
+                experimentalFeatures={{ newEditingApi: true }}
+                sx={{
+                  backgroundColor: "white",
+                  borderRadius: "10px",
+                  boxShadow: "0 0 10px 0 rgba(150, 27, 235, 0.8)",
+                }}
+              />
+            </Grid>
           </>
         </Card>
       </Modal>
