@@ -20,7 +20,7 @@ const MySwal = withReactContent(Swal);
 
 const defaultValues = {
   nombre: "",
-  duracion: "",
+ /*  duracion: "", */
   precio: "",
   /* cantTrabajadores: "", */
   tiposervicioId: "",
@@ -225,7 +225,57 @@ export default function FormDialog(props) {
                       {errors.nombre && <span style={{ color: "red" }}>Este campo es requerido</span>}
                     </Grid>
                     <Grid item xs={6} md={6} lg={6}>
-                      <strong
+                    <strong
+                        style={{
+                          color: purple[700],
+                          fontSize: 20,
+                          fontWeight: "bold",
+                          fontFamily: "Roboto",
+                          textAlign: "center",
+                          marginTop: 2,
+                          marginBottom: 2,
+                          boxShadow: 6,
+                        }}
+                      >
+                        Precio:
+                      </strong>
+                      <Controller
+                        name="precio"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                          <TextFieldForms
+                            {...field}
+                            sx={{
+                              borderRadius: 2,
+                              boxShadow: 6,
+                            }}
+                            margin="dense"
+                            id="precio"
+                            type="number"
+                            placeholder="Precio"
+                          />
+                        )}
+                      />
+                      {errors.precio && <span style={{ color: "red" }}>Este campo es requerido</span>}
+                    </Grid>
+                  </Grid>
+                </Box>
+
+                {/* <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    p: 1,
+                    m: 1,
+                    bgcolor: "background.paper",
+                    borderRadius: 2,
+                    boxShadow: 6,
+                  }}
+                >
+                  <Grid container direction="row" item rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                    <Grid item xs={6} md={6} lg={6}>
+                    <strong
                         style={{
                           color: purple[700],
                           fontSize: 20,
@@ -258,57 +308,7 @@ export default function FormDialog(props) {
                       />
                       {errors.duracion && <span style={{ color: "red" }}>Este campo es requerido</span>}
                     </Grid>
-                  </Grid>
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    p: 1,
-                    m: 1,
-                    bgcolor: "background.paper",
-                    borderRadius: 2,
-                    boxShadow: 6,
-                  }}
-                >
-                  <Grid container direction="row" item rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     <Grid item xs={6} md={6} lg={6}>
-                      <strong
-                        style={{
-                          color: purple[700],
-                          fontSize: 20,
-                          fontWeight: "bold",
-                          fontFamily: "Roboto",
-                          textAlign: "center",
-                          marginTop: 2,
-                          marginBottom: 2,
-                          boxShadow: 6,
-                        }}
-                      >
-                        Precio:
-                      </strong>
-                      <Controller
-                        name="precio"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                          <TextFieldForms
-                            {...field}
-                            sx={{
-                              borderRadius: 2,
-                              boxShadow: 6,
-                            }}
-                            margin="dense"
-                            id="precio"
-                            type="text"
-                            placeholder="Precio"
-                          />
-                        )}
-                      />
-                      {errors.precio && <span style={{ color: "red" }}>Este campo es requerido</span>}
-                    </Grid>
-                    {/* <Grid item xs={6} md={6} lg={6}>
                       <strong
                         style={{
                           color: purple[700],
@@ -341,9 +341,9 @@ export default function FormDialog(props) {
                         )}
                       />
                       {errors.cantTrabajadores && <span style={{ color: "red" }}>Este campo es requerido</span>}
-                    </Grid>*/}
+                    </Grid>
                   </Grid> 
-                </Box>
+                </Box> */}
 
                 <Stack
                   sx={{

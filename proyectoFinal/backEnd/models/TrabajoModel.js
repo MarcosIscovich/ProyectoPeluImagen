@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         duracion: {
             type: DataTypes.INTEGER,
-            allowNull: false,
+            allowNull: true,
         },
         precio: {
             type: DataTypes.INTEGER,

@@ -21,8 +21,7 @@ exports.createTrabajo = (req, res) => {
         db.TrabajoModel.create({
             nombre,
             duracion,
-            precio,
-            
+            precio,            
             tiposervicioId
         }).then(trabajo => {
             res.status(200).send(trabajo);

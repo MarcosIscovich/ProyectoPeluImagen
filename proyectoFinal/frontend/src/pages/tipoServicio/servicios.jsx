@@ -145,7 +145,10 @@ export default function Servicios() {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteTrabajo(id);
-        MySwal.fire("Yo te Adverti!", "El cliente ha sido eliminado.", "success");
+        MySwal.fire({
+          title: "El servicio ha sido eliminado.",
+          icon: "success",
+        });
         rowsdata();
       }
     });
@@ -165,7 +168,7 @@ export default function Servicios() {
         </Box>
       ),
     },
-    {
+    /* {
       field: "duracion",
       headerName: "Duracion",
       headerAlign: "center",
@@ -175,15 +178,15 @@ export default function Servicios() {
           <strong>{params.colDef.headerName}</strong>
         </Box>
       ),
-    },
+    }, */
     {
       field: "precio",
       headerName: "Precio",
       headerAlign: "center",
-      flex: 1,
+      flex: 1,      
       renderCell: (params) => (
         <Box>
-          <strong> $ {params.value}</strong>
+          <strong > $ {params.value}</strong>
         </Box>
       ),
       renderHeader: (params) => (

@@ -132,7 +132,11 @@ export default function productos() {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteProducto(id);
-        MySwal.fire("Yo te Adverti!", "El cliente ha sido eliminado.", "success");
+        MySwal.fire({
+          
+          text: "El producto ha sido eliminado.",
+          icon: "success",
+        });
         rowsdata();
       }
     });
