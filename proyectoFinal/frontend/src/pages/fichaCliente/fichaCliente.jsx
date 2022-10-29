@@ -13,6 +13,7 @@ import { deleteFicha, getAllFichas } from "../../services/fichaCliente";
 import Autocomplete from "@mui/material/Autocomplete";
 import { getAllClientes } from "../../services/cliente";
 import CreateIcon from '@mui/icons-material/Create';
+import translate from "../../components/Translate/translate.json";
 
 
 const MySwal = withReactContent(Swal);
@@ -181,6 +182,7 @@ export default function Servicios() {
       </Stack>
       <div className="flex flex-nowrap space-x-2 max-w-full ...">
         <DataGrid
+          localeText={translate}
           style={{ height: 500, margin: 10, width: "85%" }}      
           rows={rows}
           disableSelectionOnClick

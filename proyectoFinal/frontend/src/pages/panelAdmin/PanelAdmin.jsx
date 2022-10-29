@@ -18,18 +18,11 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import { Routes, Route, Outlet } from "react-router-dom";
-import Clientes from "../../pages/clientes/clientes";
-import Productos from "../../pages/productos/productos";
-import Servicios from "../../pages/tipoServicio/servicios";
-import Home from "../Dashboard/Dashboard";
-import FichaClientes from "../../pages/fichaCliente/fichaCliente";
-import Turnos from "../../pages/turnos/turnosV2";
+import { Outlet } from "react-router-dom";
 import EventIcon from "@mui/icons-material/Event";
 import Logo from "../../images/logo.jpg";
 import { Button } from "@mui/material";
-import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { ListItemButton } from "@mui/material";
+import { List, ListItem, ListItemIcon, ListItemText , ListItemButton ,Collapse} from "@mui/material";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import { Link } from "react-router-dom";
 //import { GiBarbedNails } from "react-icons/gi";
@@ -39,7 +32,6 @@ import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantity
 import { IoHome } from "react-icons/io5";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import Collapse from "@mui/material/Collapse";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 255;

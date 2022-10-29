@@ -15,6 +15,7 @@ import { purple } from "@mui/material/colors";
 import ButtonPurple from "../../components/ButtonPurple";
 import { DataGrid } from "@mui/x-data-grid";
 import moment from "moment";
+import translate from "../../components/Translate/translate.json";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -304,6 +305,7 @@ export default function NestedModal(props) {
               </Typography>
 
               <DataGrid
+                localeText={translate}
                 style={{ height: 400, width: "90%" }}
                 rows={turnoCliente}
                 disableSelectionOnClick

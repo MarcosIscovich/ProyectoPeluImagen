@@ -16,6 +16,7 @@ import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { purple } from "@mui/material/colors";
+import translate from "../../components/Translate/translate.json";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -281,6 +282,7 @@ export default function Servicios() {
       </Stack>
       <div className="flex flex-nowrap space-x-2 max-w-full ...">
         <DataGrid
+        localeText={translate}
           style={{ height: 500, margin: 10, width: "85%" }}
           rows={rowsPelu}
           disableSelectionOnClick

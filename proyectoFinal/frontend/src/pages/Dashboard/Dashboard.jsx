@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from "react";
-import "./home.css";
+import React, { useState } from "react";
 import { turnosSelected } from "../../services/turnos";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import moment from "moment";
 import Typography from "@mui/material/Typography";
 import { purple } from "@mui/material/colors";
-import ButtonPurple from "../../components/ButtonPurple";
 import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import DatePicker from "react-datepicker";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
@@ -24,13 +20,6 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const MySwal = withReactContent(Swal);
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 
 export default function Home() {
   const [ventasTotales, setVentasTotales] = useState(0);
@@ -44,15 +33,6 @@ export default function Home() {
   const years = range(1990, getYear(new Date()) + 1, 1);
   const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-  /*  useEffect(() => {
-    turnosSemana();
-    turnosMes();
-  }, ); */
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
 
   const SelectDates = async () => {
     let fechainicio = moment(startDate).format("YYYY-MM-DD");
@@ -373,14 +353,7 @@ export default function Home() {
         </Grid>
       </Box>
 
-      {/*   <Grid className="mt-10" container spacing={2} columns={12} justifyContent="center">
-        <ButtonPurple aria-describedby={id} onClick={handleClick}>
-          Ventas en la ultima semana
-        </ButtonPurple>
-        <Popper id={id} open={open} anchorEl={anchorEl}>
-          <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>${ventasSemanales}</Box>
-        </Popper>
-      </Grid> */}
+     
     </>
   );
 }
