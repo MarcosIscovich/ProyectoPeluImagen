@@ -371,7 +371,7 @@ export default function PanelAdmin() {
             }}
           />
 
-          <ListItemButton onClick={handleClickProductos} className="rounded-full">
+          {/* <ListItemButton onClick={handleClickProductos} className="rounded-full">
             <ListItemIcon>
               <ProductionQuantityLimitsIcon sx={{ color: "#ef916d" }} />
             </ListItemIcon>
@@ -410,7 +410,7 @@ export default function PanelAdmin() {
                 />
               </ListItemButton>
             </List>
-          </Collapse>
+          </Collapse> */}
 
           <Divider
             sx={{
