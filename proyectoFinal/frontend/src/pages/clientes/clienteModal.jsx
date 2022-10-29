@@ -6,9 +6,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { getTurno } from "../../services/turnos";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Logo2 from "../../images/logo2.jpg";
 import Grid from "@mui/material/Grid";
 import { purple } from "@mui/material/colors";
@@ -17,14 +15,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import moment from "moment";
 import translate from "../../components/Translate/translate.json";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  height: "100%",
-}));
 
 const style = {
   position: "absolute",

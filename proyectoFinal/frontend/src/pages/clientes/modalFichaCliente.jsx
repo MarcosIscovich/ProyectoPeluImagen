@@ -66,7 +66,6 @@ export default function FormDialog(props) {
 
   const {
     reset,
-    register,
     handleSubmit,
     control,
     formState: { errors },
