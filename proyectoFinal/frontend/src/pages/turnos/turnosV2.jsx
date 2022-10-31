@@ -67,7 +67,7 @@ export default function Turnos() {
   const [clientes, setClientes] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [flagSaveTurno, setFlagSaveTurno] = useState(false);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar} = useSnackbar();
   //const [INITIAL_EVENTS, setINITIAL_EVENTS] = useState([]);
   const [clienteSelected, setClienteSelected] = useState("");
   const [precioOk, checkPrecio] = useState(false);
@@ -104,7 +104,7 @@ export default function Turnos() {
 
   async function getEvents() {
     const data = await getAllTurnos();
-    console.log("DATA EVENTS", data.data);
+    
     return data.data.map((element) => {
       return {
         id: element.id,
