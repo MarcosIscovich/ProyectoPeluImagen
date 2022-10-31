@@ -88,6 +88,7 @@ export default function Turnos() {
   const [clienteSelected, setClienteSelected] = useState("");
   const [precioOk, checkPrecio] = useState(false);
   const [selectEventRemove , setEventRemove] = useState([]);
+  const [clearSave, setClearSave] = useState(false);
 
   const {
     register,
@@ -232,9 +233,15 @@ export default function Turnos() {
         showConfirmButton: false,
         timer: 1500,
       });
+      setClearSave(true);
       setFlagSaveTurno(true);
       setTurnoId(turno.data.id);
       setEditTurno(false);
+      data.event.remove()
+      getEvents().then((res) => {
+        let event = res;
+        setCurrentEvents(event);        
+      });
     } else {
       MySwal.fire({
         title: "Error al crear turno",
@@ -275,6 +282,7 @@ export default function Turnos() {
     const turnoUpdate = await updateTurno(updateData);
     setTurnoId("");
     setEditTurno(false);
+    setClearSave(false)
     console.log("TURNO ID UPDATE", turnoId);
     console.log("TURNOUPDATE", turnoUpdate);
     turnoUpdate.ok
@@ -308,6 +316,7 @@ export default function Turnos() {
       ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant })
       : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
     handleClose();
+    setClearSave(false)
     await setCurrentEvents("");
     setItemSelected([]);
     setEditTurno(false);
@@ -363,8 +372,10 @@ export default function Turnos() {
   };
 
   const handleDelete = async (data) => {
-    
-    const dataDelete = await deleteTurno(data.event.extendedProps.idTurno);
+    if(clearSave){
+      setClearSave(false)
+    } else {
+      const dataDelete = await deleteTurno(data.event.extendedProps.idTurno);
     console.log("DELETE", dataDelete);
     if (dataDelete.ok === true) {
       MySwal.fire({
@@ -374,6 +385,8 @@ export default function Turnos() {
         timer: 1500,
       });
     }
+    }
+    
   };
 
   const handleEvents = (events) => {
