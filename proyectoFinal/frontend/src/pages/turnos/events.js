@@ -5,7 +5,7 @@ let todayStr = new Date().toISOString().replace(/T.*$/, '') // YYYY-MM-DD of tod
 
 export async function  getEvents () {
     const data = await getAllTurnos();
-    console.log("DATA EVENTOS",data.data);
+    
    return data.data.map(element => {
   return {
         id: element.id,

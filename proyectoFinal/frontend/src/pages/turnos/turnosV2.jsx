@@ -64,8 +64,8 @@ export default function Turnos() {
   const [allDay, setAllDay] = useState(false);
   //const [startUpdate, setStartUpdate] = useState("");
   //const [endUpdate, setEndUpdate] = useState("");
-  const [fechaUpdate, setFechaUpdate] = useState("");
-  const [item, setItemSelected] = useState([]);
+  //const [fechaUpdate, setFechaUpdate] = useState("");
+  //const [item, setItemSelected] = useState([]);
   const [turnoId, setTurnoId] = useState("");
   const [editTurno, setEditTurno] = useState(false);
   const [clientes, setClientes] = useState([]);
@@ -195,7 +195,7 @@ export default function Turnos() {
           nombreCliente: cliente.nombre,
           cliente: cliente,
           trabajo: trabajo,
-          precio: precio,
+         // precio: precio,
         },
       });
       handleClose();
@@ -247,7 +247,7 @@ export default function Turnos() {
       console.log("DATAUPDATE ELSE", data.event);
       await setStart(data.event.startStr);
       await setEnd(data.event.endStr);
-      await setFechaUpdate(moment(data.event.startStr).format("YYYY-MM-DD"));
+      //await setFechaUpdate(moment(data.event.startStr).format("YYYY-MM-DD"));
       console.log("DATAUPDATE ELSE", data.event.startStr);
     }
     console.log("data end", end);
@@ -299,7 +299,7 @@ export default function Turnos() {
     handleClose();
 
     await setCurrentEvents("");
-    setItemSelected([]);
+    //setItemSelected([]);
     setEditTurno(false);
     getEvents().then((res) => {
       console.log("RES", res);
@@ -318,14 +318,16 @@ export default function Turnos() {
     setEditTurno(true);
     clientes.map((cliente) => {
       if (cliente.id === clickInfo.event.extendedProps.clienteId) {
-        setValue("cliente", cliente);
+         setValue("cliente", cliente);
+         
       }
+      return cliente;
     });
     servicios.map((servicio) => {
       if (servicio.id === clickInfo.event.extendedProps.trabajoId) {
-        setValue("servicio", servicio);
+        return setValue("servicio", servicio);
       }
-      setValue("precio", clickInfo.event.extendedProps.precio);
+      return setValue("precio", clickInfo.event.extendedProps.precio);
     });
 
     console.log("CLIENTE SELECTED", clienteSelected);
@@ -372,13 +374,13 @@ export default function Turnos() {
     }
   };
 
-  const handleEvents = (events) => {
+/*   const handleEvents = (events) => {
     console.log("HANDLEEVENTS", events);
 
-    /* this.setState({
+    this.setState({
       currentEvents: events
-    }) */
-  };
+    })
+  }; */
   const eventDidMount = (info) => {
     setTimeText(info.timeText);
     setCalendarApi(info.view.calendar);
