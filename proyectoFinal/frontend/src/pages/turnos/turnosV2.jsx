@@ -1,25 +1,21 @@
 import React from "react";
-import FullCalendar, { formatDate, WindowScrollController } from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { createEventId, getEvents } from "./events";
 import { getAllClientes } from "../../services/cliente";
 import { getAllTrabajos } from "../../services/servicios";
 import { getAllTurnos } from "../../services/turnos";
 import { createTurno, updateTurno, deleteTurno } from "../../services/turnos";
 import { useState, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import TurnosModal from "./turnosModal";
 import allLocales from "@fullcalendar/core/locales-all";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { DeleteOutline } from "@mui/icons-material";
-import CreateIcon from "@mui/icons-material/Create";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 import { useSnackbar } from "notistack";
-import { Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Autocomplete, Dialog, DialogContent, DialogContentText, DialogTitle, Grid, Paper, TextField, Typography } from "@mui/material";
 import moment from "moment";
 import { purple } from "@mui/material/colors";
 import { Box } from "@mui/system";
@@ -195,7 +191,7 @@ export default function Turnos() {
           nombreCliente: cliente.nombre,
           cliente: cliente,
           trabajo: trabajo,
-         // precio: precio,
+          // precio: precio,
         },
       });
       handleClose();
@@ -271,6 +267,7 @@ export default function Turnos() {
     console.log("TURNO ID UPDATE", turnoId);
     console.log("TURNOUPDATE", turnoUpdate);
     turnoUpdate.ok ? enqueueSnackbar(SnackBar[0].message, { variant: SnackBar[0].variant }) : enqueueSnackbar(SnackBar[1].message, { variant: SnackBar[1].variant });
+    
   };
 
   const handleDateSelect = (data) => {
@@ -318,8 +315,7 @@ export default function Turnos() {
     setEditTurno(true);
     clientes.map((cliente) => {
       if (cliente.id === clickInfo.event.extendedProps.clienteId) {
-         setValue("cliente", cliente);
-         
+        setValue("cliente", cliente);
       }
       return cliente;
     });
@@ -374,7 +370,7 @@ export default function Turnos() {
     }
   };
 
-/*   const handleEvents = (events) => {
+  /*   const handleEvents = (events) => {
     console.log("HANDLEEVENTS", events);
 
     this.setState({
