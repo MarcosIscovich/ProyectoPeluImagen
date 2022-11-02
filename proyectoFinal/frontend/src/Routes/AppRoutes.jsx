@@ -6,7 +6,7 @@ import Productos from "../pages/productos/productos";
 import Servicios from "../pages/tipoServicio/servicios";
 import Turnos from "../pages/turnos/turnosV2";
 import PanelAdmin from "../pages/panelAdmin/PanelAdmin";
-import Home from "../pages/Home/Home";
+import Home from "../pages/home/Home";
 import Login from "../pages/login/Login";
 import SignIn from "../pages/login/SignIn";
 
