@@ -3,6 +3,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config()
+
+
 
 let corsOptions = {
     origin: ["http://localhost:4000"],

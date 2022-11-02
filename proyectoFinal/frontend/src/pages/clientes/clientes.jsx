@@ -2,34 +2,137 @@
 import * as React from "react";
 import "./clientes.css";
 import { DataGrid } from "@mui/x-data-grid";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import Stack from "@mui/material/Stack";
-import ModalAdd from "./agregarModal";
-import axios from "axios";
+import { DeleteOutline, Face } from "@mui/icons-material";
+import NoteAltIcon from "@mui/icons-material/NoteAlt";
+import {Stack , styled, alpha , Button , Tooltip , InputBase , Box} from "@mui/material";
+import Modal from "./modalForm";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import CardModal from "./clienteModal";
+import { deleteCliente, getAllClientes } from "../../services/cliente";
+import SearchIcon from "@mui/icons-material/Search";
+import CreateIcon from "@mui/icons-material/Create";
+import AddIcon from "@mui/icons-material/Add";
+import ModalFicha from "./modalFichaCliente";
+import purple from "@mui/material/colors/purple";
+import  translate from "../../components/Translate/translate";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
 
 export default function clientes() {
+  useEffect(() => {
+    rowsdata();
+  }, []);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [editData, setData] = useState([]);
   const [rows, setRows] = useState([]);
+
+  const [item, setItemSelected] = useState([]);
+  //const [idCliente, setIdCliente] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [openCard, setOpenCard] = useState(false);
+  const [openFicha, setOpenFicha] = useState(false);
 
   const MySwal = withReactContent(Swal);
 
-  const rowsdata = () => {
-    axios.get("http://localhost:3000/clientes/").then((response) => {
-      console.log("entra a rowsdata", response.data);
-      setRows(response.data);
-    });
+  const search = (e) => {
+    if (e.length > 3) {
+    filtrar(e);
+    } else {
+      rowsdata();
+    }
   };
 
-  const handleEdit = (id) => {
-    console.log(id);
-    axios.get(`http://localhost:3000/clientes/${id}`).then((response) => {
-      setData(response.data);
-      console.log("data para editar", editData);
+  const filtrar = (filtrado) => {
+    
+    console.log("FILTRADO", filtrado);
+    let resultado = rows.filter((row) => {
+      return row.nombre.toLowerCase().includes(filtrado);
     });
+    console.log("RESULTADO", resultado);
+    setRows(resultado);
+       
+    
+  };
+
+  const cardOpen = (data) => {
+    console.log("CARD", data);
+    setItemSelected(data);
+    setOpenCard(true);
+  };
+  const openFichaModal = (data) => {
+    console.log("FICHA", data);
+    //setIdCliente(data.id);
+    setOpenFicha(true);
+    setItemSelected(data);
+  };
+
+  const rowsdata = async () => {
+    const data = await getAllClientes();
+    setRows(data.data);
+  };
+  const handleCloseCard = () => {
+    setOpenCard(false);
+  };
+  const handleCloseFicha = () => {
+    setOpenFicha(false);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setEdit(false);
+  };
+
+  const handleClickOpen = () => {
+    setItemSelected({});
+    setOpen(true);
+    setEdit(false);
+  };
+
+  const handleEdit = (data) => {
+    console.log("Cliente edit", data);
+    setItemSelected(data);
+    setOpen(true);
+    setEdit(true);
   };
 
   const handleDelete = (id) => {
@@ -43,148 +146,164 @@ export default function clientes() {
       confirmButtonText: "Sí, bórralo!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:3000/clientes/delete/${id}`)
-          .then((response) => {
-            console.log(response);
-            rowsdata();
-          });
-        MySwal.fire("¡Eliminado!", "El cliente ha sido eliminado.", "success");
+        deleteCliente(id);
+        MySwal.fire("Yo te Adverti!", "El cliente ha sido eliminado.", "success");
+        rowsdata();
       }
     });
   };
-
-  useEffect(() => {
-    rowsdata();
-  }, []);
-
   const columns = [
     /* { field: "id", headerName: "ID", width: 70 }, */
-    { field: "nombre", headerName: "Nombre", width: 130 },
-    { field: "telefono", headerName: "Telefono", width: 130 },
-    { field: "direccion", headerName: "Direccion", width: 130 },
-    { field: "email", headerName: "E-mail", width: 180 },
+    {
+      field: "nombre",
+      headerName: "Nombre",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "telefono",
+      headerName: "Telefono",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "direccion",
+      headerName: "Direccion",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
+    {
+      field: "email",
+      headerName: "E-mail",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
     {
       field: "fecha_nacimiento",
       headerName: "Fecha de Nacimiento",
-      width: 160,
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
     },
-    { field: "red_social", headerName: "Red Social", width: 130 },
+    {
+      field: "red_social",
+      headerName: "Red Social",
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
+    },
     {
       field: "acciones",
       headerName: "Acciones",
-      width: 130,
+      flex: 1,
+      headerAlign: "center",
+      align: "center",
+      renderHeader: (params) => (
+        <Box>
+          <strong>{params.colDef.headerName}</strong>
+        </Box>
+      ),
       renderCell: (params) => {
         return (
-          <div>
-            <button
-              className="btnEdit"
-              onClick={() => handleEdit(params.row.id)}
-            >
-              {" "}
-              Editar
-            </button>
+          <div className="flex space-x-2 ">
+            <Tooltip title="Ver y Editar Ficha del Cliente">
+            <NoteAltIcon className="cursor-pointer fill-blue-500 md:fill-blue-700 " onClick={() => openFichaModal(params.row)} />
+            </Tooltip>
+            <Tooltip title="Datos del Cliente Y Servicios Realizados">
+            <Face className=" fill-green-500 md:fill-green-700" onClick={() => cardOpen(params.row)} />
+          </Tooltip>
+            <CreateIcon className="fill-black-500 md:fill-black-700" onClick={() => handleEdit(params.row)} />
+            {/*  Editar
+            </button> */}
 
-            <DeleteOutlineIcon
-              className="btnDelete"
-              onClick={() => handleDelete(params.row.id)}
-            />
+            <DeleteOutline className="fill-red-500 md:fill-red-700" onClick={() => handleDelete(params.row.id)} />
           </div>
         );
       },
     },
   ];
 
-  /* const rows = [
-    {
-      id: 1,
-      nombre: "Juan",
-      telefono: "123456789",
-      direccion: "Calle 1",
-      email: "Juan@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 2,
-      nombre: "Pedro",
-      telefono: "123456789",
-      direccion: "Calle 2",
-      email: "Pedro@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Intagram",
-    },
-    {
-      id: 3,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 4,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 5,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 6,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 7,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    },
-    {
-      id: 8,
-      nombre: "Maria",
-      telefono: "123456789",
-      direccion: "Calle 3",
-      email: "Maria@gmail.com",
-      fechadeNacimiento: "01/01/2000",
-      redSocial: "Facebook",
-    }, 
-  ];*/
-
   return (
-    <div className="clienteList">
+    <>
+      <div className=" flex mx-15 pt-12 pb-2">
+        <Button
+          onClick={handleClickOpen}
+          variant="extended"
+          className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        >
+          <AddIcon sx={{ mr: 1 }} />
+          Nuevo Cliente
+        </Button>
+
+        <Search>
+          <SearchIconWrapper>
+            <SearchIcon sx={{
+                    fontSize: 30,
+                    justifyContent: "center",
+                    color: purple[700],
+                  }} />
+          </SearchIconWrapper>
+          <StyledInputBase placeholder="Buscar Cliente" inputProps={{ "aria-label": "search" }} onChange={(e) => search(e.target.value)} />
+        </Search>
+      </div>
+
+      <CardModal item={item} openCard={openCard} handleCloseCard={handleCloseCard} />
+      <ModalFicha openFicha={openFicha} setOpen={setOpen} handleCloseFicha={handleCloseFicha} rowsdata={rowsdata} item={item} />
+
       <Stack direction="row" spacing={5}>
         <br />
-        <ModalAdd editData={editData} rowsdata={rowsdata} />
+        <Modal edit={edit} item={item} open={open} setOpen={setOpenFicha} handleClose={handleClose} rowsdata={rowsdata} />
       </Stack>
-
-      <DataGrid
-        style={{ height: 400, margin: 60, width: "80%" }}
-        rows={rows}
-        disableSelectionOnClick
-        columns={columns}
-        pageSize={4}
-        rowsPerPageOptions={[5]}
-      />
-    </div>
+      <Box sx={{ height: 400, margin: 10, width: "95%" }}>
+        <DataGrid
+          localeText={translate}
+          autoHeight
+          rows={rows}
+          disableSelectionOnClick
+          columns={columns}
+          pageSize={7}
+          rowsPerPageOptions={[7]}
+          align="center"
+          experimentalFeatures={{ newEditingApi: true }}
+          className="bg-white shadow-lg drop-shadow-2xl rounded-lg my-6 border-solid border-1 border-purple-900
+          w-full text-sm text-left text-violet-800 dark:text-violet-900 
+          "
+        />
+      </Box>
+    </>
   );
 }

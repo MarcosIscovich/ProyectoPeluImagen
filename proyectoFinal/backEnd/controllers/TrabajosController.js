@@ -1,10 +1,9 @@
 const db = require('../database/models');
 
-exports.getTrabajos = (req, res) => {
-
-    console.log("FUNCIONANDO GET TRABAJOS");
+exports.getAllTrabajos = (req, res) => {
 
     db.TrabajoModel.findAll({
+        
     }).then(trabajos => {
         res.status(200).send(trabajos);
     }
@@ -17,12 +16,13 @@ exports.getTrabajos = (req, res) => {
 
 exports.createTrabajo = (req, res) => {
     try {
-        const { nombre, duracion, precio } = req.body;
+        const { nombre, duracion, precio ,  tiposervicioId } = req.body;
 
         db.TrabajoModel.create({
             nombre,
             duracion,
-            precio
+            precio,            
+            tiposervicioId
         }).then(trabajo => {
             res.status(200).send(trabajo);
         }
@@ -37,8 +37,8 @@ exports.createTrabajo = (req, res) => {
 
 exports.updateTrabajo = (req, res) => {
     try {
-        const { nombre, duracion, precio } = req.body;
-        const { id } = req.params;
+        const {id , nombre, duracion, precio } = req.body;
+        
 
         db.TrabajoModel.update({
             nombre,
@@ -62,7 +62,7 @@ exports.updateTrabajo = (req, res) => {
 
 exports.deleteTrabajo = (req, res) => {
     try {
-        const { id } = req.body;
+        const { id } = req.params;
 
         db.TrabajoModel.destroy({
             where: {

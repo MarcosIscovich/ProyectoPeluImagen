@@ -1,0 +1,51 @@
+.clienteList{
+    flex: 6;
+    background-color: rgb(247, 241, 241);
+    
+}
+.btnEdit{
+    border : none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 10px;
+    
+}
+
+.btnDelete{
+    padding: 5px 10px 0px 5px;
+    
+    color: red;
+    cursor: pointer;
+    
+}
+
+.btnAdd{
+    display: flex;
+    margin: 30px 30px 30px 100px !important;
+    border : none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #3bb077 !important;
+    color: white !important;
+    cursor: pointer;
+    margin-right: 20px;
+
+}
+.btnFace{
+    padding: 5px 10px 0px 5px;
+    cursor: pointer;
+    
+
+}
+.dialogTitle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #3bb077;
+    color: white;
+    border-radius: 10px 10px 0px 0px;
+}

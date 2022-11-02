@@ -1,6 +1,6 @@
 const db = require ('../database/models');
 
-exports.getProductos = (req, res) => {
+exports.getAllProductos = (req, res) => {
     console.log("FUNCIONA GET PRODUCTOS");
     db.ProductoModel.findAll({
             
@@ -15,10 +15,14 @@ exports.getProductos = (req, res) => {
 
 exports.createProducto = (req, res) => {
     try{
-        const { nombre , stock } = req.body;
+        const { nombre , descripcion, stock , precio, imagen} = req.body;
+        
     db.ProductoModel.create({
         nombre,
-        stock
+        descripcion,
+        stock,
+        precio,
+        imagen
     }).then(producto => {
         res.sendStatus(200);
     }).catch(error => {
@@ -32,16 +36,20 @@ exports.createProducto = (req, res) => {
 
 exports.updateProducto = (req, res) => {
     try{
-        const { nombre , stock } = req.body;
+        const { id, nombre, descripcion, stock, precio, imagen } = req.body;
+        console.log(req.body);
         db.ProductoModel.update({
             nombre,
-            stock
+            descripcion,
+            stock,
+            precio,
+            imagen
         }, {
             where: {
-                id: req.params.id
+                id
             }
         }).then(producto => {
-            res.sendStatus(200);
+            res.status(200).send(producto)
         }).catch(error => {
             console.log(error);
             res.status(500).send(error);
@@ -53,7 +61,7 @@ exports.updateProducto = (req, res) => {
 
 exports.deleteProducto = (req, res) => {
     try{
-        const { id } = req.body
+        const  id  = req.params.id
         db.ProductoModel.destroy({
             where: {
                 id

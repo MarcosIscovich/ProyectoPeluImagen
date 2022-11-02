@@ -5,4 +5,5 @@ const verifyToken = require('../middlewares/verifyToken');
 AuthRoutes.post('/',  AuthController.login);
 
 
+
 module.exports = AuthRoutes;

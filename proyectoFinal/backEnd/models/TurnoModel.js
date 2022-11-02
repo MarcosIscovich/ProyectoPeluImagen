@@ -1,8 +1,8 @@
 module.exports = function (sequelize, Datatypes) {
     return sequelize.define('turnos', {
 
-        fehca_concurrencia: {
-            type: Datatypes.DATE,
+        fecha_concurrencia: {
+            type: Datatypes.STRING,
             allowNull: false,
         },
         precio: {
@@ -10,13 +10,14 @@ module.exports = function (sequelize, Datatypes) {
             allowNull: false,
         },
         hora_desde: {
-            type: Datatypes.TIME,
+            type: Datatypes.DATE,
             allowNull: false,
         },
         hora_hasta: {
-            type: Datatypes.TIME,
+            type: Datatypes.DATE,
             allowNull: false,
         },
+        
     }, {
         timestamps: true,
         tableName: 'turnos'

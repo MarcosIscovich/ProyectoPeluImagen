@@ -30,6 +30,23 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        ocupacion: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        tipo_cabello: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        estado_cabello: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        formula: {
+            type: DataTypes.STRING,
+            allowNull: true,
+
+        },
     }, {
         timestamps: true,
         tableName: 'cliente'

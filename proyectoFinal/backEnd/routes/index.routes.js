@@ -13,13 +13,13 @@ const AuthRoutes = require('./auth.routes');
 const FichaRoutes = require('./ficha.routes');
 
 
-app.use("/clientes", ClienteRoutes);
-app.use("/prodColocado", ProdColRoutes);
-app.use("/producto", ProductoRoutes);
-app.use("/trabajo", TrabajoRoutes);
-app.use("/turno", TurnoRoutes);
-app.use("/user",  UserRoutes);
-app.use("/login", AuthRoutes);
-app.use("/ficha", FichaRoutes);
+app.use("/clientes", verifyToken,  ClienteRoutes);
+app.use("/prodColocado", verifyToken, ProdColRoutes);
+app.use("/productos", verifyToken, ProductoRoutes);
+app.use("/servicios", verifyToken, TrabajoRoutes);
+app.use("/turnos", verifyToken, TurnoRoutes);
+app.use("/user", verifyToken,  UserRoutes);
+app.use("/login",  AuthRoutes);
+app.use("/fichas", verifyToken, FichaRoutes);
 
 }
