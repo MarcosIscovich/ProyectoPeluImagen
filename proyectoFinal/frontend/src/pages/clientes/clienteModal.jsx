@@ -42,13 +42,15 @@ export default function NestedModal(props) {
     console.log("turnosCliente", turnosCliente.data);
 
     let allTurnos = turnosCliente.data.map((turno) => {
+      console.log("turnosif", turno);
       return {
-        id: turno.clienteId,
+        id: turno.id,
         fecha_concurrencia: moment(turno.fecha_concurrencia).format("DD/MM/YYYY"),
         servicio_realizado: turno.trabajo.nombre,
-        precio: "$" + turno.trabajo.precio,
+        precio: "$" + turno.precio,
       };
     });
+    console.log("turno", allTurnos);
     setTurnoCliente(allTurnos);
     console.log("turnosCliente OPEN MODAL", allTurnos);
     setOpenModal2(true);
