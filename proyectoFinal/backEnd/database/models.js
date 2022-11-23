@@ -17,6 +17,7 @@ db.TrabajoModel = require('../models/TrabajoModel')(sequelize, Sequelize.DataTyp
 db.UserModel = require('../models/UserModel')(sequelize, Sequelize.DataTypes);
 db.fichaClienteModel = require('../models/FichaClienteModel')(sequelize, Sequelize.DataTypes);
 db.TipoServicioModel = require('../models/TipoServicioModel')(sequelize, Sequelize.DataTypes);
+db.NewTurno = require('../models/NewTurno')(sequelize, Sequelize.DataTypes);
 
 
 db.TipoServicioModel.hasMany(db.TrabajoModel)

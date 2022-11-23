@@ -54,6 +54,26 @@ exports.getTurno = (req, res) => {
 			res.status(500).send(error);
 		});
 };
+exports.getDisponibilidad = (req, res) => {
+	console.log(req.params);
+	const fecha_concurrencia = req.params;
+	db.TurnoModel.findAll({
+		where : {
+			fecha_concurrencia : {
+				[Op.eq] : req.params.fecha
+			}
+			
+		}
+
+	})
+		.then((turno) => {
+			
+			res.status(200).send(turno);
+		})
+		.catch((error) => {
+			res.status(500).send(error);
+		});
+};
 
 exports.createTurno = (req, res) => {
 	try {

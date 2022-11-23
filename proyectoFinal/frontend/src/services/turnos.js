@@ -29,6 +29,19 @@ export const getTurno = async (id) => {
     
 }
 
+export const getDisponibilidad = async (fecha) => {
+    toString(fecha);
+    console.log("FUNCIONA GET DISPONIBILIDAD", fecha);
+    try{
+        const response = await axios.get(url+'findDispon/' + fecha );
+        return {ok: true , data:response.data};
+    }
+    catch (error) {
+        console.log(error);
+        return {ok: false , message: error.message};
+    }
+}
+
 export const createTurno = async (Turno) => {
     try{
         const response = await axios.post(url +'create', Turno , {headers: {Authorization: `Bearer ${token}`}});

@@ -11,15 +11,17 @@ const TurnoRoutes = require('./turno.routes');
 const UserRoutes = require('./user.routes');
 const AuthRoutes = require('./auth.routes');
 const FichaRoutes = require('./ficha.routes');
+const NewTurnoRoutes = require('./newturno.routes');
 
 
 app.use("/clientes", verifyToken,  ClienteRoutes);
 app.use("/prodColocado", verifyToken, ProdColRoutes);
 app.use("/productos", verifyToken, ProductoRoutes);
 app.use("/servicios", verifyToken, TrabajoRoutes);
-app.use("/turnos", verifyToken, TurnoRoutes);
+app.use("/turnos",  TurnoRoutes);
 app.use("/user", verifyToken,  UserRoutes);
 app.use("/login",  AuthRoutes);
 app.use("/fichas", verifyToken, FichaRoutes);
+app.use("/newturno",  NewTurnoRoutes);
 
 }
