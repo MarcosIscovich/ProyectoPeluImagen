@@ -249,7 +249,7 @@ export default function Turnos() {
     console.log("data end", end);
     console.log("data start", start);
     let updateData = {
-      id: flagSaveTurno ? turnoId : data.event.id,
+      id: /* flagSaveTurno ? turnoId :  */data.event.id,
       hora_desde: data.event.startStr,
       hora_hasta: data.event.endStr,
       fecha_concurrencia: moment(data.event.startStr).format("YYYY-MM-DD"),
