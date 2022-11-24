@@ -266,7 +266,7 @@ export default function Servicios() {
               className="text-white bg-gradient-to-r from-purple-800 to-orange-800 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
             >
               <GiBarbedNails className="mr-2" />
-              Uñas
+              Manicura
             </Fab>
           </ButtonGroup>
         ) : null}
@@ -283,6 +283,10 @@ export default function Servicios() {
           rowsdata={rowsdata}
         />
       </Stack>
+      <div className="flex justify-around text-2xl">
+        <strong  >Peluqueria</strong><strong>Manicura</strong>
+      </div>
+        
       <div className="flex flex-nowrap space-x-2 max-w-full ...">
         <DataGrid
         localeText={translate}
@@ -299,6 +303,7 @@ export default function Servicios() {
           w-full text-sm text-left text-violet-800 dark:text-violet-900 
           "
         />
+         
         <DataGrid
           style={{ height: 500, margin: 10, width: "85%" }}
           rows={rowsUñas}
