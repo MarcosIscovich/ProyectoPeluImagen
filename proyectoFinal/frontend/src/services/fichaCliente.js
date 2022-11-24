@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production'){
 
 export const getAllFichas = async () => {
     try{
-      const response = await axios.get(url , {headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.get(url /* , {headers: {Authorization: `Bearer ${token}`}} */);
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -21,7 +21,7 @@ export const getAllFichas = async () => {
 
 export const getFicha = async (id) => {
     try{
-      const response = await axios.get(url + id , {headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.get(url + id /* , {headers: {Authorization: `Bearer ${token}`}} */);
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -33,7 +33,7 @@ export const getFicha = async (id) => {
 
 export const createFicha = async (Ficha) => {
     try{
-        const response = await axios.post(url +'create', Ficha , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.post(url +'create', Ficha /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -44,7 +44,7 @@ export const createFicha = async (Ficha) => {
 
 export const updateFicha = async (Ficha) => {
     try{
-        const response = await axios.put(url +'update', Ficha , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.put(url +'update', Ficha /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -55,7 +55,7 @@ export const updateFicha = async (Ficha) => {
 
 export const deleteFicha = async (id) => {
     try{
-        const response = await axios.delete(url +'delete/'+id , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.delete(url +'delete/'+id /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {

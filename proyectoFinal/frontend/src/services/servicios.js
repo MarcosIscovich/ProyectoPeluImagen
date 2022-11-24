@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production'){
 
 export const getAllTrabajos = async () => {
     try{
-      const response = await axios.get(url , {headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.get(url /* , {headers: {Authorization: `Bearer ${token}`}} */);
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -21,7 +21,7 @@ export const getAllTrabajos = async () => {
 
 export const getTrabajos = async (id) => {
     try{
-      const response = await axios.get(url + id, {headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.get(url + id/* , {headers: {Authorization: `Bearer ${token}`}} */);
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -33,7 +33,7 @@ export const getTrabajos = async (id) => {
 
 export const createTrabajo = async (Trabajo) => {
     try{
-        const response = await axios.post(url +'create', Trabajo, {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.post(url +'create', Trabajo/* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -44,7 +44,7 @@ export const createTrabajo = async (Trabajo) => {
 
 export const updateTrabajo = async (Trabajo) => {
     try{
-        const response = await axios.put(url +'update', Trabajo , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.put(url +'update', Trabajo /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -55,7 +55,7 @@ export const updateTrabajo = async (Trabajo) => {
 
 export const deleteTrabajo = async (id) => {
     try{
-        const response = await axios.delete(url +'delete/'+id , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.delete(url +'delete/'+id /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {

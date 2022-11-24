@@ -103,7 +103,7 @@ export default function Home() {
       ventasdia.map((venta) => {
         return (totalDia += venta.precio);
       });
-      return ventasXdia.push({ name: dia, ventas: totalDia });
+      return ventasXdia.push({ name: moment(dia).format("DD-MM-YYYY"), ventas: totalDia });
     });
     setDataVentasMes(ventasXdia);
 
@@ -182,6 +182,8 @@ export default function Home() {
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             startDate={startDate}
+            
+            dateFormat="dd-MM-yyyy"
             endDate={endDate}
             className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
           />
@@ -249,6 +251,7 @@ export default function Home() {
             onChange={(date) => setEndDate(date)}
             startDate={startDate}
             endDate={endDate}
+            dateFormat="dd-MM-yyyy"
             minDate={startDate}
             className="mx-2 border-purple-900 border-2 rounded-md p-3 font-bold text-purple-900 text-xl hover:bg-purple-900 hover:text-white transition duration-500 ease-in-out h-15 w-40"
           />

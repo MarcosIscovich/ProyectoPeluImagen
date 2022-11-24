@@ -14,14 +14,14 @@ const FichaRoutes = require('./ficha.routes');
 const NewTurnoRoutes = require('./newturno.routes');
 
 
-app.use("/clientes", verifyToken,  ClienteRoutes);
-app.use("/prodColocado", verifyToken, ProdColRoutes);
-app.use("/productos", verifyToken, ProductoRoutes);
-app.use("/servicios", verifyToken, TrabajoRoutes);
+app.use("/clientes", /* verifyToken, */  ClienteRoutes);
+app.use("/prodColocado", /* verifyToken, */ ProdColRoutes);
+app.use("/productos", /* verifyToken, */ ProductoRoutes);
+app.use("/servicios", /* verifyToken, */ TrabajoRoutes);
 app.use("/turnos",  TurnoRoutes);
-app.use("/user", verifyToken,  UserRoutes);
+app.use("/user", /* verifyToken, */  UserRoutes);
 app.use("/login",  AuthRoutes);
-app.use("/fichas", verifyToken, FichaRoutes);
+app.use("/fichas", /* verifyToken, */ FichaRoutes);
 app.use("/newturno",  NewTurnoRoutes);
 
 }

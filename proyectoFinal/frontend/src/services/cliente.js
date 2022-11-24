@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production'){
 
 export const getAllClientes = async () => {
     try{
-      const response = await axios.get(url , {headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.get(url /* , {headers: {Authorization: `Bearer ${token}`}} */);
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -20,7 +20,7 @@ export const getAllClientes = async () => {
 
 export const getCliente = async (id) => {
     try{
-      const response = await axios.get(url + id , {headers: {Authorization: `Bearer ${token}`}});
+      const response = await axios.get(url + id /* , {headers: {Authorization: `Bearer ${token}`}} */);
     return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -32,7 +32,7 @@ export const getCliente = async (id) => {
 
 export const createCliente = async (cliente) => {
     try{
-        const response = await axios.post(url +'create', cliente , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.post(url +'create', cliente /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -43,7 +43,7 @@ export const createCliente = async (cliente) => {
 
 export const updateCliente = async (cliente) => {
     try{
-        const response = await axios.put(url +'update', cliente , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.put(url +'update', cliente /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {
@@ -54,7 +54,7 @@ export const updateCliente = async (cliente) => {
 
 export const deleteCliente = async (id) => {
     try{
-        const response = await axios.delete(url +'delete/'+id , {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.delete(url +'delete/'+id /* , {headers: {Authorization: `Bearer ${token}`}} */);
         return {ok: true , data:response.data};  
     } 
     catch (error) {
